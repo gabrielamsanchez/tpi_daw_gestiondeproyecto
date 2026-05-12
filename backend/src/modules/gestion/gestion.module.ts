@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ClientesModule } from './clientes/clientes.module';
+import { ClienteModule } from './clientes/clientes.module';
 import { ProyectosModule } from './proyectos/proyectos.module';
 
 @Module({
-  imports: [ClientesModule, ProyectosModule]
+  imports: [ClienteModule, ProyectosModule],
 })
 export class GestionModule {}
