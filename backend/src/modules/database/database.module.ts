@@ -1,22 +1,27 @@
-import { Module, Global } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-@Global()
+// @Global()
+// @Module({
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admn',
-      password: 'admin4',
-      database: 'gest',
-      autoLoadEntities: true,
-      synchronize: false, 
-      logging: process.env.DB_LOGGING === 'true',
-      logger: 'advanced-console',
+    TypeOrmModule.forRootAsync({
+      // Usar forRootAsync es más seguro para asegurar que las variables de entorno existan
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT || '5432'),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        synchronize: false,
+        autoLoadEntities: true,
+        logging: process.env.DB_LOGGING === 'true',
+        logger: 'advanced-console',
+      }),
     }),
   ],
-  exports: [TypeOrmModule], 
+  exports: [TypeOrmModule],
 })
 export class DatabaseModule {}
