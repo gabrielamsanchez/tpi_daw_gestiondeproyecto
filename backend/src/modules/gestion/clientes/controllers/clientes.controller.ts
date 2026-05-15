@@ -46,7 +46,7 @@ import { ClienteService } from '../services/clientes.service';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 
-@Controller('cliente') // Tus rutas serán localhost:3000/cliente
+@Controller('clientes') // Tus rutas serán localhost:3000/cliente
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 

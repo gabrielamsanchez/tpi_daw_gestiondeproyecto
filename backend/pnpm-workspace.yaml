@@ -1,0 +1,6 @@
+allowBuilds:
+  '@compodoc/compodoc': true
+  '@nestjs/core': true
+  '@scarf/scarf': false
+  bcrypt: true
+  unrs-resolver: true

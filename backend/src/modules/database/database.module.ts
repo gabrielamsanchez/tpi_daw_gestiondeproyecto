@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-// @Global()
-// @Module({
-
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({

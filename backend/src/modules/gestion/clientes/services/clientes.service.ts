@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateClienteDto } from './dto/create-cliente.dto';
-import { UpdateClienteDto } from './dto/update-cliente.dto';
-import { Cliente } from './entities/cliente.entity';
+import { CreateClienteDto } from '../dto/create-cliente.dto';
+import { UpdateClienteDto } from '../dto/update-cliente.dto';
+import { Cliente } from '../entities/cliente.entity';
 
 @Injectable()
 export class ClienteService {
@@ -18,7 +18,11 @@ export class ClienteService {
   }
 
   async findAll() {
-    return await this.clienteRepository.find();
+    try {
+      return await this.clienteRepository.find();
+    } catch (error) {
+      throw new NotFoundException('No se encontraron clientes');
+    }
   }
 
   async findOne(id: number) {
