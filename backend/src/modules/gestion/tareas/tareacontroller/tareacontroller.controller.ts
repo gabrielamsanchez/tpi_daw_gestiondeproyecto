@@ -7,22 +7,48 @@ import {
   Param,
   ParseIntPipe,
   UseGuards,
-  Request,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+} from '@nestjs/swagger';
 import { TareasService } from '../tareaservice/tareaservice.service';
 import { CreateTareaDto } from '../dtos/input/create-tarea-dto';
 import { UpdateTareaDto } from '../dtos/input/update-tarea-dto';
 import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard';
 
+@ApiTags('Tareas')
 @Controller('tareacontroller')
 export class TareacontrollerController {
   constructor(private readonly tareasService: TareasService) {}
 
-  //crear tarea
-  @ApiBearerAuth()
+  // Crear tarea
+  @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
-  @Post()
+  @Post(':idProyecto')
+  @ApiOperation({ summary: 'Crear una nueva tarea asociada a un proyecto' })
+  @ApiParam({
+    name: 'idProyecto',
+    description: 'ID del proyecto al que pertenecerá la tarea',
+    example: 1,
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Tarea creada exitosamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Datos de entrada inválidos.',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'No autorizado.',
+  })
   async createTarea(
     @Param('idProyecto', ParseIntPipe) idProyecto: number,
     @Body() dto: CreateTareaDto,
@@ -30,10 +56,29 @@ export class TareacontrollerController {
     return await this.tareasService.crearTarea(dto, idProyecto);
   }
 
-  //actualizar
-  @ApiBearerAuth()
+  // Actualizar
+  @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Put(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Actualizar una tarea existente por su ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID de la tarea a modificar',
+    example: 5,
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Tarea actualizada correctamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea con el ID provisto.',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'No autorizado.',
+  })
   async actualizar(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateTareaDto,
@@ -41,10 +86,29 @@ export class TareacontrollerController {
     return await this.tareasService.actualizarTarea(dto, id);
   }
 
-  //eliminar
-  @ApiBearerAuth()
+  // Eliminar
+  @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Eliminar de forma lógica o física una tarea' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID de la tarea a eliminar',
+    example: 5,
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Tarea deleted correctamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea.',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'No autorizado.',
+  })
   async eliminarTarea(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.tareasService.eliminarTarea(id);
   }

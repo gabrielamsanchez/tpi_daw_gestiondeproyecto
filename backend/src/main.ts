@@ -22,16 +22,35 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
+  //swagger
   if (process.env.SWAGGER_HABILITADO === 'true') {
     const config = new DocumentBuilder()
       .setTitle('Sistema de Gestión de Proyectos')
       .setDescription(
-        'Descripción de la API del sistema de gestión de proyectos',
+        'Descripción de la API del sistema de gestión de proyectos del TPI.',
       )
-      .addBearerAuth()
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description:
+            'Ingresá tu token JWT para acceder a los endpoints protegidos',
+          in: 'header',
+        },
+        'token',
+      )
       .build();
+
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup(globalPrefix, app, document);
+
+    SwaggerModule.setup(`${globalPrefix}/docs`, app, document, {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    });
   }
 
   await app.listen(process.env.PORT ?? 3000);
