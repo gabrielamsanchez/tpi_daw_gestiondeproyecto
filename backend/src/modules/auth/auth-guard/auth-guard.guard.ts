@@ -53,10 +53,12 @@ export class AuthGuardGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
+    //despues borrar es de prueba
     console.log('--- ENTRANDO AL GUARD ---');
     console.log('Authorization:', request.headers.authorization);
 
     const token = this.extractTokenFromHeader(request);
+    //despues borrar es de prueba
     console.log('Token extraído:', token);
 
     if (!token) {
@@ -69,7 +71,7 @@ export class AuthGuardGuard implements CanActivate {
         secret: process.env.JWT_SECRET, 
       });
 
-      console.log('Payload del JWT decodificado con éxito:', payload);
+      console.log('Payload del JWT exitoso:', payload);
 
       request['user'] = payload;
     } catch (error) {

@@ -5,14 +5,14 @@ import { ApiProperty } from '@nestjs/swagger';
 @Entity({ name: 'usuarios' })
 export class Usuario {
   @ApiProperty({
-    description: 'ID único autoincremental del usuario',
+    description: 'ID único',
     example: 1,
   })
   @PrimaryGeneratedColumn()
   id!: number;
 
   @ApiProperty({
-    description: 'Nombre de usuario utilizado para el inicio de sesión',
+    description: 'Nombre de usuario',
     example: 'admin_dev',
   })
   @Column()
@@ -22,7 +22,7 @@ export class Usuario {
   clave!: string;
 
   @ApiProperty({
-    description: 'Estado actual del usuario dentro del sistema',
+    description: 'Estado actual del usuario',
     enum: EstadoUsuario,
     example: EstadoUsuario.ACTIVO,
   })

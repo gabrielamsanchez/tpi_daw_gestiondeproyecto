@@ -36,11 +36,11 @@ export class AuthControllerController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Credenciales inválidas (nombre de usuario o contraseña incorrectos).',
+      'Credenciales inválidas.',
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
-    description: 'Estructura del Body inválida (falla el ValidationPipe).',
+    description: 'Estructura del Body inválida.',
   })
   async login(@Body() dto: LoginDto): Promise<{ accessToken: string }> {
     return await this.authService.login(dto);

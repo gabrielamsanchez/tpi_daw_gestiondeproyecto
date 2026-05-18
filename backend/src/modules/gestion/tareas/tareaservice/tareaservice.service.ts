@@ -38,7 +38,7 @@ export class TareasService {
   async eliminarTarea(idTarea: number): Promise<void> {
     const tarea = await this.tareasRepository.findOneBy({ id: idTarea });
     if (!tarea) {
-      throw new NotFoundException('Tarea no encontrada para dar de Baja');
+      throw new NotFoundException('Tarea no encontrada');
     }
     tarea.estado = EstadoTarea.BAJA;
     await this.tareasRepository.save(tarea);

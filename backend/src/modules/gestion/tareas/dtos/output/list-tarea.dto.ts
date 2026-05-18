@@ -3,20 +3,20 @@ import { EstadoTarea } from '../../enum/estado-tareas-enum';
 
 export class ListTareaDto {
   @ApiProperty({
-    description: 'ID único autoincremental de la tarea en la base de datos',
+    description: 'ID de la tarea',
     example: 1,
   })
   id!: number;
 
   @ApiProperty({
-    description: 'Detalle o cuerpo de la tarea realizada o por realizar',
+    description: 'Detalle de la tarea',
     example: 'Modelar las tablas de la base de datos en PostgreSQL',
   })
   descripcion!: string;
 
   @ApiProperty({
     description:
-      'Estado actual en el que se encuentra la tarea mapeado por el Enum',
+      'Estado actual en el que se encuentra la tarea',
     enum: EstadoTarea,
     example: EstadoTarea.PENDIENTE,
   })

@@ -34,7 +34,7 @@ export class TareacontrollerController {
   @ApiOperation({ summary: 'Crear una nueva tarea asociada a un proyecto' })
   @ApiParam({
     name: 'idProyecto',
-    description: 'ID del proyecto al que pertenecerá la tarea',
+    description: 'ID del proyecto',
     example: 1,
   })
   @ApiResponse({
@@ -55,12 +55,12 @@ export class TareacontrollerController {
   ): Promise<{ id: number }> {
     console.log('--- ENTRANDO AL CONTROLLER DE TAREAS ---');
     console.log(
-      'ID del Proyecto recibido de la URL:',
+      'ID del Proyecto recibido:',
       idProyecto,
       'Tipo:',
       typeof idProyecto,
     );
-    console.log('DTO del Body recibido:', dto);
+    console.log('DTOrecibido:', dto);
 
     return await this.tareasService.crearTarea(dto, idProyecto);
   }
@@ -70,7 +70,7 @@ export class TareacontrollerController {
   @UseGuards(AuthGuardGuard)
   @Put(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Actualizar una tarea existente por su ID' })
+  @ApiOperation({ summary: 'Actualizar una tarea existente' })
   @ApiParam({
     name: 'id',
     description: 'ID de la tarea a modificar',
@@ -82,7 +82,7 @@ export class TareacontrollerController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'No se encontró la tarea con el ID provisto.',
+    description: 'No se encontró la tarea con eL ID.',
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -108,7 +108,7 @@ export class TareacontrollerController {
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: 'Tarea deleted correctamente.',
+    description: 'Tarea eliminada correctamente.',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
