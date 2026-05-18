@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoUsuario } from '../../enum/estado-usurio.enum';
-import { ApiProperty } from '@nestjs/swagger'; // <-- Importamos Swagger
+import { ApiProperty } from '@nestjs/swagger'; 
 
 @Entity({ name: 'usuarios' })
 export class Usuario {

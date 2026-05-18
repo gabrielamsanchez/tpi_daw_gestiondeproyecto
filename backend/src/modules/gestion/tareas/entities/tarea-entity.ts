@@ -26,7 +26,7 @@ export class Tarea {
     maxLength: 255,
   })
   @Column({ type: 'varchar', length: 255, nullable: true }) 
-  description!: string;
+  descripcion!: string;
 
   @ApiProperty({
     description: 'Estado actual de la tarea mapeado por el Enum',

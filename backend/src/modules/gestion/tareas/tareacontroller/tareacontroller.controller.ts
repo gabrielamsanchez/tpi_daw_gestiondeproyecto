@@ -53,6 +53,15 @@ export class TareacontrollerController {
     @Param('idProyecto', ParseIntPipe) idProyecto: number,
     @Body() dto: CreateTareaDto,
   ): Promise<{ id: number }> {
+    console.log('--- ENTRANDO AL CONTROLLER DE TAREAS ---');
+    console.log(
+      'ID del Proyecto recibido de la URL:',
+      idProyecto,
+      'Tipo:',
+      typeof idProyecto,
+    );
+    console.log('DTO del Body recibido:', dto);
+
     return await this.tareasService.crearTarea(dto, idProyecto);
   }
 
@@ -91,7 +100,7 @@ export class TareacontrollerController {
   @UseGuards(AuthGuardGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Eliminar de forma lógica o física una tarea' })
+  @ApiOperation({ summary: 'Eliminar una tarea' })
   @ApiParam({
     name: 'id',
     description: 'ID de la tarea a eliminar',
@@ -110,6 +119,7 @@ export class TareacontrollerController {
     description: 'No autorizado.',
   })
   async eliminarTarea(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    //agregar console log
     await this.tareasService.eliminarTarea(id);
   }
 }
