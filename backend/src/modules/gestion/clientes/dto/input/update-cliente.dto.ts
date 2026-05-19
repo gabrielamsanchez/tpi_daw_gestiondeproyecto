@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateClienteDto } from './input/create-cliente.dto';
+import { CreateClienteDto } from './create-cliente.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { EstadosClientesEnum } from '../enum/estados-cliente-enum';
+import { EstadosClientesEnum } from '../../enum/estados-cliente-enum';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateClienteDto extends PartialType(CreateClienteDto) {

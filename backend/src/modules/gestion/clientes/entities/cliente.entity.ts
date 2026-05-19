@@ -1,17 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { EstadosClientesEnum } from "../enum/estados-cliente-enum";
+import { Proyecto } from "./proyecto.entity";
 
-@Entity({ name: 'clientes' })
+@Entity({ name: "clientes" })
 export class Cliente {
-  @PrimaryGeneratedColumn()
-  id!: number;
 
-  @Column({ type: 'text', unique: true, nullable: false })
-  nombre!: string;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-  @Column({
-    type: 'enum',
-    enum: ['ACTIVO', 'BAJA'],
-    default: 'ACTIVO',
-  })
-  estado!: string;
+    @Column()
+    nombre!: string;
+
+    @Column({ type: 'enum', enum: EstadosClientesEnum })
+    estado!: EstadosClientesEnum
+
+    @OneToMany(() => Proyecto, (proyecto) => proyecto.cliente)
+    proyectos!: Proyecto[]
+
 }
