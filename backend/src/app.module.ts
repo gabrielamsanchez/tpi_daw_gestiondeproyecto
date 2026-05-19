@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 
-
 import { DatabaseModule } from './modules/database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsuariosModule } from './modules/auth/usuarios/usuarios.module';
@@ -16,7 +15,7 @@ import { TareasModule } from './modules/gestion/tareas/tareas.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-   
+
     DatabaseModule,
     AuthModule,
     UsuariosModule,
