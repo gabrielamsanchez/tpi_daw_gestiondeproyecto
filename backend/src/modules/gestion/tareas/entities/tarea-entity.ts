@@ -14,14 +14,14 @@ import { ApiProperty } from '@nestjs/swagger';
 @Entity({ name: 'tareas' })
 export class Tarea {
   @ApiProperty({
-    description: 'ID único autoincremental de la tarea',
+    description: 'ID de la tarea',
     example: 1,
   })
   @PrimaryGeneratedColumn({ name: 'id' })
   id!: number;
 
   @ApiProperty({
-    description: 'Descripción detallada de la tarea a realizar',
+    description: 'Descripción de la tarea a realizar',
     example: 'Modelar las tablas de la base de datos en PostgreSQL',
     maxLength: 255,
   })
@@ -29,7 +29,7 @@ export class Tarea {
   descripcion!: string;
 
   @ApiProperty({
-    description: 'Estado actual de la tarea mapeado por el Enum',
+    description: 'Estado actual de la tarea',
     enum: EstadoTarea,
     example: EstadoTarea.PENDIENTE,
   })
@@ -44,7 +44,7 @@ export class Tarea {
   //esto es momentaneo
   @ApiProperty({
     description:
-      'ID del proyecto asociado (columna temporal hasta activar la relación)',
+      'ID del proyecto asociado',
     example: 1,
     nullable: true,
   })

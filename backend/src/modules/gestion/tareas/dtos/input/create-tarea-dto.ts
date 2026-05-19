@@ -4,7 +4,7 @@ import { EstadoTarea } from '../../enum/estado-tareas-enum';
 
 export class CreateTareaDto {
   @ApiProperty({
-    description: 'Descripción o cuerpo detallado de la tarea a realizar',
+    description: 'Descripción de la tarea a realizar',
     example: 'Modelar las tablas de la base de datos en PostgreSQL',
   })
   @IsString()
@@ -12,7 +12,7 @@ export class CreateTareaDto {
   descripcion!: string;
 
   @ApiProperty({
-    description: 'Estado actual en el que se encuentra la tarea',
+    description: 'Estado actual de la tarea',
     enum: EstadoTarea,
     example: EstadoTarea.PENDIENTE,
   })
@@ -20,7 +20,7 @@ export class CreateTareaDto {
   estado!: EstadoTarea;
 
   @ApiProperty({
-    description: 'ID del proyecto al cual pertenece y se vinculará esta tarea',
+    description: 'ID del proyecto',
     example: 1,
   })
   @IsInt()

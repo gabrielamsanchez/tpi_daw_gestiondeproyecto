@@ -31,7 +31,7 @@ export class TareacontrollerController {
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Post(':idProyecto')
-  @ApiOperation({ summary: 'Crear una nueva tarea asociada a un proyecto' })
+  @ApiOperation({ summary: 'Crear una nueva tarea' })
   @ApiParam({
     name: 'idProyecto',
     description: 'ID del proyecto',
