@@ -42,7 +42,7 @@ export class Tarea {
     nullable: true,
   })
   @Column({ name: 'id_proyecto', type: 'int', nullable: true })
-  idProyecto!: number;
+  id_Proyecto!: number;
 
   @ManyToOne(() => Proyecto, (proyecto) => proyecto.tareas, {
     onDelete: 'CASCADE',
