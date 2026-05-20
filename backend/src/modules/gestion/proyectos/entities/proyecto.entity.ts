@@ -18,6 +18,7 @@ export class Proyecto {
   @Column({
     type: 'enum',
     enum: EstadoProyecto,
+    enumName: 'estados_proyectos', // <- AGREGA ESTA LÍNEA
     default: EstadoProyecto.ACTIVO,
   })
   estado!: EstadoProyecto;

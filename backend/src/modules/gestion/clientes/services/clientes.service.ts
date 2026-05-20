@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 import { Cliente } from '../entities/cliente.entity';
+import { EstadoCliente } from '../enum/estado-cliente-enum';
 
 @Injectable()
 export class ClienteService {
@@ -17,17 +18,8 @@ export class ClienteService {
     return await this.clienteRepository.save(nuevoCliente);
   }
 
-async create(createClienteDto: CreateClienteDto) {
-    const nuevoCliente = this.clienteRepository.create(createClienteDto);
-    return await this.clienteRepository.save(nuevoCliente);
-  }
-
   async findAll() {
-    try {
-      return await this.clienteRepository.find();
-    } catch (error) {
-      throw new NotFoundException('No se encontraron clientes');
-    }
+    return await this.clienteRepository.find();
   }
 
   async findOne(id: number) {
@@ -46,7 +38,7 @@ async create(createClienteDto: CreateClienteDto) {
 
   async remove(id: number) {
     const cliente = await this.findOne(id);
-    cliente.estado = 'BAJA';
+    cliente.estado = EstadoCliente.BAJA;
     return await this.clienteRepository.save(cliente);
   }
 }

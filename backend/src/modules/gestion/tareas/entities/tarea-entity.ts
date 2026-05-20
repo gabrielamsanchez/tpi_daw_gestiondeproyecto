@@ -53,6 +53,7 @@ export class Tarea {
 
   @Column({ name: 'proyecto_id' })
     idProyecto!: number;
+
     @ManyToOne(() => Proyecto, (proyectos) => proyectos.tareas, {
       onDelete: 'CASCADE',
    })
