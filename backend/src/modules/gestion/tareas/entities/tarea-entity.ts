@@ -8,8 +8,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoTarea } from '../enum/estado-tareas-enum';
 import { ApiProperty } from '@nestjs/swagger';
-//esto despues hay que descomentarlo
-//import { Proyecto } from '../../proyectos/entities/proyecto.entity';
+
+import { Proyecto } from '../../proyectos/entities/proyecto.entity';
 
 @Entity({ name: 'tareas' })
 export class Tarea {
@@ -51,13 +51,11 @@ export class Tarea {
   @Column({ name: 'id_proyecto', type: 'int', nullable: true })
   idProyecto!: number;
 
-  //esto despues hay que descomentarlo
-  //   @Column({ name: 'proyecto_id' })
-  //   idProyecto!: number;
-
-  //   @ManyToOne(() => Proyecto, (proyectos) => proyectos.tareas, {
-  //     onDelete: 'CASCADE',
-  //   })
-  //   @JoinColumn({ name: 'id_proyecto' })
-  //   proyecto!: Proyecto;
+  @Column({ name: 'proyecto_id' })
+    idProyecto!: number;
+    @ManyToOne(() => Proyecto, (proyectos) => proyectos.tareas, {
+      onDelete: 'CASCADE',
+   })
+    @JoinColumn({ name: 'id_proyecto' })
+    proyecto!: Proyecto;
 }

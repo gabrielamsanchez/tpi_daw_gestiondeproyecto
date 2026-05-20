@@ -1,32 +1,39 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, 
-    JoinColumn } from 'typeorm';
-import { Cliente } from '../../clientes/entities/cliente.entity';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { EstadoProyecto } from '../enum/estado-proyecto.enum';
+import { Cliente } from '../../clientes/entities/cliente.entity'; // Ajusta la ruta a tu cliente.entity
+import { Tarea } from '../../tareas/entities/tarea-entity'; // Ajusta la ruta a tu tarea-entity
 
-@Entity({ name: 'proyecto' })
+@Entity({ name: 'proyectos' })
 export class Proyecto {
-  
-  @PrimaryGeneratedColumn()
+  @ApiProperty({ description: 'ID único del proyecto', example: 1 })
+  @PrimaryGeneratedColumn({ name: 'id' })
   id!: number;
 
+  @ApiProperty({ description: 'Nombre único del proyecto', example: 'Migración a AWS' })
   @Column({ type: 'text', unique: true, nullable: false })
   nombre!: string;
 
+  @ApiProperty({ description: 'Estado actual del proyecto', enum: EstadoProyecto, example: EstadoProyecto.ACTIVO })
   @Column({
     type: 'enum',
-    enum: ['ACTIVO', 'BAJA'],
-    default: 'ACTIVO',
+    enum: EstadoProyecto,
+    default: EstadoProyecto.ACTIVO,
   })
-  estado!: string;
+  estado!: EstadoProyecto;
 
-  // id_cliente INT + CONSTRAINT fk_proyectos_cliente
-  // Relación Muchos a Uno: Muchos proyectos pueden pertenecer a un cliente
+  @ApiProperty({ description: 'ID del cliente al que pertenece (opcional)', example: 1, nullable: true })
+  @Column({ name: 'id_cliente', type: 'int', nullable: true })
+  idCliente?: number;
+
+  // Relación Muchos a Uno: Muchos proyectos pertenecen a un cliente
   @ManyToOne(() => Cliente, (cliente) => cliente.proyectos, {
-    nullable: true, // Porque en tu SQL id_cliente no tiene un NOT NULL explicitado
+    nullable: true,
   })
-  @JoinColumn({ name: 'id_cliente' }) // Especificamos el nombre exacto de la columna FK
+  @JoinColumn({ name: 'id_cliente' })
   cliente!: Cliente;
 
-  // (Opcional) Si necesitas acceder al id_cliente directamente sin cargar toda la relación
-  @Column({ type: 'int', nullable: true })
-  id_cliente!: number;
+  // Relación Uno a Muchos: Un proyecto tiene muchas tareas
+  @OneToMany(() => Tarea, (tarea) => tarea.proyecto)
+  tareas!: Tarea[];
 }
