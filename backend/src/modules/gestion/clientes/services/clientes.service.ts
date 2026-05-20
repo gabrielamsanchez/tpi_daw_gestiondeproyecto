@@ -17,6 +17,11 @@ export class ClienteService {
     return await this.clienteRepository.save(nuevoCliente);
   }
 
+async create(createClienteDto: CreateClienteDto) {
+    const nuevoCliente = this.clienteRepository.create(createClienteDto);
+    return await this.clienteRepository.save(nuevoCliente);
+  }
+
   async findAll() {
     try {
       return await this.clienteRepository.find();
