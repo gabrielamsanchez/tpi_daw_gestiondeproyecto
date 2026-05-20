@@ -9,6 +9,7 @@ import { UsuariosModule } from './modules/auth/usuarios/usuarios.module';
 import { GestionModule } from './modules/gestion/gestion.module';
 import { TareasModule } from './modules/gestion/tareas/tareas.module';
 import { ClientesModule } from './modules/gestion/clientes/clientes.module';
+import { ProyectosModule } from './modules/gestion/proyectos/proyectos.module';
 
 @Module({
   imports: [
@@ -20,9 +21,10 @@ import { ClientesModule } from './modules/gestion/clientes/clientes.module';
     AuthModule,
     ClientesModule,
     UsuariosModule,
-    //ClientesModule,
+    ClientesModule,
     TareasModule,
     GestionModule,
+    ProyectosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
