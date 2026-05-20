@@ -1,15 +1,9 @@
-// import {
-//   Column,
-//   Entity,
-//   //JoinColumn,
-//  // ManyToOne,
-//   PrimaryGeneratedColumn,
-// } from 'typeorm';
+import { JoinColumn, ManyToOne } from 'typeorm';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoTarea } from '../enum/estado-tareas-enum';
 import { ApiProperty } from '@nestjs/swagger';
-//esto despues hay que descomentarlo
-//import { Proyecto } from '../../proyectos/entities/proyecto.entity';
+
+import { Proyecto } from '../../proyectos/entities/proyecto.entity';
 
 @Entity({ name: 'tareas' })
 export class Tarea {
@@ -43,21 +37,16 @@ export class Tarea {
 
   //esto es momentaneo
   @ApiProperty({
-    description:
-      'ID del proyecto asociado',
+    description: 'ID del proyecto asociado',
     example: 1,
     nullable: true,
   })
   @Column({ name: 'id_proyecto', type: 'int', nullable: true })
   idProyecto!: number;
 
-  //esto despues hay que descomentarlo
-  //   @Column({ name: 'proyecto_id' })
-  //   idProyecto!: number;
-
-  //   @ManyToOne(() => Proyecto, (proyectos) => proyectos.tareas, {
-  //     onDelete: 'CASCADE',
-  //   })
-  //   @JoinColumn({ name: 'id_proyecto' })
-  //   proyecto!: Proyecto;
+  @ManyToOne(() => Proyecto, (proyecto) => proyecto.tareas, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'id_proyecto' })
+  proyecto!: Proyecto;
 }

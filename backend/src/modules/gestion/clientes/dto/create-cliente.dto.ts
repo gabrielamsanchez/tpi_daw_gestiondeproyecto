@@ -1,34 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { EstadoUsuario } from '../../../auth/usuarios/enum/estado-usurio.enum';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { EstadoCliente } from '../enum/estado-cliente-enum';
 
 export class CreateClienteDto {
-  @ApiProperty({
-    description: 'Nombre único del usuario',
-    example: 'juan_perez',
-  })
+  @ApiProperty({ description: 'Nombre único del cliente', example: 'Empresa S.A.' })
   @IsString()
   @IsNotEmpty()
   nombre!: string;
 
-  @ApiProperty({
-    description: 'Contraseña del usuario',
-    example: 'Segura123!',
-    minLength: 6,
-  })
-  @IsString()
+  @ApiProperty({ description: 'Estado actual del cliente', enum: EstadoCliente, example: EstadoCliente.ACTIVO })
+  @IsEnum(EstadoCliente, { message: 'El estado debe ser ACTIVO o BAJA' })
   @IsNotEmpty()
-  @MinLength(6, { message: 'La clave debe tener al menos 6 caracteres' })
-  clave!: string;
-
-  @ApiProperty({
-    description: 'Estado actual del usuario',
-    enum: EstadoUsuario,
-    example: EstadoUsuario.ACTIVO,
-  })
-  @IsEnum(EstadoUsuario, {
-    message: 'El estado debe ser un valor válido de estados_usuarios',
-  })
-  @IsNotEmpty()
-  estado!: EstadoUsuario;
+  estado!: EstadoCliente;
 }

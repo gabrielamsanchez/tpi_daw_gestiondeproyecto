@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Proyecto } from '../../proyectos/entities/proyecto.entity';
+import { EstadoCliente } from '../enum/estado-cliente-enum';
 
 @Entity({ name: 'clientes' })
 export class Cliente {
@@ -10,8 +12,12 @@ export class Cliente {
 
   @Column({
     type: 'enum',
-    enum: ['ACTIVO', 'BAJA'],
-    default: 'ACTIVO',
+    enum: EstadoCliente,
+    enumName: 'estados_clientes', // Fundamental para PostgreSQL
+    default: EstadoCliente.ACTIVO,
   })
-  estado!: string;
+  estado!: EstadoCliente;
+
+  @OneToMany(() => Proyecto, (proyecto) => proyecto.cliente)
+  proyectos!: Proyecto[];
 }

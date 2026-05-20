@@ -1,77 +1,131 @@
-// // import { Body, Controller, Get, NotImplementedException, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
-// // import { CreateClienteDto } from "../dtos/input/create-cliente.dto";
-// // import { ApiBearerAuth, ApiOkResponse, ApiQuery } from "@nestjs/swagger";
-// // import { ListClienteDTO } from "../dtos/output/list-cliente.dto";
-// // import { UpdateClienteDto } from "../dtos/input/update-cliente.dto";
-// // import { EstadosClientesEnum } from "../enums/estados-clientes.enum";
-// // import { ClientesService } from "../services/clientes.service";
-// // import { AuthGuard } from "../../auth/guards/auth.guard";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  ParseIntPipe,
+  UseGuards,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+} from '@nestjs/swagger';
+import { ClienteService } from '../services/clientes.service';
+import { CreateClienteDto } from '../dto/create-cliente.dto';
+import { UpdateClienteDto } from '../dto/update-cliente.dto';
+import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard'; // Verifica que esta ruta sea la correcta en tu árbol
 
-// // @Controller('clientes')
-// // export class ClientesController {
+@ApiTags('Clientes')
+@Controller('clientes')
+export class ClienteController {
+  constructor(private readonly clienteService: ClienteService) {}
 
-// //     constructor(private readonly clientesService: ClientesService) { }
+  // Crear cliente
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Post()
+  @ApiOperation({ summary: 'Crear un nuevo cliente' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Cliente creado exitosamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Datos de entrada inválidos.',
+  })
+  async create(@Body() createClienteDto: CreateClienteDto) {
+    return await this.clienteService.create(createClienteDto);
+  }
 
-// //     @ApiBearerAuth()
-// //     @UseGuards(AuthGuard)
-// //     @Post()
-// //     async crearCliente(@Body() dto: CreateClienteDto): Promise<{ id: number }> {
-// //         return await this.clientesService.crearCliente(dto);
-// //     }
+  // Obtener todos los clientes
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get()
+  @ApiOperation({ summary: 'Obtener todos los clientes' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Lista de clientes devuelta exitosamente.',
+  })
+  async findAll() {
+    return await this.clienteService.findAll();
+  }
 
-// //     @ApiBearerAuth()
-// //     @UseGuards(AuthGuard)
-// //     @Put(":id")
-// //     async actualizarCliente(@Param("id") id: number, @Body() dto: UpdateClienteDto): Promise<void> {
-// //         await this.clientesService.actualizarCliente(id, dto);
-// //     }
+  // Obtener un cliente por su ID
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get(':id')
+  @ApiOperation({ summary: 'Obtener un cliente por su ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del cliente',
+    example: 1,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Cliente encontrado.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Cliente no encontrado.',
+  })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.clienteService.findOne(id);
+  }
 
-// //     @ApiBearerAuth()
-// //     @ApiOkResponse({ type: ListClienteDTO, isArray: true })
-// //     @ApiQuery({
-// //         name: 'estado',
-// //         required: false,
-// //         enum: EstadosClientesEnum
-// //     })
-// //     @UseGuards(AuthGuard)
-// //     @Get()
-// //     async obtenerClientes(@Query("estado") estado: EstadosClientesEnum): Promise<ListClienteDTO[]> {
-// //         return await this.clientesService.obtenerClientes(estado);
-// //     }
+  // Actualizar un cliente
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Actualizar un cliente existente' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del cliente a modificar',
+    example: 1,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Cliente actualizado correctamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Cliente no encontrado.',
+  })
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateClienteDto: UpdateClienteDto,
+  ) {
+    return await this.clienteService.update(id, updateClienteDto);
+  }
 
-// // }
-// import { Body } from '@nestjs/common';
-// import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-// import { ClienteService } from '../services/clientes.service';
-// import { CreateClienteDto } from '../dto/create-cliente.dto';
-// import { UpdateClienteDto } from '../dto/update-cliente.dto';
-
-// @Controller('cliente') // Tus rutas serán localhost:3000/cliente
-// export class ClienteController {
-//   constructor(private readonly clienteService: ClienteService) {}
-
-//   @Post()
-//   create(@Body() createClienteDto: CreateClienteDto) {
-//     return this.clienteService.create(createClienteDto);
-//   }
-
-//   @Get()
-//   findAll() {
-//     return this.clienteService.findAll();
-//   }
-
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.clienteService.findOne(+id); // El + convierte el string a number
-//   }
-
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
-//     return this.clienteService.update(+id, updateClienteDto);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.clienteService.remove(+id);
-//   }
-// }
+  // Eliminar cliente (Baja Lógica)
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Eliminar un cliente (Baja Lógica)' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del cliente a eliminar',
+    example: 1,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Cliente eliminado correctamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Cliente no encontrado.',
+  })
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.clienteService.remove(id);
+  }
+}
