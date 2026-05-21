@@ -3,6 +3,11 @@
 { 
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
     "outDir": "./out-tsc/app",
     "rootDir": "src",
     "module": "ESNext",
