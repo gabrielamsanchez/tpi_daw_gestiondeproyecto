@@ -1,0 +1,28 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="form-section">
+      <h2>Iniciar Sesión</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <label>Usuario:</label>
+          <input type="text" formControlName="username" />
+        </div>
+        <div class="input-group">
+          <label>Contraseña:</label>
+          <input type="password" formControlName="password" />
+        </div>
+        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        <button type="submit" class="btn-primary">Ingresar</button>
+        <p class="signup-link">¿Eres nuevo/a? <a href="#">Crea tu cuenta</a></p>
+      </form>
+    </div>
+
+    <div class="welcome-section">
+      <h1>¡Bienvenido/a 👋!</h1>
+      <p>Organizá tus proyectos y tareas en un solo lugar.</p>
+      <div class="illustration">
+        <img src="assets/img/illustration.png" alt="Proyectos" />
+      </div>
+    </div>
+  </div>
+</div>
