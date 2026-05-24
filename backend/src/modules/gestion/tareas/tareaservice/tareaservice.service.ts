@@ -16,6 +16,7 @@ export class TareasService {
     @InjectRepository(Tarea)
     private readonly tareasRepository: Repository<Tarea>,
   ) {}
+  //crear tarea
   async crearTarea(
     dto: CreateTareaDto,
     idProyecto: number,
@@ -23,10 +24,11 @@ export class TareasService {
     const tarea: Tarea = this.tareasRepository.create(dto);
 
     tarea.estado = EstadoTarea.PENDIENTE;
-    tarea.idProyecto = idProyecto;
+    tarea.id_Proyecto = idProyecto;
     await this.tareasRepository.save(tarea);
     return { id: tarea.id };
   }
+  //actualizar tarea
   async actualizarTarea(dto: UpdateTareaDto, idTarea: number): Promise<void> {
     const tarea = await this.tareasRepository.findOneBy({ id: idTarea });
     if (!tarea) {

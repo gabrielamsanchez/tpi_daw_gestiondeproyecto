@@ -141,3 +141,37 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# ==========================================
+# Angular Specific
+# ==========================================
+.angular/
+dist/
+tmp/
+out- some/
+bazel-out/
+
+# Angular CLI cache
+.sass-cache/
+.sourcemap/
+.ext/
+
+# Architect execution environments
+.server/
+.prerender/
+
+# End-to-end testing
+/cypress/screenshots/
+/cypress/videos/
+
+# Editors and IDEs (Optional but recommended for Angular workflows)
+.idea/
+.project
+.classpath
+.factorypath
+.settings/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

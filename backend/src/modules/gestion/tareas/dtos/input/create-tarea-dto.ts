@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsEnum, IsInt } from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, IsInt, IsOptional } from 'class-validator';
 import { EstadoTarea } from '../../enum/estado-tareas-enum';
 
 export class CreateTareaDto {
@@ -17,6 +17,7 @@ export class CreateTareaDto {
     example: EstadoTarea.PENDIENTE,
   })
   @IsEnum(EstadoTarea)
+  @IsOptional()
   estado!: EstadoTarea;
 
   @ApiProperty({
@@ -24,6 +25,6 @@ export class CreateTareaDto {
     example: 1,
   })
   @IsInt()
-  @IsNotEmpty()
+  @IsOptional()
   id_proyecto!: number;
 }
