@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
 <div class="card " style="width: 18rem; ">
   <div class="card-body">
     <h5 class="card-title">Login</h5>
@@ -21,4 +21,39 @@
     </form>
   </div>
 </div>
+</div> -->
+
+<p-toast />
+
+<div class="mb-4 p-8 flex justify-center">
+    <p-card header="Formulario de Acceso" subheader="Por favor introduce tus datos" styleClass="w-full sm:w-96">
+        
+        <form [formGroup]="exampleForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full">
+            
+            <div class="flex flex-col gap-1">
+                <input pInputText type="text" id="username" placeholder="Username" formControlName="username" [invalid]="isInvalid('username')" />
+                @if (isInvalid('username')) {
+                    <p-message severity="error" size="small" variant="simple">Username is required.</p-message>
+                }
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <input pInputText type="email" id="email" placeholder="Email" formControlName="email" [invalid]="isInvalid('email')" />
+                @if (isInvalid('email')) {
+                    @if (exampleForm.get('email')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">Email is required.</p-message>
+                    }
+                    @if (exampleForm.get('email')?.errors?.['email']) {
+                        <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+                    }
+                }
+            </div>
+
+            <button pButton severity="secondary" type="submit" class="w-full">
+                <span pButtonLabel>Submit</span>
+            </button>
+            
+        </form>
+
+    </p-card>
 </div>
