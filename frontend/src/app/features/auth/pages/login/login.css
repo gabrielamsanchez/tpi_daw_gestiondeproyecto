@@ -1,0 +1,86 @@
+:root {
+    --letra-titulo: "Funnel Sans", sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--p-slate-950);
+}
+.titulo-container{
+    background: transparent !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+.titulo-principal {
+    font-family: var(--letra-titulo);
+    font-size: 2rem;
+    color: white;
+    margin-top: 10px;
+}
+
+.texto-login{
+    text-align: center;
+    --letra-titulo: "Funnel Sans", sans-serif;
+    width: 100%;
+    font-size: 2.2rem;
+}
+.tarjeta {
+    background-color: var(--p-blue-100);
+    background: linear-gradient(180deg, #ffffff 40%, #4978f9f7 100%) !important;    width: 400px;
+    height: 450px;
+    border-radius: 20px;
+    font-family: var(--letra-titulo);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tarjeta:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 35px var(--p-blue-150);
+}
+
+.formulario {
+    width: 100%;
+}
+.form-text{
+    text-align: center;
+    --letra-titulo: "Funnel Sans", sans-serif;
+    width: 100%;
+    font-size: 1rem;
+    color: var(--p-stone-900);
+}
+
+input, input::placeholder{
+    width: 100%;
+    background-color: transparent;
+    color: var(--p-stone-950);
+}
+
+
+.boton-contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+:host ::ng-deep .boton {
+    background-color: var(--p-slate-950);
+    border-color: var(--p-blue-800) !important;
+    border-radius: 14px !important;
+    width: 100%;
+    height: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+:host ::ng-deep .boton:hover {
+    background-color: var(--p-blue-600) !important;
+}
+:host ::ng-deep .p-button-label {
+    color: rgb(246, 243, 243) !important;
+}

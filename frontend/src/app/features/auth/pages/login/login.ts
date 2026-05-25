@@ -1,68 +1,62 @@
-// import { Component,  } from '@angular/core';
-
-// @Component({
-//   selector: 'app-home',
-//   imports: [],
-//   templateUrl: './login.html',
-//   styleUrl: './login.css',
-// })
-// export class Login {
-	
-// }
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MessageModule } from 'primeng/message';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { CardModule } from 'primeng/card'; // <--- Agregamos el módulo de la tarjeta
+import { MessageModule } from 'primeng/message';
+import { CardModule } from 'primeng/card';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessageService } from 'primeng/api';
 
+
 @Component({
-    selector: 'app-form-card-demo',
-    standalone: true,
-    imports: [
-        CardModule, 
-        MessageModule, 
-        ToastModule, 
-        ButtonModule, 
-        InputTextModule, 
-        ReactiveFormsModule
-    ],
-    providers: [MessageService], // Proveedor necesario para que funcione el Toast
-    templateUrl: './login.html',
-    styleUrls: ['./login.css']
+  selector: 'app-login',
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+  standalone: true,
+  imports: [ButtonModule, CardModule, ToastModule, InputTextModule, MessageModule, AutoCompleteModule, FormsModule],
+  providers: [MessageService]
 })
 export class Login {
-    private fb = inject(FormBuilder); // Inyectamos FormBuilder correctamente
-    private messageService = inject(MessageService);
-    
-    exampleForm: FormGroup;
-    formSubmitted: boolean = false;
+  private messageService = inject(MessageService);
 
-    constructor() {
-        this.exampleForm = this.fb.group({
-            username: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]]
-        });
+  user = { username: '', password: '' };
+  formSubmitted = false;
+
+  // Autocomplete state
+  value: string | null = null;
+  items: string[] = [];
+
+  private allSuggestions = ['alice', 'bob', 'carol', 'dave', 'eve', 'mallory'];
+
+  search(event: any) {
+    const q = (event.query || '').toLowerCase();
+    this.items = this.allSuggestions.filter(s => s.toLowerCase().includes(q));
+  }
+
+  onSubmit(form: NgForm) {
+    this.formSubmitted = true;
+
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
     }
 
-    onSubmit() {
-        this.formSubmitted = true;
-        if (this.exampleForm.valid) {
-            this.messageService.add({ 
-                severity: 'success', 
-                summary: 'Éxito', 
-                detail: 'Formulario Enviado', 
-                life: 3000 
-            });
-            this.exampleForm.reset();
-            this.formSubmitted = false;
-        }
-    }
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Formulario Enviado',
+      life: 3000
+    });
 
-    isInvalid(controlName: string) {
-        const control = this.exampleForm.get(controlName);
-        return control?.invalid && (control.touched || this.formSubmitted);
-    }
+    form.resetForm();
+    this.user = { username: '', password: '' };
+    this.formSubmitted = false;
+  }
+
+  isInvalid(control: any) {
+    return control?.invalid && (control.touched || this.formSubmitted);
+  }
 }
+
+
