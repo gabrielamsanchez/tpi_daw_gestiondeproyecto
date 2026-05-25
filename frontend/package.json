@@ -23,6 +23,7 @@
     "@ng-select/ng-select": "^21.8.2",
     "@primeuix/themes": "^2.0.3",
     "bootstrap": "5.3.8",
+    "chart.js": "^4.5.1",
     "express": "^5.1.0",
     "primeicons": "^7.0.0",
     "primeng": "^21.1.8",
