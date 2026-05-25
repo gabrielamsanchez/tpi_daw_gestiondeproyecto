@@ -1,1 +1,58 @@
-<p>home works!</p>
+<div class="main-layout">
+  
+  <app-sidebar></app-sidebar>  
+
+  <main class="dashboard-content">
+    
+    <header class="dashboard-header">
+      <h2>Bienvenido, User</h2>
+      <p-button label="CERRAR SESIÓN" severity="secondary" [outlined]="true"></p-button>
+    </header>
+
+    <section class="quick-access-cards">
+      <div class="card-item">
+        <div class="card-icon">
+          <i class="pi pi-folder"></i>
+        </div>
+        <div class="card-content">
+          <h3>NUEVO PROYECTO</h3>
+          <p>Crear un proyecto</p>
+        </div>
+        <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn"></p-button>
+      </div>
+
+      <div class="card-item">
+        <div class="card-icon">
+          <i class="pi pi-file"></i>
+        </div>
+        <div class="card-content">
+          <h3>NUEVA TAREA</h3>
+          <p>Crear una nueva tarea</p>
+        </div>
+        <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn"></p-button>
+      </div>
+
+      <div class="card-item">
+        <div class="card-icon">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="card-content">
+          <h3>USUARIOS</h3>
+          <p>Usuarios activos</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chart-section">
+      <div class="chart-header">
+        <h3>PRODUCTIVIDAD MENSUAL</h3>
+        <p>Tareas completadas en el último semestre</p>
+      </div>
+      
+      <div class="chart-container">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+      </div>
+    </section>
+
+  </main>
+</div>
