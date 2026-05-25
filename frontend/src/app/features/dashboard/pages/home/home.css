@@ -1,17 +1,17 @@
 /* --- ESTRUCTURA PRINCIPAL (LAYOUT) --- */
 .main-layout {
   display: flex;
-  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+  height: 100vh; 
   width: 100%;
-  overflow: hidden; /* Evita que la página completa haga scroll */
-  background-color: #0c1b22; /* Fondo oscuro detrás del navbar (opcional) */
+  overflow: hidden; 
+  background-color: #0c1b22; 
 }
 
 .dashboard-content {
-  flex: 1; /* Ocupa todo el espacio restante a la derecha del navbar */
+  flex: 1; 
   padding: 2rem;
-  background-color: #ffffff; /* Fondo claro para el área de las tarjetas */
-  overflow-y: auto; /* Si agregas más gráficos abajo, el scroll solo pasa aquí */
+  background-color: #ffffff; 
+  overflow-y: auto; 
   color: #1a2b3c;
   font-family: sans-serif;
 }
