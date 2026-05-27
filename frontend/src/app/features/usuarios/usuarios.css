@@ -92,10 +92,10 @@
 }
 
 .badge-title {
-  color: var(--p-stone-900) !important;;
-  font-weight: 700;
-  font-size: 25px;
-  letter-spacing: 0.05em;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.05em;
 }
 
 .badge-subtitle {
