@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
+import { UiService } from '../../../../core/service/ui';
+import { ProyectoService } from '../../../../core/service/proyecto';
 @Component({
   selector: 'app-home',
   imports: [ChartModule, ButtonModule, Sidebar],
@@ -9,8 +11,14 @@ import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
   styleUrl: './home.css',
 })
 export class Home implements OnInit{
+   
   chartData: any;
   chartOptions: any;
+  
+  constructor(
+    private uiService: UiService,
+    private proyectoService: ProyectoService,
+  ){}
 
   ngOnInit() {
     this.initChart();
@@ -59,4 +67,40 @@ export class Home implements OnInit{
       }
     };
   }
+
+  abrirModalNuevoProyecto(){
+    const ref = this.uiService.openNuevoProyecto();
+
+    // Verificamos que 'ref' no sea null antes de suscribirnos
+    if (ref) {
+      ref.onClose.subscribe((datosDelFormulario: any)=>{
+        if(datosDelFormulario){
+          console.log("Enviando datos al servidor(simulando)")
+          this.proyectoService.crearProyecto(datosDelFormulario).subscribe({ 
+            next: (respuesta) => {
+              console.log('2. Respuesta del servidor recibida:', respuesta);
+          
+            },
+            error: (err) => {
+              console.log('Hubo un error:', err);
+            }
+          })
+        }
+      })
+    }
+  }
+
+  abrirModalNuevaTarea() {
+    const ref = this.uiService.openNuevaTarea();
+
+    if (ref) {
+      ref.onClose.subscribe((datosDeLaTarea: any) => {
+        if (datosDeLaTarea) {
+          console.log('Datos de la tarea listos para enviar:', datosDeLaTarea);
+          // Aquí llamarás a tu TareaService(mock) en el futuro
+        }
+      });
+    }
+  }
+
 }
