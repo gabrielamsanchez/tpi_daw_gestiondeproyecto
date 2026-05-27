@@ -1,0 +1,15 @@
+.btn-dark {
+  background-color:var(--p-slate-950)  !important;
+  color:var(--p-slate-50) !important;
+  border: none !important;
+  padding: 10px 24px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 8px !important;
+}
+
+.btn-dark:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+} 

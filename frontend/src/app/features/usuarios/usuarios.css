@@ -28,7 +28,7 @@
 }
 
 /* btn atras */
-.btnvolver {
+/* .btnvolver {
   background-color:var(--p-slate-950)  !important;
   color:var(--p-slate-50) !important;
   border: 3px solid var(--p-slate-50) !important;
@@ -38,9 +38,9 @@
 }
 .btnvolver:hover , .btn-dark:hover{
   background: var(--p-blue-900) !important;
-}
+}*/
 
-/* btn cerrar sesion y desc */
+/*btn cerrar sesion y desc */
 .btn-dark {
   background-color:var(--p-slate-950)  !important;
   color:var(--p-slate-50) !important;
@@ -55,7 +55,7 @@
 .btn-dark:disabled {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
-}
+} 
 
 .btn-download {
   padding: 12px 48px !important;

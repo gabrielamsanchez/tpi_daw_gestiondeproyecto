@@ -1,0 +1,174 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    background-color: #ffffff;
+    padding: 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    box-sizing: border-box;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+:host .btn-back.p-button {
+    background: transparent !important;
+    color: #334155 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+:host .btn-dark.p-button {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 10px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 6px !important;
+}
+
+:host .btn-dark.p-button:hover {
+    background-color: #0f172a !important;
+}
+
+:host .btn-dark.p-button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+.btn-download {
+    padding: 12px 48px !important;
+}
+
+.badge-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.badge-blue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0f2fe !important;
+    border: 1px solid #bae6fd !important;
+    border-radius: 12px;
+    padding: 16px 48px;
+    min-width: 280px;
+    gap: 16px;
+}
+
+.badge-text-box {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.badge-title {
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+}
+
+.badge-subtitle {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.table-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.custom-table {
+    width: 100%;
+    max-width: 1000px;
+}
+
+:host  .custom-table .p-datatable-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+:host  .custom-table .col-nombre {
+    background-color: var(--p-blue-100) !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host  .custom-table .col-cliente {
+    background-color: var(--p-purple-100) !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host  .custom-table .col-estado{
+    background-color: var(--p-orange-100) !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+:host  .custom-table .col-acciones {
+    background-color: var(--p-lime-100) !important;
+    color: #25292f !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+}
+
+.col-cell{
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    text-align: center !important;
+    padding: 14px !important;
+    border: 1px solid #64748b !important;
+    height: 48px;
+}
+:host .custom-table .empty-cell {
+    text-align: center !important;
+    padding: 24px !important;
+    color: #64748b !important;
+    border: 1px solid #64748b !important;
+    background-color: #f8fafc !important;
+}
+.custom-table :is(.p-inputtext, input, .p-select) {
+  background-color: #dadff6 !important;
+  color: #1e293b !important;
+}
+
+
+.footer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+    width: 100%;
+}
+
+.footer-text {
+    color: #94a3b8;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+}

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { Back } from '../../shared/components/back/back';
+import { Logout } from '../../shared/components/logout/logout';
 //import { Sidebar } from '../../shared/components/sidebar/sidebar';
 
 interface Usuario {
@@ -12,7 +14,7 @@ interface Usuario {
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, ],
+  imports: [CommonModule, TableModule, ButtonModule, Back, Logout ],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })
