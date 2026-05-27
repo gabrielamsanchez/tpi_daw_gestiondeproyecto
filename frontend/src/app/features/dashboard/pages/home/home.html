@@ -18,7 +18,9 @@
           <h3>NUEVO PROYECTO</h3>
           <p>Crear un proyecto</p>
         </div>
-        <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn"></p-button>
+        <p-button icon="pi pi-plus-circle" [text]="true" size="large"
+            styleClass="action-btn" (onClick)="abrirModalNuevoProyecto()">
+        </p-button>
       </div>
 
       <div class="card-item">
@@ -29,7 +31,7 @@
           <h3>NUEVA TAREA</h3>
           <p>Crear una nueva tarea</p>
         </div>
-        <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn"></p-button>
+        <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn" (onClick)="abrirModalNuevaTarea()"></p-button>
       </div>
 
       <div class="card-item">

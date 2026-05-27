@@ -1,0 +1,15 @@
+<div class="modal-form">
+  <div class="field">
+    <label>NOMBRE DEL PROYECTO</label>
+    <input type="text" pInputText [(ngModel)]="proyecto.nombre" placeholder="Ingrese nombre del proyecto" class="w-full" />
+  </div>
+
+  <div class="field" style="margin-top: 1.5rem;">
+    <label>CLIENTE ASIGNADO</label>
+    <input type="text" pInputText [(ngModel)]="proyecto.cliente" placeholder="Nombre de cliente" class="w-full" />
+  </div>
+
+  <div class="footer-actions" style="margin-top: 2rem;">
+    <p-button label="GUARDAR" styleClass="btn-dark" (onClick)="guardar()"></p-button>
+  </div>
+</div>

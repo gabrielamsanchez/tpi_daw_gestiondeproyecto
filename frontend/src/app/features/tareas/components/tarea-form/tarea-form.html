@@ -1,0 +1,29 @@
+<div class="modal-form">
+  <div class="field">
+    <label>TÍTULO DE LA TAREA</label>
+    <input 
+      type="text" 
+      pInputText 
+      [(ngModel)]="tarea.titulo" 
+      placeholder="Ej: Diseñar el login" 
+      class="w-full" 
+    />
+  </div>
+
+  <div class="field" style="margin-top: 1.5rem;">
+    <label>PROYECTO ASIGNADO</label>
+    <p-select 
+      [options]="proyectosDisponibles" 
+      [(ngModel)]="tarea.proyectoId" 
+      optionLabel="nombre" 
+      optionValue="id"
+      placeholder="Seleccione un proyecto" 
+      [style]="{'width':'100%', 'border-radius': '8px'}"
+      appendTo="body">
+    </p-select>
+  </div>
+
+  <div class="footer-actions" style="margin-top: 2.5rem;">
+    <p-button label="GUARDAR TAREA" styleClass="btn-dark" (onClick)="guardar()"></p-button>
+  </div>
+</div>
