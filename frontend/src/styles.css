@@ -1,3 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+.custom-modal-v2 .p-dialog-header {
+    padding-top: 2rem;
+}
+
+.modal-container {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #1a2b3c;
+}
+
+.field-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+    color: #1a2b3c;
+}
+
+/* Inputs y Selects Centrados */
+.custom-input {
+    text-align: center !important;
+    background-color: #f1f4f9 !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 10px !important;
+    padding: 0.8rem !important;
+}
+
+.custom-input:focus {
+    border-color: #122b38 !important;
+    box-shadow: 0 0 0 0.1rem rgba(18, 43, 56, 0.1) !important;
+}
+
+/* Botón Guardar - Estilo Avast */
+.btn-guardar-premium {
+    background-color: #122b38 !important; /* Azul muy oscuro */
+    border: none !important;
+    width: 100% !important;
+    border-radius: 12px !important;
+    padding: 0.9rem !important;
+    font-weight: 600 !important;
+    margin-top: 2rem;
+}
