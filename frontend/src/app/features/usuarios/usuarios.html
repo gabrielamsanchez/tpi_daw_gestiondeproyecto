@@ -1,1 +1,81 @@
-<p>usuarios works!</p>
+<div class="main-container">
+
+  <!-- <app-sidebar></app-sidebar>   -->
+
+  <main class="usuarios-content">
+  <div class="header-row">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-arrow-left"
+      class="btnvolver">
+    </button>
+
+    <button
+      pButton
+      type="button"
+      label="CERRAR SESIÓN"
+      class="btn-dark">
+    </button>
+  </div>
+
+  <div class="badge-wrapper">
+    <div class="badge-blue">
+      <div class="badge-icon-box">
+        <i class="pi pi-users badge-icon"></i>
+      </div>
+      <div class="badge-text-box" >
+        <span class="badge-title">USUARIOS</span>
+      </div>
+    </div>
+  </div>
+
+ <p-table
+  #dt
+      [value]="usuarios"
+      [loading]="loading"
+      responsiveLayout="scroll"
+      styleClass="custom-table"
+      [style]="{ width: '100%' }">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="col-nombre">Nombre de Usuario</th>
+          <th class="col-estado">Estado</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-usuario>
+        <tr>
+          <td class="col-cell">{{ usuario.nombre }}</td>
+          <td class="col-cell text-center">{{ usuario.estado }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="2" class="empty-cell">
+            No se encontraron usuarios activos
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+
+  <div class="footer-row">
+    <button
+      pButton
+      type="button"
+      label="DESCARGAR"
+      (click)="dt.exportCSV()"
+      [disabled]="usuarios.length === 0"
+      class="btn-dark btn-download">
+    </button>
+
+    <span class="footer-text">
+      DAW - Sistema de Gestión de Proyectos © 2026
+    </span>
+
+  </div>
+  </main>
+</div>
