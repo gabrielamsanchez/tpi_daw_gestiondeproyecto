@@ -1,1 +1,108 @@
-<p>cliente works!</p>
+<div class="flex h-screen w-full overflow-hidden bg-[#0c1b22]">
+
+
+  <main class="flex-1 h-full overflow-y-auto p-8 pl-16 w-full bg-[#f8fafc]">
+
+    <p-card styleClass="w-full shadow-md rounded-xl bg-white p-2">
+      <p-toast />
+
+      <div class="mb-4">
+        <button
+          pButton
+          type="button"
+          label="Crear nuevo cliente"
+          style="background-color: #1e293b; color: white; border: none; border-radius: 6px; padding: 10px 20px; font-weight: 500;">
+        </button>
+      </div>
+
+      <div class="w-full overflow-x-auto">
+        <p-table
+          [value]="clientes"
+          dataKey="id"
+          editMode="row"
+          [tableStyle]="{ 'width': '100%', 'border-collapse': 'collapse' }">
+
+          <ng-template #header>
+            <tr>
+              <th style="background-color: #e0f2fe; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Nombre</th>
+              <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Estado</th>
+              <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; width: 15%; font-weight: 600;">Acciones</th>
+            </tr>
+          </ng-template>
+
+          <ng-template #body let-cliente let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="cliente" style="height: 60px;">
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <input pInputText type="text" [(ngModel)]="cliente.nombre" class="w-full" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.nombre }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <p-select [options]="estados" appendTo="body" [(ngModel)]="cliente.estado" [style]="{ 'width': '100%' }" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.estado }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <div class="flex justify-content-center align-items-center gap-3">
+
+                  <ng-container *ngIf="!editing">
+                    <button
+                      pButton
+                      type="button"
+                      pInitEditableRow
+                      icon="pi pi-pencil"
+                      (click)="onRowEditInit(cliente)"
+                      style="color: #0f766e; background: none; border: none; font-size: 1.4rem;">
+                    </button>
+
+                    <p-button
+                      icon="pi pi-times"
+                      severity="danger"
+                      [rounded]="true"
+                      [text]="true"
+                      (click)="onRowEditCancel(cliente, ri)">
+                    </p-button>
+                  </ng-container>
+
+                  <ng-container *ngIf="editing">
+                    <button
+                      pButton
+                      type="button"
+                      pSaveEditableRow
+                      icon="pi pi-check"
+                      (click)="onRowEditSave(cliente)"
+                      style="color: #16a34a; background: none; border: none;">
+                    </button>
+                    <button
+                      pButton
+                      type="button"
+                      pCancelEditableRow
+                      icon="pi pi-times"
+                      (click)="onRowEditCancel(cliente, ri)"
+                      style="color: #dc2626; background: none; border: none;">
+                    </button>
+                  </ng-container>
+
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+    </p-card>
+  </main>
+</div>
