@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
-import { Sidebar } from '../../../../shared/components/sidebar/sidebar';
 import { UiService } from '../../../../core/service/ui';
 import { ProyectoService } from '../../../../core/service/proyecto';
 @Component({
   selector: 'app-home',
-  imports: [ChartModule, ButtonModule, Sidebar],
+  imports: [ChartModule, ButtonModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements OnInit{
-   
+
   chartData: any;
   chartOptions: any;
-  
+
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
@@ -33,13 +32,13 @@ export class Home implements OnInit{
           label: 'Tareas Completadas',
           backgroundColor: '#818cf8', // Color violeta/azul claro
           borderColor: '#818cf8',
-          data: [65, 59, 80, 81, 56, 95] 
+          data: [65, 59, 80, 81, 56, 95]
         },
         {
           label: 'Nuevos Proyectos',
           backgroundColor: '#38bdf8', // Color celeste
           borderColor: '#38bdf8',
-          data: [28, 48, 40, 19, 86, 27] 
+          data: [28, 48, 40, 19, 86, 27]
         }
       ]
     };
@@ -76,10 +75,10 @@ export class Home implements OnInit{
       ref.onClose.subscribe((datosDelFormulario: any)=>{
         if(datosDelFormulario){
           console.log("Enviando datos al servidor(simulando)")
-          this.proyectoService.crearProyecto(datosDelFormulario).subscribe({ 
+          this.proyectoService.crearProyecto(datosDelFormulario).subscribe({
             next: (respuesta) => {
               console.log('2. Respuesta del servidor recibida:', respuesta);
-          
+
             },
             error: (err) => {
               console.log('Hubo un error:', err);

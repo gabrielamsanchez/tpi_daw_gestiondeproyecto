@@ -32,5 +32,15 @@ export class UiService {
     });
   }
 
+   openNuevoCliente(): DynamicDialogRef | null {
+    return this.dialogService.open(TareaForm, {
+      header: 'Nuevo Cliente',
+      width: '450px',
+      contentStyle: { overflow: 'visible' }, // 'visible' ayuda con los dropdowns
+      baseZIndex: 10000,
+      maskStyleClass: 'dialog-mask-blur'
+    });
+  }
+
 
 }

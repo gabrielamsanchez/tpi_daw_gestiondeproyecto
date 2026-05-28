@@ -3,7 +3,8 @@ import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiParam } from '@ne
 import { ProyectosService } from '../services/proyectos.service';
 import { CreateProyectoDto } from '../dtos/input/create-proyecto.dto';
 import { UpdateProyectoDto } from '../dtos/input/update-proyecto.dto';
-import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard'; // Ajusta la ruta a tu Guard
+import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard';
+import { Proyecto } from '../entities/proyecto.entity'; // Ajusta la ruta a tu Guard
 
 @ApiTags('Proyectos')
 @Controller('proyectos')
@@ -43,31 +44,61 @@ export class ProyectosController {
     return await this.proyectosService.obtenerPorId(id);
   }
 
-  // Actualizar
+//   // Actualizar
+//   @ApiBearerAuth('token')
+//   @UseGuards(AuthGuardGuard)
+//   @Put(':id')
+//   @HttpCode(HttpStatus.NO_CONTENT)
+//   @ApiOperation({ summary: 'Actualizar un proyecto existente' })
+//   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
+//   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Proyecto actualizado correctamente.' })
+//   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Proyecto no encontrado.' })
+//   async actualizarProyecto(
+//     @Param('id', ParseIntPipe) id: number,
+//     @Body() dto: UpdateProyectoDto,
+//   ): Promise<void> {
+//     return await this.proyectosService.actualizarProyecto(id, dto);
+//   }
+
+//   // Eliminar (Baja Lógica)
+//   @ApiBearerAuth('token')
+//   @UseGuards(AuthGuardGuard)
+//   @Delete(':id')
+//   @HttpCode(HttpStatus.NO_CONTENT)
+//   @ApiOperation({ summary: 'Eliminar un proyecto (Baja Lógica)' })
+//   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
+//   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Proyecto eliminado.' })
+//   async eliminarProyecto(@Param('id', ParseIntPipe) id: number): Promise<void> {
+//     await this.proyectosService.eliminarProyecto(id);
+//   }
+// }
+
+// Actualizar (Corregido a 200 OK devolviendo el proyecto)
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Put(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK) // Cambiado de NO_CONTENT a OK
   @ApiOperation({ summary: 'Actualizar un proyecto existente' })
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Proyecto actualizado correctamente.' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Proyecto actualizado correctamente.', type: Proyecto })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Proyecto no encontrado.' })
   async actualizarProyecto(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateProyectoDto,
-  ): Promise<void> {
+  ): Promise<Proyecto> { // Ahora retorna el Proyecto modificado
     return await this.proyectosService.actualizarProyecto(id, dto);
   }
 
-  // Eliminar (Baja Lógica)
+  // Eliminar - Baja Lógica (Corregido a 200 OK devolviendo confirmación)
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK) // Cambiado de NO_CONTENT a OK
   @ApiOperation({ summary: 'Eliminar un proyecto (Baja Lógica)' })
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Proyecto eliminado.' })
-  async eliminarProyecto(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    await this.proyectosService.eliminarProyecto(id);
+  @ApiResponse({ status: HttpStatus.OK, description: 'Proyecto eliminado lógicamente de forma correcta.' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Proyecto no encontrado.' })
+  async eliminarProyecto(@Param('id', ParseIntPipe) id: number) {
+    return await this.proyectosService.eliminarProyecto(id);
   }
 }
