@@ -1,0 +1,8 @@
+.dashboard-content {
+  flex: 1; /* Ocupa todo el espacio restante a la derecha del navbar */
+  padding: 2rem;
+  background-color: #ffffff; /* Fondo claro para el área de las tarjetas */
+  overflow-y: auto; /* Si agregas más gráficos abajo, el scroll solo pasa aquí */
+  color: #1a2b3c;
+  font-family: sans-serif;
+}

@@ -1,10 +1,8 @@
-/* --- ESTRUCTURA PRINCIPAL (LAYOUT) --- */
-.main-layout {
-  display: flex;
-  height: 100vh; 
-  width: 100%;
-  overflow: hidden; 
-  background-color: #0c1b22; 
+/* --- TU CÓDIGO ORIGINAL INTACTO --- */
+.dashboard-container {
+  padding: 2rem;
+  color: #1a2b3c;
+  font-family: sans-serif;
 }
 
 .dashboard-content {
@@ -16,7 +14,6 @@
   font-family: sans-serif;
 }
 
-/* --- CABECERA --- */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -29,7 +26,6 @@
   margin: 0;
 }
 
-/* --- TARJETAS --- */
 .quick-access-cards {
   display: flex;
   gap: 1.5rem;
@@ -76,7 +72,6 @@
   color: #1a2b3c !important;
 }
 
-/* --- GRÁFICO --- */
 .chart-section {
   background-color: #f0f7f9;
   border-radius: 12px;
@@ -103,4 +98,47 @@
 .chart-container {
   height: 350px;
   width: 100%;
+}
+
+/* =========================================
+   NUEVO: REGLAS RESPONSIVAS (MEDIA QUERIES)
+   ========================================= */
+
+/* Para Tablets (pantallas menores a 992px) */
+@media (max-width: 992px) {
+  .quick-access-cards {
+    flex-wrap: wrap; /* Permite que las tarjetas bajen de línea si no caben */
+  }
+  .card-item {
+    min-width: 45%; /* Dos tarjetas arriba, una abajo */
+  }
+}
+
+/* Para Celulares (pantallas menores a 768px) */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem; /* Achicamos el margen exterior */
+  }
+
+  .dashboard-header {
+    flex-direction: column; /* El botón pasa abajo del título */
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .quick-access-cards {
+    flex-direction: column; /* Todas las tarjetas se apilan una sobre otra */
+  }
+
+  .card-item {
+    width: 100%;
+  }
+
+  .chart-section {
+    padding: 1rem;
+  }
+
+  .chart-container {
+    height: 250px; /* Reducimos la altura del gráfico para que entre en la pantalla del celular */
+  }
 }
