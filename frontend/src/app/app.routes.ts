@@ -25,16 +25,17 @@ export const routes: Routes = [
       path: "clientes",
       component: Cliente
       },
+      { path: "usuarios",
+      component: Usuarios
+      },
+      { path: "tareas",
+      component: Tareas
+      },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: 'login' },
-    { path: "usuarios",
-      component: Usuarios
-    },
-    { path: "tareas",
-    component: Tareas
-    },
+   
     
 ];

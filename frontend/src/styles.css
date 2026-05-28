@@ -2,3 +2,8 @@
 @import "primeicons/primeicons.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "tailwindcss-primeui";
+
+
+body, .p-component {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}

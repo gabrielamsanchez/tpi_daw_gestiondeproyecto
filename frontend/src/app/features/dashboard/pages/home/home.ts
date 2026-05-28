@@ -3,9 +3,11 @@ import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { UiService } from '../../../../core/service/ui';
 import { ProyectoService } from '../../../../core/service/proyecto';
+import { Logout } from '../../../../shared/components/logout/logout';
+
 @Component({
   selector: 'app-home',
-  imports: [ChartModule, ButtonModule],
+  imports: [ChartModule, ButtonModule, Logout],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

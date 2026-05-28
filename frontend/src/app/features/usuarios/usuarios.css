@@ -5,7 +5,6 @@
   height: 100vh; 
   width: 100%;
   overflow: hidden; 
-  background-color: #0c1b22; 
 }
 
 /* priniciapal de usuarios*/
@@ -27,20 +26,8 @@
   margin-bottom: 32px;
 }
 
-/* btn atras */
-/* .btnvolver {
-  background-color:var(--p-slate-950)  !important;
-  color:var(--p-slate-50) !important;
-  border: 3px solid var(--p-slate-50) !important;
-  border-radius: 50% !important;
-  width: 40px !important;
-  height: 40px !important;
-}
-.btnvolver:hover , .btn-dark:hover{
-  background: var(--p-blue-900) !important;
-}*/
 
-/*btn cerrar sesion y desc */
+/*btn desc */
 .btn-dark {
   background-color:var(--p-slate-950)  !important;
   color:var(--p-slate-50) !important;
@@ -92,17 +79,16 @@
 }
 
 .badge-title {
-    color: #1e293b;
+    color: var(--p-slate-950) ;
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 0.05em;
 }
 
 .badge-subtitle {
-  color: #64748b;
+  color: var(--p-gray-450);
   font-size: 13px;
 }
-
 
 /* estilos de la tabla */
 .table-wrapper {
@@ -177,7 +163,7 @@
 }
 
 .footer-text {
-  color: #94a3b8;
+  color: var(--p-gray-400);
   font-size: 12px;
   letter-spacing: 0.05em;
 }

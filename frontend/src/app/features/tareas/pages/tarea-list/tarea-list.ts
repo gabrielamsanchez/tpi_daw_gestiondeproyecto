@@ -33,7 +33,6 @@ interface TareaInterface {
         RippleModule, 
         FormsModule, 
         Back,
-        Logout
     ],
     templateUrl: './tarea-list.html',
     styleUrls: ['./tarea-list.css'],

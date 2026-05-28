@@ -1,8 +1,8 @@
-/* --- ESTILOS DE LA BARRA LATERAL --- */
+/* sidebar */
 .sidebar-hover {
   width: 65px; /* Ancho inicial (colapsado) */
-  background-color: #122b38; /* Color azul oscuro tipo Avast */
-  transition: width 0.3s ease; /* Animación fluida */
+  background-color: var(bg-blue-900); 
+  transition: width 0.3s ease; 
   overflow: hidden; /* Oculta lo que sobresale (el texto) */
   display: flex;
   flex-direction: column;
@@ -11,12 +11,11 @@
   z-index: 10;
 }
 
-/* EL TRUCO: Al pasar el mouse, el ancho crece */
 .sidebar-hover:hover {
-  width: 250px; /* Ancho expandido */
+  width: 250px; 
 }
 
-/* --- ESTILOS DE LA LISTA Y LOS ITEMS --- */
+/* lista e items */
 .menu-list {
   list-style: none;
   padding: 0;
@@ -31,44 +30,43 @@
   cursor: pointer;
   color: #a3bac7;
   transition: background-color 0.2s, color 0.2s;
-  white-space: nowrap; /* Evita que el texto baje a otra línea */
+  white-space: nowrap; 
 }
 
 .menu-item:hover {
-  background-color: #1a3c4d; /* Efecto hover en el ítem */
+  background-color: #1a3c4d; 
   color: #ffffff;
 }
 
 .menu-item.active {
   background-color: #1f4a62;
   color: #ffffff;
-  border-left: 3px solid #2196F3; /* Detalles del menú activo */
+  border-left: 3px solid var(bg-sky-500); /*menú activo */
 }
 
 /* Iconos de PrimeNG */
 .menu-item i {
   font-size: 1.2rem;
-  min-width: 30px; /* Da un espacio fijo al icono para alinear el texto */
+  min-width: 30px; 
   text-align: left;
 }
 
-/* Texto del menú */
+/* texto del menú */
 .menu-text {
   margin-left: 10px;
   font-weight: 600;
-  opacity: 0; /* Oculto por defecto */
-  transition: opacity 0.2s ease; /* Transición suave de opacidad */
+  opacity: 0; 
+  transition: opacity 0.2s ease; 
 }
 
-/* Cuando el sidebar está expandido, el texto se hace visible */
 .sidebar-hover:hover .menu-text {
   opacity: 1;
-  transition-delay: 0.1s; /* Un pequeñísimo retraso queda mejor */
+  transition-delay: 0.1s; 
 }
 
-/* --- ESTILOS DEL CONTENIDO PRINCIPAL --- */
+/* contenido principal*/
 .main-content {
-  flex: 1; /* Ocupa el resto de la pantalla */
+  flex: 1; 
   padding: 20px;
-  background-color: #08141a; /* Fondo aún más oscuro para el área principal */
+  background-color: #08141a; 
 }

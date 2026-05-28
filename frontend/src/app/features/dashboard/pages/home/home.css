@@ -1,7 +1,6 @@
-/* --- TU CÓDIGO ORIGINAL INTACTO --- */
 .dashboard-container {
   padding: 2rem;
-  color: #1a2b3c;
+  color: var(--p-slate-900);
   font-family: sans-serif;
 }
 
@@ -10,7 +9,7 @@
   padding: 2rem;
   background-color: #ffffff; 
   overflow-y: auto; 
-  color: #1a2b3c;
+  color: var(--p-slate-900);
   font-family: sans-serif;
 }
 
@@ -48,7 +47,7 @@
 
 .card-icon i {
   font-size: 2.5rem;
-  color: #1a2b3c;
+  color: var(--p-slate-900);
 }
 
 .card-content {
@@ -69,7 +68,7 @@
 
 ::ng-deep .action-btn .p-button-icon {
   font-size: 2rem !important;
-  color: #1a2b3c !important;
+  color: var(--p-slate-900) !important;
 }
 
 .chart-section {
@@ -91,7 +90,7 @@
 
 .chart-header p {
   margin: 0;
-  color: #5c6c7c;
+  color: var(--p-gray-400);
   font-size: 0.9rem;
 }
 
@@ -100,34 +99,30 @@
   width: 100%;
 }
 
-/* =========================================
-   NUEVO: REGLAS RESPONSIVAS (MEDIA QUERIES)
-   ========================================= */
-
-/* Para Tablets (pantallas menores a 992px) */
+/* media queries */
 @media (max-width: 992px) {
   .quick-access-cards {
-    flex-wrap: wrap; /* Permite que las tarjetas bajen de línea si no caben */
+    flex-wrap: wrap;
   }
   .card-item {
-    min-width: 45%; /* Dos tarjetas arriba, una abajo */
+    min-width: 45%; 
   }
 }
 
-/* Para Celulares (pantallas menores a 768px) */
+/* celulares */
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 1rem; /* Achicamos el margen exterior */
+    padding: 1rem; 
   }
 
   .dashboard-header {
-    flex-direction: column; /* El botón pasa abajo del título */
+    flex-direction: column; 
     align-items: flex-start;
     gap: 1rem;
   }
 
   .quick-access-cards {
-    flex-direction: column; /* Todas las tarjetas se apilan una sobre otra */
+    flex-direction: column; 
   }
 
   .card-item {
@@ -139,6 +134,6 @@
   }
 
   .chart-container {
-    height: 250px; /* Reducimos la altura del gráfico para que entre en la pantalla del celular */
+    height: 250px; 
   }
 }

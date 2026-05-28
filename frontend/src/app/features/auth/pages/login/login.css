@@ -1,7 +1,3 @@
-:root {
-    --letra-titulo: "Funnel Sans", sans-serif;
-}
-
 .main-container {
     display: flex;
     flex-direction: column;
@@ -21,7 +17,6 @@
 }
 
 .titulo-principal {
-    font-family: var(--letra-titulo);
     font-size: 2rem;
     color: white;
     margin-top: 10px;
@@ -29,7 +24,6 @@
 
 .texto-login{
     text-align: center;
-    --letra-titulo: "Funnel Sans", sans-serif;
     width: 100%;
     font-size: 2.2rem;
 }
@@ -38,7 +32,6 @@
     background: linear-gradient(180deg, #ffffff 40%, #4978f9f7 100%) !important;    width: 400px;
     height: 450px;
     border-radius: 20px;
-    font-family: var(--letra-titulo);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .tarjeta:hover {
@@ -51,7 +44,6 @@
 }
 .form-text{
     text-align: center;
-    --letra-titulo: "Funnel Sans", sans-serif;
     width: 100%;
     font-size: 1rem;
     color: var(--p-stone-900);
@@ -62,7 +54,6 @@ input, input::placeholder{
     background-color: transparent;
     color: var(--p-stone-950);
 }
-
 
 .boton-contenedor {
     width: 100%;

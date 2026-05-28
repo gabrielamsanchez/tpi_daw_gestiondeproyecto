@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Back } from '../../shared/components/back/back';
 import { Logout } from '../../shared/components/logout/logout';
-//import { Sidebar } from '../../shared/components/sidebar/sidebar';
+
 
 interface Usuario {
   nombre: string;
