@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { ButtonModule } from 'primeng/button'; 
 
 @Component({
   selector: 'app-back',
-  imports: [],
+  standalone: true, 
+  imports: [ButtonModule], 
   templateUrl: './back.html',
   styleUrl: './back.css',
 })
