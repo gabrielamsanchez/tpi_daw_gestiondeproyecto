@@ -32,7 +32,7 @@ export class ProyectosService {
   async obtenerPorId(id: number): Promise<Proyecto> {
     const proyecto = await this.proyectosRepository.findOne({ 
       where: { id },
-      relations: ['cliente', 'tareas'] // Para traer sus tareas si quieres
+      relations: ['cliente', 'tareas'] // Para traer sus tareas si quieres CLIENTE SEGUN EL PROFE SE BORRA
     });
     
     if (!proyecto) {
@@ -41,15 +41,36 @@ export class ProyectosService {
     return proyecto;
   }
 
-  async actualizarProyecto(id: number, dto: UpdateProyectoDto): Promise<void> {
+//   async actualizarProyecto(id: number, dto: UpdateProyectoDto): Promise<void> {
+//     const proyecto = await this.obtenerPorId(id);
+//     this.proyectosRepository.merge(proyecto, dto);
+//     await this.proyectosRepository.save(proyecto);
+//   }
+
+//   async eliminarProyecto(id: number): Promise<void> {
+//     const proyecto = await this.obtenerPorId(id);
+//     proyecto.estado = EstadoProyecto.BAJA;
+//     await this.proyectosRepository.save(proyecto);
+//   }
+// }
+
+async actualizarProyecto(id: number, dto: UpdateProyectoDto): Promise<Proyecto> {
     const proyecto = await this.obtenerPorId(id);
+    
+    // Fusiona los cambios del DTO en la entidad encontrada
     this.proyectosRepository.merge(proyecto, dto);
-    await this.proyectosRepository.save(proyecto);
+    
+    // Guarda y retorna la entidad con los datos frescos
+    return await this.proyectosRepository.save(proyecto);
   }
 
-  async eliminarProyecto(id: number): Promise<void> {
+  async eliminarProyecto(id: number) {
     const proyecto = await this.obtenerPorId(id);
+    
+    // Aplicamos la baja lógica cambiando el enum
     proyecto.estado = EstadoProyecto.BAJA;
+    
     await this.proyectosRepository.save(proyecto);
+    return { message: `El proyecto con ID ${id} fue dado de baja exitosamente.` };
   }
 }
