@@ -175,3 +175,5 @@ bazel-out/
 *.njsproj
 *.sln
 *.sw?
+
+documentation/
