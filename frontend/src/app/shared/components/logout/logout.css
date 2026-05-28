@@ -9,7 +9,6 @@
   border-radius: 8px !important;
 }
 
-.btn-dark:disabled {
-  opacity: 0.5 !important;
-  cursor: not-allowed !important;
+.btn-dark:hover {
+  background: var(--p-blue-900) !important;
 } 

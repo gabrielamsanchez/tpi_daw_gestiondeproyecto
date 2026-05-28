@@ -2,11 +2,21 @@
     <p-toast />
     
     <div class="header-row">
-        <button pButton type="button" icon="pi pi-arrow-left" class="btn-back"></button>
-        <button pButton type="button" label="CERRAR SESIÓN" class="btn-dark"></button>
+        <app-back></app-back>
+        <!-- <app-logout></app-logout> -->
     </div>
 
     <div class="badge-wrapper">
+       
+        <button
+            pButton
+            type="button"
+            label="Nueva Tarea"
+            class="btn-agregar-tarea"
+            icon="pi pi-plus-circle"
+            iconPos="left">
+
+        </button>
         <div class="badge-blue">
             <div class="badge-icon-box">
                 <i class="pi pi-briefcase" style="font-size: 1.8rem; color: #1e293b;"></i>
@@ -20,11 +30,11 @@
 
     <div class="table-wrapper">
         <p-table #dt 
-                 [value]="tareas" 
-                 dataKey="id" 
-                 editMode="row" 
-                 class="custom-table"
-                 [columns]="cols">
+                [value]="tareas" 
+                dataKey="id" 
+                editMode="row" 
+                class="custom-table"
+                [columns]="cols">
             <ng-template #header>
                 <tr>
                     <th class="col-nombre" style="width: 30%">Nombre Proyecto</th>

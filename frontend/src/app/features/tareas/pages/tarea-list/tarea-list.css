@@ -10,43 +10,45 @@
 
 .header-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     width: 100%;
     margin-bottom: 32px;
 }
 
-:host .btn-back.p-button {
-    background: transparent !important;
-    color: #334155 !important;
-    border: 1px solid #334155 !important;
-    border-radius: 50% !important;
-    width: 40px !important;
-    height: 40px !important;
+.btn-agregar-tarea{
+    background-color:var(--p-slate-950)  !important;
+    color:var(--p-slate-50) !important;
+    border: none !important;
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 8px !important;
+    margin-right: 20px;
 }
 
-:host .btn-dark.p-button {
-    background-color: #1e293b !important;
-    color: #ffffff !important;
+.btn-agregar-tarea:hover {
+    background: var(--p-blue-900) !important;
+}
+
+.btn-dark:hover {
+    background: var(--p-blue-900) !important;
+} 
+
+.btn-download {
+    background-color:var(--p-slate-950)  !important;
+    color:var(--p-slate-50) !important;
     border: none !important;
     padding: 10px 24px !important;
     font-size: 14px !important;
     font-weight: 600 !important;
     letter-spacing: 0.05em !important;
-    border-radius: 6px !important;
+    border-radius: 8px !important;
 }
 
-:host .btn-dark.p-button:hover {
-    background-color: #0f172a !important;
-}
-
-:host .btn-dark.p-button:disabled {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-}
-
-.btn-download {
-    padding: 12px 48px !important;
+.btn-download:hover {
+    background: var(--p-blue-900) !important;
 }
 
 .badge-wrapper {
@@ -135,6 +137,8 @@
     color: #25292f !important;
     padding: 14px !important;
     border: 1px solid #64748b !important;
+    text-align: center !important;
+
 }
 
 .col-cell{
@@ -152,11 +156,15 @@
     border: 1px solid #64748b !important;
     background-color: #f8fafc !important;
 }
-.custom-table :is(.p-inputtext, input, .p-select) {
-  background-color: #dadff6 !important;
+
+.custom-table :is(.p-inputtext, input) {
+  background-color: #fefeff !important;
   color: #1e293b !important;
 }
-
+ span .p-select, .p-select-label {
+    background-color: #fefeff !important;
+    color: #1e293b !important;
+}
 
 .footer-row {
     display: flex;

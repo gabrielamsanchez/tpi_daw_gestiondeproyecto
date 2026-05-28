@@ -9,6 +9,8 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { SelectItem, MessageService } from 'primeng/api';
+import { Back } from '../../../../shared/components/back/back';
+import { Logout } from '../../../../shared/components/logout/logout';
 
 interface TareaInterface {
     id: string;
@@ -29,7 +31,9 @@ interface TareaInterface {
         ButtonModule, 
         InputTextModule, 
         RippleModule, 
-        FormsModule
+        FormsModule, 
+        Back,
+        Logout
     ],
     templateUrl: './tarea-list.html',
     styleUrls: ['./tarea-list.css'],

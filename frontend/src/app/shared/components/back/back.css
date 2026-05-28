@@ -6,6 +6,6 @@
   width: 40px !important;
   height: 40px !important;
 }
-.btnvolver:hover , .btn-dark:hover{
+.btnvolver:hover{
   background: var(--p-blue-900) !important;
 }
