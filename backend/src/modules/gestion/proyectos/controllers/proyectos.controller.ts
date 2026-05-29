@@ -11,6 +11,7 @@ import {
   HttpStatus,
   HttpCode,
   Query,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -66,6 +67,41 @@ export class ProyectosController {
   })
   async obtenerProyectos(@Query() query: QueryProyectoDto) {
     return await this.proyectosService.obtenerTodos(query);
+  }
+
+  // 1. EXPORTAR TODOS LOS PROYECTOS (CON FILTROS)
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get('exportar/csv') // <-- IMPRESCINDIBLE: Arriba de :id
+  @ApiOperation({
+    summary:
+      'Descargar proyectos en CSV aplicando los mismos filtros de búsqueda',
+  })
+  async exportarCsv(@Res() res: any, @Query() query: QueryProyectoDto) {
+    const csvContent = await this.proyectosService.exportarCsv(query);
+
+    const sufijo = query.estado ? `_${query.estado.toLowerCase()}` : '_todos';
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=reporte_proyectos${sufijo}.csv`,
+    );
+
+    return res.status(HttpStatus.OK).send(csvContent);
+  }
+
+  // 2. EXPORTAR UN PROYECTO ESPECÍFICO CON SUS TAREAS
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get(':id/exportar/csv') // <-- IMPRESCINDIBLE: Arriba de :id
+  @ApiOperation({ summary: 'Descargar el detalle de un proyecto específico y sus tareas en formato CSV' })
+  async exportarProyectoEspecificoCsv(@Param('id', ParseIntPipe) id: number, @Res() res: any) {
+    const csvContent = await this.proyectosService.exportarProyectoConTareasCsv(id);
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename=proyecto_${id}_tareas.csv`);
+
+    return res.status(HttpStatus.OK).send(csvContent);
   }
 
   // Obtener uno

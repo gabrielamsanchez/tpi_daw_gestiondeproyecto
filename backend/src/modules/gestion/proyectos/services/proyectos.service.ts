@@ -12,6 +12,7 @@ import { UpdateProyectoDto } from '../dtos/input/update-proyecto.dto';
 import { Cliente } from '../../clientes/entities/cliente.entity';
 import { EstadoCliente } from '../../clientes/enum/estado-cliente-enum';
 import { QueryProyectoDto } from '../dtos/input/query-proyecto.dto';
+import { ProyectosExportService } from './proyectos-export.service';
 
 @Injectable()
 export class ProyectosService {
@@ -20,6 +21,7 @@ export class ProyectosService {
     private readonly proyectosRepository: Repository<Proyecto>,
     @InjectRepository(Cliente)
     private readonly clientesRepository: Repository<Cliente>,
+    private readonly exportService: ProyectosExportService,
   ) {}
 
   //necesitamos validar el cliente exista y que este en estado activo.
@@ -120,5 +122,14 @@ export class ProyectosService {
     return {
       message: `El proyecto con ID ${id} fue dado de baja exitosamente.`,
     };
+  }
+
+  //para el export
+  async exportarCsv(query: QueryProyectoDto): Promise<string> {
+    return await this.exportService.exportarAStrCsv(query);
+  }
+
+  async exportarProyectoConTareasCsv(idProyecto: number): Promise<string> {
+    return await this.exportService.exportarProyectoConTareasCsv(idProyecto);
   }
 }

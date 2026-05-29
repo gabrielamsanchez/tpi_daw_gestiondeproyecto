@@ -9,12 +9,14 @@ import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 import { Cliente } from '../entities/cliente.entity';
 import { EstadoCliente } from '../enum/estado-cliente-enum';
+import { ClientesExportService } from './clientes-export.service';
 
 @Injectable()
 export class ClienteService {
   constructor(
     @InjectRepository(Cliente)
     private readonly clienteRepository: Repository<Cliente>,
+    private readonly exportService: ClientesExportService,
   ) {}
 
   async create(createClienteDto: CreateClienteDto) {
@@ -57,5 +59,10 @@ export class ClienteService {
     }
     cliente.estado = EstadoCliente.BAJA;
     return await this.clienteRepository.save(cliente);
+  }
+
+  async exportarClientesCsv(estado?: EstadoCliente): Promise<string> {
+    // Delegás la tarea al sub-servicio
+    return await this.exportService.exportarClientesCsv(estado);
   }
 }

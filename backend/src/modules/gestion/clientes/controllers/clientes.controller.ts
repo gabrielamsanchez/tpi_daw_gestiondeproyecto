@@ -10,6 +10,8 @@ import {
   UseGuards,
   HttpStatus,
   HttpCode,
+  Res,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -22,6 +24,7 @@ import { ClienteService } from '../services/clientes.service';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 import { AuthGuardGuard } from '../../../auth/guards/auth-guard.guard'; // Verifica que esta ruta sea la correcta en tu árbol
+import { EstadoCliente } from '../enum/estado-cliente-enum';
 
 @ApiTags('Clientes')
 @Controller('clientes')
@@ -56,6 +59,29 @@ export class ClienteController {
   })
   async findAll() {
     return await this.clienteService.findAll();
+  }
+
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get('exportar/csv') // <-- Recordar: Arriba de :id
+  @ApiOperation({
+    summary:
+      'Descargar listado de clientes en CSV, filtrando opcionalmente por estado',
+  })
+  async exportarCsv(@Res() res: any, @Query('estado') estado?: EstadoCliente) {
+    const csvContent = await this.clienteService.exportarClientesCsv(estado);
+
+    const nombreArchivo = estado
+      ? `reporte_clientes_${estado.toLowerCase()}.csv`
+      : 'reporte_clientes_todos.csv';
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=${nombreArchivo}`,
+    );
+
+    return res.status(HttpStatus.OK).send(csvContent);
   }
 
   // Obtener un cliente por su ID
