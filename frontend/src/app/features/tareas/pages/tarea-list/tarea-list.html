@@ -3,43 +3,51 @@
     
     <div class="header-row">
         <app-back></app-back>
-        <!-- <app-logout></app-logout> -->
-    </div>
 
-    <div class="badge-wrapper">
-       
-        <button
-            pButton
-            type="button"
-            label="Nueva Tarea"
-            class="btn-agregar-tarea"
-            icon="pi pi-plus-circle"
-            iconPos="left">
-        </button>
+            <div class="badge-wrapper">
+        <div class="badge-blue">
+            <div class="badge-text-box">
+                <span class="badge-title">NOMBRE PROYECTO</span>
+                <span class="badge-subtitle">{{ infoProyecto.nombre }}</span>
+            </div>
+        </div>
 
         <div class="badge-blue">
-            <div class="badge-icon-box">
-                <i class="pi pi-briefcase" style="font-size: 1.8rem;"></i>
-            </div>
             <div class="badge-text-box">
-                <span class="badge-title">TAREAS</span>
-                <span class="badge-subtitle">Gestión de proyectos</span>
+                <span class="badge-title">ESTADO</span>
+                <span class="badge-subtitle">{{ infoProyecto.estado }}</span>
+            </div>
+        </div>
+
+        <div class="badge-blue">
+            <div class="badge-text-box">
+                <span class="badge-title">CLIENTE</span>
+                <span class="badge-subtitle">{{ infoProyecto.cliente }}</span>
             </div>
         </div>
     </div>
+    </div>
 
+    <div class="action-row">
+    <button
+        pButton
+        type="button"
+        label="CREAR NUEVA TAREA"
+        class="btn-agregar-tarea"
+        icon="pi pi-plus-circle"
+        (click)="crearNuevaTarea()">
+    </button>
+    </div>
     <div class="table-wrapper">
         <p-table #dt 
                 [value]="tareas" 
                 dataKey="id" 
                 editMode="row" 
-                class="custom-table"
-                [columns]="cols">
+                class="custom-table">
             <ng-template #header>
                 <tr>
-                    <th class="col-nombre" style="width: 30%">Nombre Proyecto</th>
-                    <th class="col-cliente" style="width: 25%">Cliente</th>
-                    <th class="col-estado" style="width: 25%">Estado</th>
+                    <th class="col-nombre" style="width: 45%">Nombre</th>
+                    <th class="col-estado" style="width: 35%">Estado</th>
                     <th class="col-acciones" style="width: 20%">Acciones</th>
                 </tr>
             </ng-template>
@@ -50,21 +58,10 @@
                     <td class="col-cell">
                         <p-cellEditor>
                             <ng-template #input>
-                                <input pInputText type="text" [(ngModel)]="tarea.nombreProyecto" required style="width: 100%" />
+                                <input pInputText type="text" [(ngModel)]="tarea.nombreTarea" required style="width: 100%" />
                             </ng-template>
                             <ng-template #output>
-                                {{ tarea.nombreProyecto }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    
-                    <td class="col-cell">
-                        <p-cellEditor>
-                            <ng-template #input>
-                                <input pInputText type="text" [(ngModel)]="tarea.cliente" required style="width: 100%" />
-                            </ng-template>
-                            <ng-template #output>
-                                {{ tarea.cliente }}
+                                {{ tarea.nombreTarea }}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -92,8 +89,8 @@
 
             <ng-template #emptymessage>
                 <tr>
-                    <td colspan="4" class="empty-cell">
-                        No se encontraron tareas o proyectos en la base de datos.
+                    <td colspan="3" class="empty-cell">
+                        No se encontraron tareas en este proyecto.
                     </td>
                 </tr>
             </ng-template>

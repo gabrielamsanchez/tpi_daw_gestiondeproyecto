@@ -1,8 +1,16 @@
-.dashboard-content {
-  flex: 1; /* Ocupa todo el espacio restante a la derecha del navbar */
-  padding: 2rem;
-  background-color: #ffffff; /* Fondo claro para el área de las tarjetas */
-  overflow-y: auto; /* Si agregas más gráficos abajo, el scroll solo pasa aquí */
-  color: #1a2b3c;
-  font-family: sans-serif;
+.btn-agregar-cliente {
+    background-color: #1a233a !important; /* Azul oscuro del mockup */
+    color: var(--p-slate-50) !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-agregar-cliente:hover {
+    background: var(--p-cyan-800) !important;
 }

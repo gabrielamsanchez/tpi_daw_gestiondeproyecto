@@ -10,12 +10,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { SelectItem, MessageService } from 'primeng/api';
 import { Back } from '../../../../shared/components/back/back';
-import { Logout } from '../../../../shared/components/logout/logout';
+import { UiService } from '../../../../core/service/ui';
 
 interface TareaInterface {
     id: string;
-    nombreProyecto: string;
-    cliente: string;
+    nombreTarea: string; 
     estado: string; 
 }
 
@@ -36,36 +35,39 @@ interface TareaInterface {
     ],
     templateUrl: './tarea-list.html',
     styleUrls: ['./tarea-list.css'],
-    providers: [MessageService]
+    providers: [MessageService] 
 })
 export class Tareas implements OnInit {
     private messageService = inject(MessageService);
+    private uiService = inject(UiService); 
     
-    tareas: TareaInterface[] = [];
+    infoProyecto = {
+        nombre: 'Desarrollo Web DAW',
+        estado: 'En Progreso',
+        cliente: 'Nombre Cliente S.A.'
+    };
+    
+    tareas: any[] = [];
     statuses!: SelectItem[];
     cols: any[] = [];
     clonedTareas: { [s: string]: TareaInterface } = {};
 
     ngOnInit() {
-  //ESTO DESPUES CAMBIAR
-
         this.tareas = [
-            { id: '1', nombreProyecto: 'E-Commerce Alimentos', cliente: 'De Mil Amores', estado: 'EN_PROGRESO' },
-            { id: '2', nombreProyecto: 'Sistema Gestión Interna', cliente: 'Estudio Alpha', estado: 'PLANIFICADO' },
-            { id: '3', nombreProyecto: 'Landing Page Campaña', cliente: 'Catering Premium', estado: 'COMPLETADO' }
+            { id: '1', nombreTarea: 'Diseño de Interfaces', estado: 'PENDIENTE' },
+            { id: '2', nombreTarea: 'Configuración de Base de Datos', estado: 'FINALIZADA' },
+            { id: '3', nombreTarea: 'Pruebas Unitarias', estado: 'BAJA' }
         ];
 
         this.cols = [
-            { field: 'nombreProyecto', header: 'Nombre Proyecto' },
-            { field: 'cliente', header: 'Cliente' },
+            { field: 'nombreTarea', header: 'Nombre Tarea' },
             { field: 'estado', header: 'Estado' }
         ];
 
-
         this.statuses = [
-            { label: 'Planificado', value: 'PLANIFICADO' },
-            { label: 'En Progreso', value: 'EN_PROGRESO' },
-            { label: 'Completado', value: 'COMPLETADO' }
+            { label: 'Planificado', value: 'PENDIENTE' },
+            { label: 'En Progreso', value: 'FINALIZADA' },
+            { label: 'Completado', value: 'BAJA' }
         ];
     }
 
@@ -74,19 +76,19 @@ export class Tareas implements OnInit {
     }
 
     onRowEditSave(tarea: TareaInterface) {
-        if (tarea.nombreProyecto.trim().length > 0 && tarea.cliente.trim().length > 0) {
+        if (tarea.nombreTarea && tarea.nombreTarea.trim().length > 0) {
             delete this.clonedTareas[tarea.id as string];
             
             this.messageService.add({ 
                 severity: 'success', 
                 summary: 'Éxito', 
-                detail: 'Proyecto actualizado con éxito de forma local' 
+                detail: 'Tarea actualizada con éxito de forma local' 
             });
         } else {
             this.messageService.add({ 
                 severity: 'error', 
                 summary: 'Error', 
-                detail: 'Los campos obligatorios no pueden quedar vacíos' 
+                detail: 'El nombre de la tarea no puede quedar vacío' 
             });
         }
     }
@@ -98,19 +100,41 @@ export class Tareas implements OnInit {
 
     getSeverity(status: string) {
         switch (status) {
-            case 'COMPLETADO':
-                return 'success';
-            case 'EN_PROGRESO':
-                return 'warn';
-            case 'PLANIFICADO':
-                return 'danger';
-            default:
-                return 'secondary';
+            case 'PENDIENTE': return 'success';
+            case 'FINALIZADA': return 'warn';
+            case 'BAJA': return 'danger';
+            default: return 'secondary';
         }
     }
 
     getLabelEstado(status: string): string {
-      const found = this.statuses.find(s => s.value === status);
-      return found?.label ?? status;
+        const found = this.statuses.find(s => s.value === status);
+        return found?.label ?? status;
+    }
+
+   
+    crearNuevaTarea() {
+        const ref = this.uiService.openNuevaTarea();
+
+        if (ref) {
+            ref.onClose.subscribe((datosDeLaTarea: any) => {
+    
+                if (datosDeLaTarea) {
+                    const nuevaTareaEstructurada = {
+                        id: String(this.tareas.length + 1), 
+                        nombreTarea: datosDeLaTarea.titulo, 
+                        estado: 'PENDIENTE' 
+                    };
+
+                    this.tareas = [...this.tareas, nuevaTareaEstructurada];
+
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Tarea Creada',
+                        detail: 'Se agregó la tarea exitosamente al listado.'
+                    });
+                }
+            });
+        }
     }
 }

@@ -1,19 +1,23 @@
-<div class="flex h-screen w-full overflow-hidden bg-[#0c1b22]">
+<div class="flex h-screen w-full overflow-hidden">
 
 
-  <main class="flex-1 h-full overflow-y-auto p-8 pl-16 w-full bg-[#f8fafc]">
+  <main>
 
-    <p-card styleClass="w-full shadow-md rounded-xl bg-white p-2">
+    <p-card styleClass="w-full shadow-md rounded-xl p-2">
       <p-toast />
 
-      <div class="mb-4">
-        <button
-          pButton
-          type="button"
-          label="Crear nuevo cliente"
-          style="background-color: #1e293b; color: white; border: none; border-radius: 6px; padding: 10px 20px; font-weight: 500;">
-        </button>
-      </div>
+        <div class="flex items-center justify-between mb-4">
+              <div class="action-row">
+                <button
+                    pButton
+                    type="button"
+                    label="Nuevo Cliente"
+                    class="btn-agregar-cliente"
+                    icon="pi pi-plus-circle"
+                    >
+                </button>
+              </div>
+    </div>
 
       <div class="w-full overflow-x-auto">
         <p-table

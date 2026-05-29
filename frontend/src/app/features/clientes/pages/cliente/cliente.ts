@@ -35,7 +35,8 @@ interface ClienteInterface {
         FormsModule,
     ],
     providers: [MessageService],
-    templateUrl: './cliente.html'
+    templateUrl: './cliente.html',
+    styleUrls: ['./cliente.css']
 })
 export class Cliente implements OnInit {
     private messageService = inject(MessageService);
