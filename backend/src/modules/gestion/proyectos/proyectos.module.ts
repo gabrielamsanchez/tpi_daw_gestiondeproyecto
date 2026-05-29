@@ -4,8 +4,9 @@ import { Proyecto } from './entities/proyecto.entity';
 import { ProyectosService } from './services/proyectos.service';
 import { ProyectosController } from './controllers/proyectos.controller';
 import { JwtModule } from '@nestjs/jwt'; // <-- 1. Importa esto
+import { Cliente } from '../clientes/entities/cliente.entity';
 @Module({
-  imports: [TypeOrmModule.forFeature([Proyecto]), JwtModule],
+  imports: [TypeOrmModule.forFeature([Proyecto, Cliente]), JwtModule],
 
   controllers: [ProyectosController],
   providers: [ProyectosService],

@@ -4,9 +4,10 @@ import { TareacontrollerController } from './tareacontroller/tareacontroller.con
 import { TareasService } from './tareaservice/tareaservice.service';
 import { Tarea } from './entities/tarea-entity';
 import { JwtModule } from '@nestjs/jwt';
+import { Proyecto } from '../proyectos/entities/proyecto.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tarea]), JwtModule],
+  imports: [TypeOrmModule.forFeature([Tarea, Proyecto]), JwtModule],
   controllers: [TareacontrollerController],
   providers: [TareasService],
 })
