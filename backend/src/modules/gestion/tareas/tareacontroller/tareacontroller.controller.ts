@@ -20,7 +20,7 @@ import {
 import { TareasService } from '../tareaservice/tareaservice.service';
 import { CreateTareaDto } from '../dtos/input/create-tarea-dto';
 import { UpdateTareaDto } from '../dtos/input/update-tarea-dto';
-import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard';
+import { AuthGuardGuard } from '../../../auth/guards/auth-guard.guard';
 
 @ApiTags('Tareas')
 @Controller('tareacontroller')

@@ -3,8 +3,11 @@ import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiParam } from '@ne
 import { ProyectosService } from '../services/proyectos.service';
 import { CreateProyectoDto } from '../dtos/input/create-proyecto.dto';
 import { UpdateProyectoDto } from '../dtos/input/update-proyecto.dto';
-import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard';
+import { AuthGuardGuard } from '../../../auth/guards/auth-guard.guard';
 import { Proyecto } from '../entities/proyecto.entity'; // Ajusta la ruta a tu Guard
+import { RolesGuard } from '../../../auth/guards/roles.guard';
+import { ROLES } from '../../../auth/decorators/roles.decorators';
+import { RolUsuario } from '../../usuarios/enum/rol-usuario.enum';
 
 @ApiTags('Proyectos')
 @Controller('proyectos')
@@ -91,7 +94,8 @@ export class ProyectosController {
 
   // Eliminar - Baja Lógica (Corregido a 200 OK devolviendo confirmación)
   @ApiBearerAuth('token')
-  @UseGuards(AuthGuardGuard)
+  @UseGuards(AuthGuardGuard, RolesGuard)
+  @ROLES(RolUsuario.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.OK) // Cambiado de NO_CONTENT a OK
   @ApiOperation({ summary: 'Eliminar un proyecto (Baja Lógica)' })

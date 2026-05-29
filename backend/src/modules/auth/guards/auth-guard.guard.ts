@@ -42,9 +42,14 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-  
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
+export interface JwtPayload {
+  sub: number;
+  nombre: string;
+  rol: string;
+}
 
 @Injectable()
 export class AuthGuardGuard implements CanActivate {
@@ -68,13 +73,14 @@ export class AuthGuardGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET, 
+        secret: process.env.JWT_SECRET,
       });
 
       console.log('Payload del JWT exitoso:', payload);
 
       request['user'] = payload;
     } catch (error) {
+      //borrar el console.error despues
       console.error(
         'Error interno al verificar el JWT:',
         error instanceof Error ? error.message : error,

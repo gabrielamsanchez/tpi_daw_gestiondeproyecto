@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
@@ -37,7 +37,20 @@ export class ClienteService {
   }
 
   async remove(id: number) {
-    const cliente = await this.findOne(id);
+    const cliente = await this.clienteRepository.findOne({
+      where: { id },
+      relations: ['proyectos'],
+    });
+
+    if (!cliente) {
+      throw new NotFoundException(`El cliente con ID ${id} no existe`);
+    }
+
+    if (cliente.proyectos && cliente.proyectos.length > 0) {
+      throw new BadRequestException(
+        'No se puede dar de baja el cliente porque tiene proyectos vinculados.',
+      );
+    }
     cliente.estado = EstadoCliente.BAJA;
     return await this.clienteRepository.save(cliente);
   }

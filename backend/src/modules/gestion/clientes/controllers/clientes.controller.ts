@@ -21,7 +21,7 @@ import {
 import { ClienteService } from '../services/clientes.service';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
-import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard'; // Verifica que esta ruta sea la correcta en tu árbol
+import { AuthGuardGuard } from '../../../auth/guards/auth-guard.guard'; // Verifica que esta ruta sea la correcta en tu árbol
 
 @ApiTags('Clientes')
 @Controller('clientes')
