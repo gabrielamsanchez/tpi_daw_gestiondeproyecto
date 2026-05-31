@@ -18,6 +18,13 @@ export class Cliente {
   })
   estado!: EstadoCliente;
 
+  // Funcionalidad Extra (Contacto)
+  @Column({ type: 'text', nullable: true })
+  telefono?: string;
+
+  @Column({ type: 'text', nullable: true })
+  correo?: string;
+
   @OneToMany(() => Proyecto, (proyecto) => proyecto.cliente)
   proyectos!: Proyecto[];
 }

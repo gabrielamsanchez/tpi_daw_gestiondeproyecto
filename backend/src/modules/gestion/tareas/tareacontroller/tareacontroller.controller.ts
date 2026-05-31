@@ -9,6 +9,7 @@ import {
   UseGuards,
   HttpStatus,
   HttpCode,
+  Get,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -20,18 +21,21 @@ import {
 import { TareasService } from '../tareaservice/tareaservice.service';
 import { CreateTareaDto } from '../dtos/input/create-tarea-dto';
 import { UpdateTareaDto } from '../dtos/input/update-tarea-dto';
-import { AuthGuardGuard } from '../../../auth/auth-guard/auth-guard.guard';
+import { AuthGuardGuard } from '../../../auth/guards/auth-guard.guard';
+import { RolUsuario } from '../../usuarios/enum/rol-usuario.enum';
+import { ROLES } from '../../../auth/decorators/roles.decorators';
+import { RolesGuard } from '../../../auth/guards/roles.guard';
 
 @ApiTags('Tareas')
-@Controller('tareacontroller')
+@Controller('tareas')
 export class TareacontrollerController {
   constructor(private readonly tareasService: TareasService) {}
 
   // Crear tarea
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
-  @Post(':idProyecto')
-  @ApiOperation({ summary: 'Crear una nueva tarea' })
+  @Post()
+  @ApiOperation({ summary: 'Crear una nueva tarea asignandolo a un proyecto' })
   @ApiParam({
     name: 'idProyecto',
     description: 'ID del proyecto',
@@ -49,20 +53,20 @@ export class TareacontrollerController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'No autorizado.',
   })
-  async createTarea(
-    @Param('idProyecto', ParseIntPipe) idProyecto: number,
-    @Body() dto: CreateTareaDto,
-  ): Promise<{ id: number }> {
+  async createTarea(@Body() dto: CreateTareaDto): Promise<{ id: number }> {
     console.log('--- ENTRANDO AL CONTROLLER DE TAREAS ---');
-    console.log(
-      'ID del Proyecto recibido:',
-      idProyecto,
-      'Tipo:',
-      typeof idProyecto,
-    );
     console.log('DTOrecibido:', dto);
+    return await this.tareasService.crearTarea(dto);
+  }
 
-    return await this.tareasService.crearTarea(dto, idProyecto);
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get('proyecto/:idProyecto')
+  @ApiOperation({
+    summary: 'Ver el detalle de las tareas que componen un proyecto',
+  })
+  async obtenerTareas(@Param('idProyecto', ParseIntPipe) idProyecto: number) {
+    return await this.tareasService.obtenerTareasPorProyecto(idProyecto);
   }
 
   // Actualizar
@@ -97,7 +101,8 @@ export class TareacontrollerController {
 
   // Eliminar
   @ApiBearerAuth('token')
-  @UseGuards(AuthGuardGuard)
+  @UseGuards(AuthGuardGuard, RolesGuard)
+  @ROLES(RolUsuario.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Eliminar una tarea' })

@@ -12,11 +12,12 @@ export class UiService {
 
   openNuevoProyecto(): DynamicDialogRef | null {
     return this.dialogService.open(ProyectoForm, {
-      header: 'Nuevo Proyecto',
-      width: '450px',
-      contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      maskStyleClass: 'dialog-mask-blur'
+    header: ' ', // Dejamos el header vacío para usar el título interno
+    width: '400px',
+    contentStyle: { overflow: 'auto', 'border-radius': '20px' },
+    baseZIndex: 10000,
+    styleClass: 'custom-modal-v2', // Clase para el diseño premium
+    maskStyleClass: 'dialog-mask-blur'
     });
   }
 

@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoUsuario } from '../../enum/estado-usurio.enum';
-import { ApiProperty } from '@nestjs/swagger'; 
+import { ApiProperty } from '@nestjs/swagger';
+import { RolUsuario } from '../../enum/rol-usuario.enum';
 
 @Entity({ name: 'usuarios' })
 export class Usuario {
@@ -15,7 +16,7 @@ export class Usuario {
     description: 'Nombre de usuario',
     example: 'admin_dev',
   })
-  @Column()
+  @Column({ unique: true })
   nombre!: string;
 
   @Column()
@@ -28,4 +29,7 @@ export class Usuario {
   })
   @Column({ type: 'enum', enum: EstadoUsuario })
   estado!: EstadoUsuario;
+
+  @Column({ type: 'enum', enum: RolUsuario, default: RolUsuario.REGULAR }) //  Agregado
+  rol!: RolUsuario;
 }

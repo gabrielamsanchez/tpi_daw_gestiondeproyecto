@@ -1,8 +1,12 @@
-import { JoinColumn, ManyToOne } from 'typeorm';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  JoinColumn,
+  ManyToOne,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { EstadoTarea } from '../enum/estado-tareas-enum';
 import { ApiProperty } from '@nestjs/swagger';
-
 import { Proyecto } from '../../proyectos/entities/proyecto.entity';
 
 @Entity({ name: 'tareas' })
@@ -19,7 +23,7 @@ export class Tarea {
     example: 'Modelar las tablas de la base de datos en PostgreSQL',
     maxLength: 255,
   })
-  @Column({ type: 'varchar', length: 255, nullable: true }) 
+  @Column({ type: 'text', nullable: false })
   descripcion!: string;
 
   @ApiProperty({
@@ -29,8 +33,8 @@ export class Tarea {
   })
   @Column({
     name: 'estado',
-    type: 'enum',
     enum: EstadoTarea,
+    enumName: 'estados_tareas',
     default: EstadoTarea.PENDIENTE,
   })
   estado!: EstadoTarea;
@@ -39,10 +43,9 @@ export class Tarea {
   @ApiProperty({
     description: 'ID del proyecto asociado',
     example: 1,
-    nullable: true,
   })
-  @Column({ name: 'id_proyecto', type: 'int', nullable: true })
-  id_Proyecto!: number;
+  @Column({ name: 'id_proyecto', type: 'int' })
+  id_proyecto!: number;
 
   @ManyToOne(() => Proyecto, (proyecto) => proyecto.tareas, {
     onDelete: 'CASCADE',
