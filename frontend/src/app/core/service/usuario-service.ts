@@ -7,7 +7,7 @@ import { Usuario } from '../../shared/interfaces/usuario';
   providedIn: 'root',
 })
 export class UsuarioService {
-  private url = 'http://localhost:3000/api/v1/';
+  private url = 'http://localhost:3000/api/v1/usuarios';
 
   constructor(private readonly http: HttpClient) {}
   getUsuarios(): Observable<Usuario[]> {
