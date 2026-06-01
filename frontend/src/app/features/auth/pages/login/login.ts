@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, ChangeDetectorRef } from "@angular/core"; 
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ButtonModule } from "primeng/button";
@@ -19,10 +19,9 @@ import { AuthService } from "../../auth-service";
 export class Login {
 
     private readonly authService: AuthService = inject(AuthService);
-
     private readonly router: Router = inject(Router);
-
     private readonly formBuilder: FormBuilder = inject(FormBuilder);
+    private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef); 
 
     protected readonly form = this.formBuilder.nonNullable.group({
         nombre: ['', [Validators.required]],
@@ -45,17 +44,18 @@ export class Login {
         const { nombre, clave } = this.form.getRawValue();
 
         this.authService.iniciarSesion(nombre, clave)
-            .pipe(finalize(() => this.loading = false))
+            .pipe(finalize(() => {
+                this.loading = false;
+                this.cdr.detectChanges(); //para que no se quede colgando el loading
+            }))
             .subscribe({
-            next: () => {
-                this.router.navigateByUrl('/dashboard');
-            },
-            error: (err) => {
-                this.errorMessage = err?.error?.message ?? 'Ha ocurrido un error al iniciar sesión.';
-            }
-        });
-
-
+                next: () => {
+                    this.router.navigateByUrl('/dashboard');
+                },
+                error: (err) => {
+                    this.errorMessage = err?.error?.message ?? 'Ha ocurrido un error al iniciar sesión.';
+                    this.cdr.detectChanges(); 
+                }
+            });
     }
-
 }

@@ -14,12 +14,11 @@ export class AuthStore {
     private isBrowser(): boolean {
         return isPlatformBrowser(this.platformId);
     }
-
+//ciclo de vida del token, almacenamiento
     guardarToken(token: string): void {
         if (!this.isBrowser()) {
             return;
         }
-
         sessionStorage.setItem(this.storageKey, token);
     }
 
@@ -27,10 +26,26 @@ export class AuthStore {
         if (!this.isBrowser()) {
             return null;
         }
-
         return sessionStorage.getItem(this.storageKey);
     }
-//
+
+    tieneToken(): boolean {
+        return this.obtenerToken() !== null;
+    }
+
+    eliminarToken(): void {
+        if (!this.isBrowser()) {
+            return;
+        }
+
+        sessionStorage.removeItem(this.storageKey);
+    }
+
+    cerrarSesion(): void {
+        this.eliminarToken();
+        this.router.navigateByUrl("/login");
+    }
+//esto es para extraer el nombre de usuario desde el token, se decodifica  el JWT
     obtenerNombreUsuario(): string | null {
         const token = this.obtenerToken();
 
@@ -38,10 +53,8 @@ export class AuthStore {
             //console.warn('No hay token disponible');
             return null;
         }
-
         try {
             const payloadBase64Url = token.split('.')[1];
-
             if (!payloadBase64Url) {
                 console.warn('Token inválido: no tiene payload');
                 return null;
@@ -52,7 +65,7 @@ export class AuthStore {
             const payload = JSON.parse(payloadJson) as { nombre?: string };
 
             if (!payload.nombre) {
-                console.warn('El payload del token no contiene el campo "nombre". Payload:', payload);
+                console.warn('El payload del token no contiene el nombre. Payload:', payload);
                 return null;
             }
 
@@ -69,25 +82,7 @@ export class AuthStore {
         if (padding === 0) {
             return value;
         }
-
         return value + '='.repeat(4 - padding);
-    }
-//
-    tieneToken(): boolean {
-        return this.obtenerToken() !== null;
-    }
-
-    eliminarToken(): void {
-        if (!this.isBrowser()) {
-            return;
-        }
-
-        sessionStorage.removeItem(this.storageKey);
-    }
-
-    cerrarSesion(): void {
-        this.eliminarToken();
-        this.router.navigateByUrl("/login");
     }
 
 }

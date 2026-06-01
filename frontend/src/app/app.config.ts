@@ -7,6 +7,7 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './core/interceptors/interceptor';
+import { MessageService } from 'primeng/api';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
+    MessageService,
     providePrimeNG({
       theme: {
         preset: Aura,

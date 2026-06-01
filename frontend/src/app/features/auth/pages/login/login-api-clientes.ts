@@ -9,7 +9,6 @@ export class LoginApiClient {
     private readonly authService: AuthService = inject(AuthService)
 
     iniciarSesion(nombre: string, clave: string): Observable<{ accessToken: string }> {
-
         return this.authService.iniciarSesion(nombre, clave);
 
     }
