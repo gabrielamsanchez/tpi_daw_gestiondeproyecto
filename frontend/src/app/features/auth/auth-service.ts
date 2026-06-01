@@ -2,15 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { AuthStore } from "./auth-store";
-
-export interface LoginCredentials {
-    nombre: string;
-    clave: string;
-}
-
-export interface LoginResponse {
-    accessToken: string;
-}
+import { LoginCredentials } from "../../shared/interfaces/login.credential";
+import { LoginResponse } from "../../shared/interfaces/login.response";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

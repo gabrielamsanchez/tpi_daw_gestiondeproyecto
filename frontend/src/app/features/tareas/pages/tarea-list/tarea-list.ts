@@ -11,12 +11,8 @@ import { RippleModule } from 'primeng/ripple';
 import { SelectItem, MessageService } from 'primeng/api';
 import { Back } from '../../../../shared/components/back/back';
 import { UiService } from '../../../../core/service/ui';
+import { TareaInterface } from '../../../../shared/interfaces/tarea';
 
-interface TareaInterface {
-    id: string;
-    nombreTarea: string; 
-    estado: string; 
-}
 
 @Component({
     selector: 'app-tareas-tabla',

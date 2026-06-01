@@ -12,12 +12,7 @@ import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
 import { MessageService, SelectItem } from 'primeng/api';
 import { Back } from '../../../../shared/components/back/back';
-
-interface ClienteInterface {
-    id: string;
-    nombre: string;
-    estado: string;
-}
+import { ClienteInterface } from '../../../../shared/interfaces/cliente.interface';
 
 @Component({
     selector: 'app-tabla-clientes',
