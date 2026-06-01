@@ -1,62 +1,61 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { ToastModule } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
-import { CardModule } from 'primeng/card';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { MessageService } from 'primeng/api';
-
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { InputTextModule } from "primeng/inputtext";
+import { PasswordModule } from "primeng/password";
+import { finalize } from "rxjs";
+import { AuthService } from "../../auth-service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.css'],
-  standalone: true,
-  imports: [ButtonModule, CardModule, ToastModule, InputTextModule, MessageModule, AutoCompleteModule, FormsModule],
-  providers: [MessageService]
+    selector: "app-login",
+    standalone: true,
+    templateUrl: "./login.html",
+    styleUrl: "./login.css",
+    imports: [CommonModule, ReactiveFormsModule, ButtonModule, CardModule, InputTextModule, PasswordModule]
 })
 export class Login {
-  private messageService = inject(MessageService);
 
-  user = { username: '', password: '' };
-  formSubmitted = false;
+    private readonly authService: AuthService = inject(AuthService);
 
-  // Autocomplete state
-  value: string | null = null;
-  items: string[] = [];
+    private readonly router: Router = inject(Router);
 
-  private allSuggestions = ['alice', 'bob', 'carol', 'dave', 'eve', 'mallory'];
+    private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
-  search(event: any) {
-    const q = (event.query || '').toLowerCase();
-    this.items = this.allSuggestions.filter(s => s.toLowerCase().includes(q));
-  }
-
-  onSubmit(form: NgForm) {
-    this.formSubmitted = true;
-
-    if (form.invalid) {
-      form.control.markAllAsTouched();
-      return;
-    }
-
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Formulario Enviado',
-      life: 3000
+    protected readonly form = this.formBuilder.nonNullable.group({
+        nombre: ['', [Validators.required]],
+        clave: ['', [Validators.required, Validators.minLength(4)]]
     });
 
-    form.resetForm();
-    this.user = { username: '', password: '' };
-    this.formSubmitted = false;
-  }
+    protected errorMessage = '';
+    protected loading = false;
 
-  isInvalid(control: any) {
-    return control?.invalid && (control.touched || this.formSubmitted);
-  }
+    iniciarSesion(): void {
+        this.errorMessage = '';
+
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            this.errorMessage = 'Completa el nombre de usuario y la contraseña.';
+            return;
+        }
+
+        this.loading = true;
+        const { nombre, clave } = this.form.getRawValue();
+
+        this.authService.iniciarSesion(nombre, clave)
+            .pipe(finalize(() => this.loading = false))
+            .subscribe({
+            next: () => {
+                this.router.navigateByUrl('/dashboard');
+            },
+            error: (err) => {
+                this.errorMessage = err?.error?.message ?? 'Ha ocurrido un error al iniciar sesión.';
+            }
+        });
+
+
+    }
+
 }
-
-
