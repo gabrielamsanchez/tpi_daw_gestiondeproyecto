@@ -3,13 +3,13 @@ import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { UiService } from '../../../../core/service/ui';
 import { ProyectoService } from '../../../../core/service/proyecto';
-import { Logout } from '../../../../shared/components/logout/logout';
 import {CommonModule} from "@angular/common";
 import { AuthStore } from '../../../../features/auth/auth-store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [ChartModule, ButtonModule, Logout, CommonModule],
+  imports: [ChartModule, ButtonModule, CommonModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -25,6 +25,7 @@ export class Home implements OnInit{
     private uiService: UiService,
     private proyectoService: ProyectoService,
     private authStore: AuthStore,
+    private router: Router,
   ){}
 
 
@@ -112,6 +113,10 @@ export class Home implements OnInit{
         }
       });
     }
+  }
+
+  navegarAUsuarios(): void {
+    this.router.navigate(['/usuarios']);
   }
 
 }
