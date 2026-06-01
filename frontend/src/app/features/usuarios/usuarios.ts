@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Back } from '../../shared/components/back/back';
-import { Logout } from '../../shared/components/logout/logout';
 import { UsuarioService } from '../../core/service/usuario-service';
 import { Usuario } from '../../shared/interfaces/usuario';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, Back, Logout ],
+  imports: [CommonModule, TableModule, ButtonModule, Back ],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })
