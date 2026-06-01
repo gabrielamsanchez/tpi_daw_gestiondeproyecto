@@ -1,5 +1,9 @@
-<div class="modal-container">
-    <h2 class="modal-title">Nuevo Proyecto</h2>
+<div class="modal-form">
+        <button type="button" class="close-button" (click)="cerrar()">
+            <i class="pi pi-times"></i>
+        </button>
+
+        <h2 class="modal-title">Nuevo Proyecto</h2>
 
     <div class="field">
         <label class="field-label">Nombre de PROYECTO</label>
@@ -13,5 +17,7 @@
                placeholder="Nombre de cliente" class="w-full custom-input" />
     </div>
 
-    <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()"></p-button>
+        <div class="footer-actions">
+            <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()"></p-button>
+        </div>
 </div>

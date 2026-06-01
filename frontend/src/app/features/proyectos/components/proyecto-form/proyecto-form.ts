@@ -10,10 +10,9 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
   selector: 'app-proyecto-form',
   imports: [CommonModule, FormsModule, InputTextModule, ButtonModule],
   templateUrl: './proyecto-form.html',
-  styleUrls: ['./proyecto-form.css'] // Asegúrate de que el archivo exista
+  styleUrls: ['./proyecto-form.css']
 })
 export class ProyectoForm {
-  // Objeto que bindeamos al formulario
   proyecto = {
     nombre: '',
     cliente: ''
@@ -21,6 +20,10 @@ export class ProyectoForm {
 
   // Inyectamos DynamicDialogRef para poder cerrar el modal
   constructor(public ref: DynamicDialogRef) {}
+
+  cerrar() {
+    this.ref.close();
+  }
 
   guardar() {
     if (this.proyecto.nombre && this.proyecto.cliente) {

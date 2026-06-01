@@ -24,11 +24,11 @@ export class UiService {
   // Nuevo método para la Tarea
   openNuevaTarea(): DynamicDialogRef | null {
     return this.dialogService.open(TareaForm, {
-      header: 'Nueva Tarea',
+      header: ' ',
       width: '450px',
-      contentStyle: { overflow: 'visible' }, 
+      contentStyle: { overflow: 'auto', 'border-radius': '20px' },
       baseZIndex: 10000,
-      styleClass: 'custom-dialog-sin-pad',
+      styleClass: 'custom-modal-v2',
       maskStyleClass: 'dialog-mask-blur'
     });
   }
