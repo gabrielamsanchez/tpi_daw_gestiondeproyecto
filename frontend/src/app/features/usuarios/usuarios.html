@@ -1,7 +1,5 @@
 <div class="main-container">
 
-  <!-- <app-sidebar></app-sidebar>   -->
-
   <main class="usuarios-content">
   <div class="header-row">
       <app-back></app-back>
@@ -19,8 +17,9 @@
       </div>
     </div>
   </div>
-
- <p-table
+<div>
+ <p-table 
+ 
   #dt
       [value]="usuarios"
       responsiveLayout="scroll"
@@ -48,8 +47,7 @@
           </td>
         </tr>
       </ng-template>
-    </p-table>
-  
+    </p-table> 
 
   <div class="footer-row">
     <button
@@ -66,5 +64,8 @@
     </span>
 
   </div>
+  
+  </div>
+
   </main>
 </div>

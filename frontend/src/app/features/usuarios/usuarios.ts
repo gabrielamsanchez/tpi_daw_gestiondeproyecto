@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -9,12 +9,13 @@ import { Usuario } from '../../shared/interfaces/usuario';
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, Back ],
+  imports: [CommonModule, TableModule, ButtonModule, Back],
   templateUrl: './usuarios.html',
-  styleUrl: './usuarios.css',
+  styleUrls: ['./usuarios.css'],
 })
 export class Usuarios implements OnInit {
   private readonly usuarioService = inject(UsuarioService);
+  private readonly cd = inject(ChangeDetectorRef);
 
   usuarios: Usuario[] = [];
 
@@ -23,15 +24,15 @@ export class Usuarios implements OnInit {
   }
 
   cargarUsuarios() {
-    this.usuarioService
-      .getUsuarios()
-      .subscribe({
-        next: (usuarios) => {
-          this.usuarios = usuarios;
-        },
-        error: () => {
-          this.usuarios = [];
-        },
-      });
+    this.usuarioService.getUsuarios().subscribe({
+      next: (usuarios) => {
+        this.usuarios = usuarios;
+        this.cd.detectChanges();
+      },
+      error: () => {
+        this.usuarios = [];
+        this.cd.detectChanges();
+      },
+    });
   }
 }
