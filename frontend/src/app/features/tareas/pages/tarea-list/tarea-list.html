@@ -4,49 +4,50 @@
     <div class="header-row">
         <app-back></app-back>
 
-            <div class="badge-wrapper">
-        <div class="badge-blue">
-            <div class="badge-text-box">
-                <span class="badge-title">NOMBRE PROYECTO</span>
-                <span class="badge-subtitle">{{ infoProyecto.nombre }}</span>
+        <div class="badge-wrapper">
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">NOMBRE PROYECTO</span>
+                    <span class="badge-subtitle">{{ infoProyecto.nombre }}</span>
+                </div>
             </div>
-        </div>
 
-        <div class="badge-blue">
-            <div class="badge-text-box">
-                <span class="badge-title">ESTADO</span>
-                <span class="badge-subtitle">{{ infoProyecto.estado }}</span>
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">ESTADO</span>
+                    <span class="badge-subtitle">{{ infoProyecto.estado }}</span>
+                </div>
             </div>
-        </div>
 
-        <div class="badge-blue">
-            <div class="badge-text-box">
-                <span class="badge-title">CLIENTE</span>
-                <span class="badge-subtitle">{{ infoProyecto.cliente }}</span>
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">CLIENTE</span>
+                    <span class="badge-subtitle">{{ infoProyecto.cliente }}</span>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     <div class="action-row">
-    <button
-        pButton
-        type="button"
-        label="CREAR NUEVA TAREA"
-        class="btn-agregar-tarea"
-        icon="pi pi-plus-circle"
-        (click)="crearNuevaTarea()">
-    </button>
+        <button
+            pButton
+            type="button"
+            label="CREAR NUEVA TAREA"
+            class="btn-agregar-tarea"
+            icon="pi pi-plus-circle"
+            (click)="crearNuevaTarea()">
+        </button>
     </div>
+
     <div class="table-wrapper">
         <p-table #dt 
-                [value]="tareas" 
+                [value]="tareas()" 
                 dataKey="id" 
                 editMode="row" 
                 class="custom-table">
             <ng-template #header>
                 <tr>
-                    <th class="col-nombre" style="width: 45%">Nombre</th>
+                    <th class="col-nombre" style="width: 45%">Descripción de la Tarea</th>
                     <th class="col-estado" style="width: 35%">Estado</th>
                     <th class="col-acciones" style="width: 20%">Acciones</th>
                 </tr>
@@ -58,10 +59,10 @@
                     <td class="col-cell">
                         <p-cellEditor>
                             <ng-template #input>
-                                <input pInputText type="text" [(ngModel)]="tarea.nombreTarea" required style="width: 100%" />
+                                <input pInputText type="text" [(ngModel)]="tarea.descripcion" required style="width: 100%" />
                             </ng-template>
                             <ng-template #output>
-                                {{ tarea.nombreTarea }}
+                                {{ tarea.descripcion }}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -69,7 +70,13 @@
                     <td class="col-cell text-center">
                         <p-cellEditor>
                             <ng-template #input>
-                                <p-select [options]="statuses" appendTo="body" [(ngModel)]="tarea.estado" [style]="{ width: '100%' }" />
+                                <p-select 
+                                    [options]="statuses" 
+                                    optionLabel="label" 
+                                    optionValue="value" 
+                                    appendTo="body" 
+                                    [(ngModel)]="tarea.estado" 
+                                    [style]="{ width: '100%' }" />
                             </ng-template>
                             <ng-template #output>
                                 <p-tag [value]="getLabelEstado(tarea.estado)" [severity]="getSeverity(tarea.estado)" />
@@ -79,9 +86,15 @@
                     
                     <td class="col-cell text-center">
                         <div class="flex items-center justify-center gap-2">
-                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(tarea)" class="p-button-rounded p-button-text p-button-secondary"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(tarea)" class="p-button-rounded p-button-text p-button-success"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(tarea, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            @if (!editing) {
+                                <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(tarea)" class="p-button-rounded p-button-text p-button-secondary"></button>
+                                
+                                <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmDeleteTarea(tarea)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            } @else {
+                                <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(tarea)" class="p-button-rounded p-button-text p-button-success"></button>
+                                
+                                <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(tarea, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            }
                         </div>
                     </td>
                 </tr>
@@ -102,7 +115,7 @@
                 type="button" 
                 label="DESCARGAR" 
                 (click)="dt.exportCSV()" 
-                [disabled]="tareas.length === 0"
+                [disabled]="tareas().length === 0"
                 class="btn-dark btn-download">
         </button>
         

@@ -1,5 +1,12 @@
-export interface TareaInterface {
+export interface Tarea {
     id: string;
-    nombreTarea: string; 
+    descripcion: string; 
     estado: string; 
+    id_proyecto: number;
+}
+
+export interface TareaPayload {
+  descripcion: string;
+  estado: string;
+  id_proyecto: number;
 }
