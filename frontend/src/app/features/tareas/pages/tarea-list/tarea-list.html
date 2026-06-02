@@ -5,26 +5,26 @@
         <app-back></app-back>
 
         <div class="badge-wrapper">
-            <div class="badge-blue">
-                <div class="badge-text-box">
-                    <span class="badge-title">NOMBRE PROYECTO</span>
-                    <span class="badge-subtitle">{{ infoProyecto.nombre }}</span>
-                </div>
-            </div>
+                    <div class="badge-blue">
+                        <div class="badge-text-box">
+                            <span class="badge-title">NOMBRE PROYECTO</span>
+                            <span class="badge-subtitle">{{ infoProyecto()?.nombre || 'Cargando...' }}</span>
+                        </div>
+                    </div>
 
-            <div class="badge-blue">
-                <div class="badge-text-box">
-                    <span class="badge-title">ESTADO</span>
-                    <span class="badge-subtitle">{{ infoProyecto.estado }}</span>
-                </div>
-            </div>
+                    <div class="badge-blue">
+                        <div class="badge-text-box">
+                            <span class="badge-title">ESTADO</span>
+                            <span class="badge-subtitle">{{ infoProyecto()?.estado || 'Cargando...' }}</span>
+                        </div>
+                    </div>
 
-            <div class="badge-blue">
-                <div class="badge-text-box">
-                    <span class="badge-title">CLIENTE</span>
-                    <span class="badge-subtitle">{{ infoProyecto.cliente }}</span>
+                <div class="badge-blue">
+                    <div class="badge-text-box">
+                        <span class="badge-title">CLIENTE</span>
+                        <span class="badge-subtitle">{{ infoProyecto()?.cliente?.nombre || 'Proyecto Interno' }}</span>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 

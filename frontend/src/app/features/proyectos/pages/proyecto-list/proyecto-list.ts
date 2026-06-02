@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef, signal } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, signal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { SelectItem, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+
 
 // Imports desde el Core
 import { UiService } from '../../../../core/service/ui';
@@ -34,19 +36,24 @@ export class ProyectoList implements OnInit {
     private uiService = inject(UiService); 
     private proyectoService = inject(ProyectoService);
     private cdr = inject(ChangeDetectorRef);
+    private router = inject(Router);
     proyectos = signal<Proyecto[]>([]);
     statuses!: SelectItem[];
     clonedProyectos: { [s: string]: Proyecto } = {};
 
-    
+
     ngOnInit() {
         this.cargarProyectos();
-
+     
         this.statuses = [
             { label: 'Activo', value: 'ACTIVO' },
             { label: 'Finalizado', value: 'FINALIZADO' },
             { label: 'Baja Lógica', value: 'BAJA' }
         ];
+    }  
+    
+    verDetalleProyecto(proyecto: Proyecto) {
+        this.router.navigate(['/proyectos', proyecto.id, 'tareas']);
     }
 
     cargarProyectos() {

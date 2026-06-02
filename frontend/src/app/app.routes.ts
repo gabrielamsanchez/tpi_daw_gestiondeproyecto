@@ -37,6 +37,8 @@ export const routes: Routes = [
       { path: "proyectos",
       component: ProyectoList
       },
+      { path: 'proyectos/:id/tareas',
+      component: Tareas },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

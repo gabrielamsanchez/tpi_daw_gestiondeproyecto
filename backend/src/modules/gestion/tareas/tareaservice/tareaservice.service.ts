@@ -54,7 +54,6 @@ export class TareasService {
   // NUEVO:
   async obtenerTareasPorProyecto(idProyecto: number): Promise<Tarea[]> {
     return await this.tareasRepository.find({
-      where: { id_proyecto: idProyecto, estado: EstadoTarea.PENDIENTE }, // O los estados que desees mostrar
       order: { id: 'ASC' },
     });
   }

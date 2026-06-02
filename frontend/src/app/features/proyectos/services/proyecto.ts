@@ -21,6 +21,9 @@ export class ProyectoService {
 
     return this.http.get<any>(this.apiUrl, { params });
   }
+  obtenerUnProyecto(id: number): Observable<Proyecto> {
+    return this.http.get<Proyecto>(`${this.apiUrl}/${id}`);
+  }
 
   crearProyecto(proyecto: Partial<Proyecto>): Observable<any> {
     return this.http.post<any>(this.apiUrl, proyecto);
