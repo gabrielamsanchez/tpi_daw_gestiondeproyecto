@@ -6,6 +6,8 @@ import { Layout } from './shared/components/layout/layout';
 
 import { Usuarios } from './features/usuarios/usuarios';
 import { Tareas } from './features/tareas/pages/tarea-list/tarea-list';
+import { ProyectoList } from './features/proyectos/pages/proyecto-list/proyecto-list';
+
 
 export const routes: Routes = [
     {
@@ -30,6 +32,9 @@ export const routes: Routes = [
       },
       { path: "tareas",
       component: Tareas
+      },
+      { path: "proyectos",
+      component: ProyectoList
       },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
