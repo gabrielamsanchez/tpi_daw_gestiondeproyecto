@@ -1,38 +1,42 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+
+import { Observable } from 'rxjs';
+import { Proyecto } from '../../shared/interfaces/proyecto';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProyectoService {
-  
-  // Esto actúa como tu "Base de Datos" temporal en memoria
-  private baseDeDatosFicticia = [
-    { id: 1, nombre: 'Rediseño Web', cliente: 'TechCorp' },
-    { id: 2, nombre: 'App Móvil iOS', cliente: 'StartUp Inc' }
-  ];
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/api/v1/proyectos';
 
-  constructor() { }
+  obtenerProyectos(page: number = 1, limit: number = 10, search?: string, estado?: string): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+      
+    if (search) params = params.set('search', search);
+    if (estado) params = params.set('estado', estado);
 
-  // 1. Simula el POST (Crear un proyecto)
-  crearProyecto(proyecto: any): Observable<any> {
-    // Le inventamos un ID único basado en la fecha actual
-    const nuevoProyecto = { ...proyecto, id: new Date().getTime() };
-    
-    // Lo guardamos en nuestro array temporal
-    this.baseDeDatosFicticia.push(nuevoProyecto);
-
-    // Simulamos que el servidor responde con éxito después de 1 segundo (1000ms)
-    return of({ 
-      status: 201, 
-      mensaje: 'Proyecto creado exitosamente en el Mock', 
-      data: nuevoProyecto 
-    }).pipe(delay(1000)); 
+    return this.http.get<any>(this.apiUrl, { params });
   }
 
-  // 2. Simula el GET (Traer todos los proyectos - te servirá para tu tabla después)
-  obtenerProyectos(): Observable<any[]> {
-    return of(this.baseDeDatosFicticia).pipe(delay(800));
+  crearProyecto(proyecto: Partial<Proyecto>): Observable<any> {
+    return this.http.post<any>(this.apiUrl, proyecto);
+  }
+
+  actualizarProyecto(id: number, proyecto: Partial<Proyecto>): Observable<Proyecto> {
+    return this.http.put<Proyecto>(`${this.apiUrl}/${id}`, proyecto);
+  }
+
+  eliminarProyecto(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  descargarCsv(estado?: string) {
+    let url = `${this.apiUrl}/exportar/csv`;
+    if (estado) url += `?estado=${estado}`;
+    window.open(url, '_blank'); 
   }
 }

@@ -32,8 +32,8 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #dt 
-                [value]="proyectos" 
+                <p-table #dt 
+                [value]="proyectos()" 
                 dataKey="id" 
                 editMode="row" 
                 class="custom-table">
@@ -71,11 +71,17 @@
                     <td class="col-cell text-center">
                         <p-cellEditor>
                             <ng-template #input>
-                                <p-select [options]="statuses" appendTo="body" [(ngModel)]="proyecto.estado" [style]="{ width: '100%' }" />
-                            </ng-template>
-                            <ng-template #output>
-                                <p-tag [value]="proyecto.estado" [severity]="getSeverity(proyecto.estado)" />
-                            </ng-template>
+                                <p-select 
+                                    [options]="statuses" 
+                                    optionLabel="label" 
+                                    optionValue="value" 
+                                    appendTo="body" 
+                                    [(ngModel)]="proyecto.estado" 
+                                    [style]="{ width: '100%' }" />
+                        </ng-template>
+                        <ng-template #output>
+                            <p-tag [value]="proyecto.estado" [severity]="getSeverity(proyecto.estado)" />
+                        </ng-template>  
                         </p-cellEditor>
                     </td>
                     
@@ -114,7 +120,7 @@
                 label="DESCARGAR REPORTE CSV" 
                 icon="pi pi-download"
                 (click)="exportarCsvBackend()" 
-                [disabled]="proyectos.length === 0"
+                [disabled]="proyectos().length === 0"
                 class="btn-dark btn-download">
         </button>
         

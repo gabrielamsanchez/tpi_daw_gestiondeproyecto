@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -33,11 +33,12 @@ export class ProyectoList implements OnInit {
     private messageService = inject(MessageService);
     private uiService = inject(UiService); 
     private proyectoService = inject(ProyectoService);
-    
-    proyectos: Proyecto[] = [];
+    private cdr = inject(ChangeDetectorRef);
+    proyectos = signal<Proyecto[]>([]);
     statuses!: SelectItem[];
     clonedProyectos: { [s: string]: Proyecto } = {};
 
+    
     ngOnInit() {
         this.cargarProyectos();
 
@@ -51,7 +52,9 @@ export class ProyectoList implements OnInit {
     cargarProyectos() {
         this.proyectoService.obtenerProyectos(1, 50).subscribe({
             next: (response) => {
-                this.proyectos = response.data; 
+
+                this.proyectos.set(response.data);
+                this.cdr.detectChanges();
             },
             error: () => {
                 this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los proyectos' });
@@ -65,13 +68,24 @@ export class ProyectoList implements OnInit {
 
     onRowEditSave(proyecto: Proyecto) {
         if (proyecto.nombre && proyecto.nombre.trim().length > 0) {
-            this.proyectoService.actualizarProyecto(proyecto.id, proyecto).subscribe({
+            
+            // 1. Armamos el paquete limpio para que NestJS no devuelva Error 400
+            const payloadLimpio = {
+                nombre: proyecto.nombre,
+                estado: proyecto.estado,
+                idCliente: proyecto.idCliente
+            };
+
+            // Enviamos payloadLimpio en vez del proyecto entero
+            this.proyectoService.actualizarProyecto(proyecto.id, payloadLimpio).subscribe({
                 next: (proyectoActualizado) => {
                     delete this.clonedProyectos[proyecto.id];
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Proyecto actualizado en la base de datos' });
                 },
-                error: () => {
-                    this.onRowEditCancel(proyecto, this.proyectos.findIndex(p => p.id === proyecto.id));
+                error: (err) => {
+                    console.error(err);
+                    // 2. Le agregamos los paréntesis a proyectos() porque es una Signal
+                    this.onRowEditCancel(proyecto, this.proyectos().findIndex(p => p.id === proyecto.id));
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fallo al actualizar el proyecto' });
                 }
             });
@@ -81,10 +95,16 @@ export class ProyectoList implements OnInit {
     }
 
     onRowEditCancel(proyecto: Proyecto, index: number) {
-        this.proyectos[index] = this.clonedProyectos[proyecto.id];
+        this.proyectos.update(listaActual => {
+            listaActual[index] = this.clonedProyectos[proyecto.id];
+            return [...listaActual]; 
+        });
+        
+        // 3. Faltaba eliminar el clon y CERRAR LA LLAVE de la función
         delete this.clonedProyectos[proyecto.id];
     }
 
+    
     eliminarProyecto(proyecto: Proyecto) {
         this.proyectoService.eliminarProyecto(proyecto.id).subscribe({
             next: () => {

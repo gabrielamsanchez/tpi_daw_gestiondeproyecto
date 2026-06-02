@@ -9,7 +9,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class ProyectoService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/proyectos';
+  private apiUrl = 'http://localhost:3000/api/v1/proyectos';
 
   obtenerProyectos(page: number = 1, limit: number = 10, search?: string, estado?: string): Observable<any> {
     let params = new HttpParams()
