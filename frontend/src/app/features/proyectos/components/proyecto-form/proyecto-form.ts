@@ -1,34 +1,45 @@
-
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+
+import { Proyecto } from '../../../../shared/interfaces/proyecto';
 
 @Component({
   selector: 'app-proyecto-form',
-  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, SelectModule],
   templateUrl: './proyecto-form.html',
-  styleUrls: ['./proyecto-form.css']
+  styleUrls: ['./proyecto-form.css'] 
 })
-export class ProyectoForm {
-  proyecto = {
+export class ProyectoForm implements OnInit {
+  ref = inject(DynamicDialogRef);
+
+  proyecto: Partial<Proyecto> = {
     nombre: '',
-    cliente: ''
+    idCliente: undefined
   };
 
-  // Inyectamos DynamicDialogRef para poder cerrar el modal
-  constructor(public ref: DynamicDialogRef) {}
+  clientesDisponibles: any[] = [];
 
-  cerrar() {
-    this.ref.close();
+  ngOnInit() {
+    this.clientesDisponibles = [
+      { id: 1, nombre: 'Agencia Zesty' },
+      { id: 2, nombre: 'Gobierno de Córdoba' },
+      { id: 3, nombre: 'Universidad Nacional' }
+    ];
   }
 
   guardar() {
-    if (this.proyecto.nombre && this.proyecto.cliente) {
-      // Cerramos el modal devolviendo el objeto proyecto
-      this.ref.close(this.proyecto);
+    if (this.proyecto.nombre) {
+      this.ref.close(this.proyecto); 
     }
+  }
+
+  cerrar() {
+    this.ref.close(); 
   }
 }
