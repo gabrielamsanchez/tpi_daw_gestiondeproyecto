@@ -1,4 +1,3 @@
-<p-toast />
 <div class="main-container">
   <div class="titulo-container">
     <p class="titulo-principal mb-5">
@@ -6,65 +5,62 @@
     </p>
   </div>
     <p-card styleClass="tarjeta mb-2">
-        
+
         <ng-template #title>
-          <div class="texto-login text-center w-full font-bold text-black pt-4 mt-1 ">
-            Iniciar Sesión
+          <div class="texto-login text-center w-full font-bold text-black pt-4 mt-1">
+            Iniciar sesión
         </div>
         </ng-template>
 
-        <div class="formulario flex flex-col items-center w-full px-6 pb-4">
-            <form #loginForm="ngForm"
-                (ngSubmit)="onSubmit(loginForm)"
-                class="flex flex-col gap-4 w-full items-center">
-                
-                <div class="flex flex-col gap-1 mt-2 w-full">
-                  <p class="form-text">Nombre de Usuario</p>
-                    <input
-                        pInputText
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Ingrese su username"
-                        [(ngModel)]="user.username"
-                        required
-                        #username="ngModel"
-                        [invalid]="isInvalid(username)" />
+        <form [formGroup]="form" (ngSubmit)="iniciarSesion()" class="formulario flex flex-col gap-4 w-full px-6 pb-4">
 
-                    @if (isInvalid(username)) {
-                        <p-message severity="error" size="small" variant="simple">El nombre de usuario es requerido</p-message>
-                    }
-                </div>
+            <div class="campo flex flex-col gap-1 mt-2 w-full">
+              <label class="form-text" for="nombre">Nombre de usuario</label>
+              <input
+                pInputText
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                placeholder="Ingresá tu usuario" />
 
-                <div class="flex flex-col gap-1 mt-2 w-full">
-                   <p class="form-text">Contraseña</p>
-                    <input
-                        pInputText
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Ingrese su contraseña"
-                        [(ngModel)]="user.password"
-                        required
-                        #password="ngModel"
-                        [invalid]="isInvalid(password)" />
+              @if (form.controls.nombre.touched && form.controls.nombre.invalid) {
+                <small class="error-message">El nombre de usuario es requerido</small>
+              }
+            </div>
 
-                    @if (isInvalid(password)) {
-                        <p-message severity="error" size="small" variant="simple">La contraseña es requerida</p-message>
-                    }
-                </div>
+            <div class="campo flex flex-col gap-1 mt-2 w-full">
+              <label class="form-text" for="clave">Contraseña</label>
+              <p-password
+                inputId="clave"
+                formControlName="clave"
+                [feedback]="false"
+                [toggleMask]="true"
+                styleClass="w-full password-field"
+                inputStyleClass="w-full"
+                placeholder="Ingresá tu contraseña">
+              </p-password>
 
-                <div class="boton-contenedor">
-                  <p-button 
-                      label="Ingresar"
-                      type="submit"
-                      styleClass="boton mt-4
-                      ">
-                  </p-button>
+              @if (form.controls.clave.touched && form.controls.clave.invalid) {
+                <small class="error-message">La contraseña es requerida</small>
+              }
+            </div>
+
+            @if (errorMessage) {
+              <div class="login-error">
+                {{ errorMessage }}
               </div>
+            }
 
-            </form>
-        </div>
+            <div class="boton-contenedor">
+              <p-button
+                label="Ingresar"
+                type="submit"
+                [loading]="loading"
+                styleClass="boton mt-4">
+              </p-button>
+            </div>
+
+        </form>
     </p-card>
 
 </div>

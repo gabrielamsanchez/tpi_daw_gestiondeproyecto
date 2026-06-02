@@ -1,29 +1,26 @@
-<div class="flex h-screen w-full overflow-hidden">
+<div class="main-container">
+  <p-toast />
 
+  <div class="header-row">
+    <app-back></app-back>
+  </div>
 
-  <main>
+  <div class="action-row">
+    <button
+      pButton
+      type="button"
+      label="Nuevo Cliente"
+      class="btn-agregar-cliente"
+      icon="pi pi-plus-circle">
+    </button>
+  </div>
 
-    <p-card styleClass="w-full shadow-md rounded-xl p-2">
-      <p-toast />
-
-        <div class="flex items-center justify-between mb-4">
-              <div class="action-row">
-                <button
-                    pButton
-                    type="button"
-                    label="Nuevo Cliente"
-                    class="btn-agregar-cliente"
-                    icon="pi pi-plus-circle"
-                    >
-                </button>
-              </div>
-    </div>
-
-      <div class="w-full overflow-x-auto">
-        <p-table
+  <div class="table-wrapper">
+    <p-table
           [value]="clientes"
           dataKey="id"
           editMode="row"
+          class="custom-table"
           [tableStyle]="{ 'width': '100%', 'border-collapse': 'collapse' }">
 
           <ng-template #header>
@@ -35,12 +32,12 @@
           </ng-template>
 
           <ng-template #body let-cliente let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="cliente" style="height: 60px;">
+            <tr [pEditableRow]="cliente">
 
-              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+              <td class="col-cell">
                 <p-cellEditor>
                   <ng-template #input>
-                    <input pInputText type="text" [(ngModel)]="cliente.nombre" class="w-full" />
+                    <input pInputText type="text" [(ngModel)]="cliente.nombre" required style="width: 100%" />
                   </ng-template>
                   <ng-template #output>
                     {{ cliente.nombre }}
@@ -48,19 +45,19 @@
                 </p-cellEditor>
               </td>
 
-              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+              <td class="col-cell text-center">
                 <p-cellEditor>
                   <ng-template #input>
-                    <p-select [options]="estados" appendTo="body" [(ngModel)]="cliente.estado" [style]="{ 'width': '100%' }" />
+                    <p-select [options]="estados" appendTo="body" [(ngModel)]="cliente.estado" [style]="{ width: '100%' }" />
                   </ng-template>
                   <ng-template #output>
-                    {{ cliente.estado }}
+                    <p-tag *ngIf="cliente.estado" [value]="cliente.estado" />
                   </ng-template>
                 </p-cellEditor>
               </td>
 
-              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
-                <div class="flex justify-content-center align-items-center gap-3">
+              <td class="col-cell text-center">
+                <div class="flex items-center justify-center gap-2">
 
                   <ng-container *ngIf="!editing">
                     <button
@@ -69,16 +66,14 @@
                       pInitEditableRow
                       icon="pi pi-pencil"
                       (click)="onRowEditInit(cliente)"
-                      style="color: #0f766e; background: none; border: none; font-size: 1.4rem;">
-                    </button>
+                      class="p-button-rounded p-button-text p-button-secondary"></button>
 
                     <p-button
                       icon="pi pi-times"
                       severity="danger"
                       [rounded]="true"
                       [text]="true"
-                      (click)="onRowEditCancel(cliente, ri)">
-                    </p-button>
+                      (click)="onRowEditCancel(cliente, ri)"></p-button>
                   </ng-container>
 
                   <ng-container *ngIf="editing">
@@ -88,25 +83,28 @@
                       pSaveEditableRow
                       icon="pi pi-check"
                       (click)="onRowEditSave(cliente)"
-                      style="color: #16a34a; background: none; border: none;">
-                    </button>
+                      class="p-button-rounded p-button-text p-button-success"></button>
                     <button
                       pButton
                       type="button"
                       pCancelEditableRow
                       icon="pi pi-times"
                       (click)="onRowEditCancel(cliente, ri)"
-                      style="color: #dc2626; background: none; border: none;">
-                    </button>
+                      class="p-button-rounded p-button-text p-button-danger"></button>
                   </ng-container>
 
                 </div>
               </td>
             </tr>
           </ng-template>
-        </p-table>
-      </div>
 
-    </p-card>
-  </main>
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="3" class="empty-cell">
+                No se encontraron clientes.
+              </td>
+            </tr>
+          </ng-template>
+    </p-table>
+  </div>
 </div>

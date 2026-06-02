@@ -1,6 +1,6 @@
 .modal-form {
-  position: relative; 
-  background-color: #e0f2fe !important; 
+  position: relative;
+  background-color: #e0f2fe !important;
   padding: 2.5rem 2rem 2rem 2rem;
   border-radius: 16px;
   display: flex;
@@ -14,7 +14,7 @@
 .modal-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1d2438; 
+  color: #1d2438;
   margin: 0 0 0.5rem 0;
   text-align: center;
 }
@@ -37,7 +37,7 @@
 
 .close-button i {
   font-size: 1.35rem;
-  color: #1d2438 !important; 
+  color: #1d2438 !important;
   font-weight: bold;
 }
 
@@ -56,7 +56,7 @@
 .field label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #334155; 
+  color: #334155;
   margin-bottom: 0.5rem;
   text-align: center;
   letter-spacing: 0.05em;
@@ -67,17 +67,17 @@
   width: 100%;
   max-width: 280px;
   padding: 0.6rem 1rem;
-  border: 1px solid #bae6fd !important; 
+  border: 1px solid #bae6fd !important;
   border-radius: 8px !important;
-  text-align: center; 
+  text-align: center;
   color: #1e293b;
-  background-color: #ffffff !important; 
+  background-color: #ffffff !important;
   box-shadow: none;
   transition: border-color 0.2s;
 }
 
 .custom-input:focus {
-  border-color: #38bdf8 !important; 
+  border-color: #38bdf8 !important;
   outline: none;
 }
 
@@ -92,7 +92,7 @@
 
 :host ::ng-deep .custom-select .p-select-label {
   padding: 0.6rem 1rem !important;
-  text-align: center !important; 
+  text-align: center !important;
   color: #475569 !important;
 }
 
@@ -102,20 +102,4 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-}
-
-:host ::ng-deep .btn-guardar {
-  background-color: #1d2438 !important; 
-  border: none !important;
-  color: #ffffff !important;
-  padding: 0.7rem 3.5rem !important;
-  border-radius: 8px !important;
-  font-size: 0.9rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.05em;
-  transition: background-color 0.2s ease;
-}
-
-:host ::ng-deep .btn-guardar:hover {
-  background-color: #0f172a !important; 
 }

@@ -1,9 +1,35 @@
-import { Component } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { UiService } from '../../../core/service/ui';
+import { AuthService } from '../../../features/auth/auth-service';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
+  standalone: true
 })
-export class Sidebar {}
+export class Sidebar {
+  private router: Router = inject(Router);
+  private uiService: UiService = inject(UiService);
+  private location: Location = inject(Location);
+  private readonly authService = inject(AuthService);
+
+  navegarA(ruta: string): void {
+    this.router.navigate([ruta]);
+  }
+
+  abrirNuevoProyecto(): void {
+    this.uiService.openNuevoProyecto();
+  }
+
+  volverAnterior(): void {
+    this.location.back();
+  }
+
+  cerrarSesion(): void {
+    this.authService.cerrarSesion();
+  }
+}

@@ -1,32 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Back } from '../../shared/components/back/back';
-import { Logout } from '../../shared/components/logout/logout';
-
-
-interface Usuario {
-  nombre: string;
-  estado: string;
-}
+import { UsuarioService } from '../../core/service/usuario-service';
+import { Usuario } from '../../shared/interfaces/usuario';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, Back, Logout ],
+  imports: [CommonModule, TableModule, ButtonModule, Back],
   templateUrl: './usuarios.html',
-  styleUrl: './usuarios.css',
+  styleUrls: ['./usuarios.css'],
 })
 export class Usuarios implements OnInit {
-  loading = false;
+  private readonly usuarioService = inject(UsuarioService);
+  private readonly cd = inject(ChangeDetectorRef);
+
   usuarios: Usuario[] = [];
 
   ngOnInit() {
-    this.usuarios = [//despues cambiar, es solo prueba
-      { nombre: 'Ana', estado: 'ACTIVO' },
-      { nombre: 'Luis', estado: 'ACTIVO' },
-      { nombre: 'María', estado: 'INACTIVO' }
-    ];
+    this.cargarUsuarios();
+  }
+
+  cargarUsuarios() {
+    this.usuarioService.getUsuarios().subscribe({
+      next: (usuarios) => {
+        this.usuarios = usuarios;
+        this.cd.detectChanges();
+      },
+      error: () => {
+        this.usuarios = [];
+        this.cd.detectChanges();
+      },
+    });
   }
 }

@@ -11,20 +11,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
 import { MessageService, SelectItem } from 'primeng/api';
-import { Card } from 'primeng/card';
-
-interface ClienteInterface {
-    id: string;
-    nombre: string;
-    estado: string;
-}
+import { Back } from '../../../../shared/components/back/back';
+import { ClienteInterface } from '../../../../shared/interfaces/cliente.interface';
 
 @Component({
     selector: 'app-tabla-clientes',
     standalone: true,
     imports: [
         CommonModule,
-        Card, // 2. IMPORTANTE: Agregamos Card acá para que el HTML lo reconozca
         SelectModule,
         TableModule,
         TagModule,
@@ -33,6 +27,7 @@ interface ClienteInterface {
         InputTextModule,
         RippleModule,
         FormsModule,
+        Back
     ],
     providers: [MessageService],
     templateUrl: './cliente.html',
