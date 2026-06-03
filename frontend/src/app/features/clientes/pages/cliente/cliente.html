@@ -14,6 +14,7 @@
                     label="Nuevo Cliente"
                     class="btn-agregar-cliente"
                     icon="pi pi-plus-circle"
+                    (click)=" crearNuevoCliente()"
                     >
                 </button>
               </div>
@@ -30,6 +31,8 @@
             <tr>
               <th style="background-color: #e0f2fe; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Nombre</th>
               <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Estado</th>
+              <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Teléfono</th>
+              <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Correo</th>
               <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; width: 15%; font-weight: 600;">Acciones</th>
             </tr>
           </ng-template>
@@ -55,6 +58,28 @@
                   </ng-template>
                   <ng-template #output>
                     {{ cliente.estado }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <input pInputText type="text" [(ngModel)]="cliente.telefono" class="w-full" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.telefono }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+                <p-cellEditor>
+                  <ng-template #input>
+                    <input pInputText type="text" [(ngModel)]="cliente.correo" class="w-full" />
+                  </ng-template>
+                  <ng-template #output>
+                    {{ cliente.correo }}
                   </ng-template>
                 </p-cellEditor>
               </td>

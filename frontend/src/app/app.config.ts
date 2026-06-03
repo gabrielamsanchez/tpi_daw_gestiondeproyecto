@@ -5,13 +5,17 @@ import Aura from '@primeuix/themes/aura';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/interceptors/interceptor';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     DialogService,
-    provideHttpClient(),
+    provideHttpClient((
+      withFetch(),
+      withInterceptors([authInterceptor])
+    ),),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
