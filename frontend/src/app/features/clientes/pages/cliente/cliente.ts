@@ -114,7 +114,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
-import { ClienteService } from '../../service/service';
+import { ClienteService } from '../../../../core/service/cliente';
 import { UiService } from '../../../../core/service/ui';
 import { InterfaceCliente, EstadoCliente } from '../../../../core/interfaces/interface-cliente';
 
@@ -125,15 +125,14 @@ import { InterfaceCliente, EstadoCliente } from '../../../../core/interfaces/int
         CommonModule,
         SelectModule,
         TableModule,
-        TagModule,
         ToastModule,
         ButtonModule,
         InputTextModule,
-        RippleModule,
         FormsModule,
-        Back
+        Back,
+        Card,
+        
     ],
-    imports: [CommonModule, Card, SelectModule, TableModule, ToastModule, ButtonModule, InputTextModule, FormsModule],
     providers: [MessageService],
     templateUrl: './cliente.html',
     styleUrls: ['./cliente.css']

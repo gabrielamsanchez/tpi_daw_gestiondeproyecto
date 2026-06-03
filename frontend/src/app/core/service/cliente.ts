@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InterfaceCliente, EstadoCliente } from '../../../core/interfaces/interface-cliente';
+import { InterfaceCliente, EstadoCliente } from '../interfaces/interface-cliente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
   private http = inject(HttpClient);
-  private apiUrl = 'clientes'; // Ajustá el puerto según tu Nest
+  private apiUrl = '/clientes'; // Ajustá el puerto según tu Nest
 
   getClientes(): Observable<InterfaceCliente[]> {
     return this.http.get<InterfaceCliente[]>(this.apiUrl);
