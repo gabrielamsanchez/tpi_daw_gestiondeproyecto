@@ -14,7 +14,7 @@ export const routes: Routes = [
     },
     {
     path: '',
-    component: Layout, // Sidebar y un router-outlet 
+    component: Layout,// Sidebar y un router-outlet
     // canActivate: [authGuard],
     children: [
       {
@@ -36,6 +36,6 @@ export const routes: Routes = [
     ]
   },
   { path: '**', redirectTo: 'login' },
-   
-    
+
+
 ];
