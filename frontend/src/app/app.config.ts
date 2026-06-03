@@ -6,14 +6,16 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { tokenInterceptor } from './core/interceptors/interceptor';
-import { MessageService } from 'primeng/api';
+import { authInterceptor } from './core/interceptors/interceptor';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     DialogService,
-    provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
+    provideHttpClient((
+      withFetch(),
+      withInterceptors([authInterceptor])
+    ),),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
