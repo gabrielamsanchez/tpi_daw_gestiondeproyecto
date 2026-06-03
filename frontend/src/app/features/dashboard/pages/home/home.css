@@ -1,14 +1,14 @@
-.dashboard-container {
+/* .dashboard-container {
   padding: 2rem;
   color: var(--p-slate-900);
   font-family: sans-serif;
 }
 
 .dashboard-content {
-  flex: 1; 
+  flex: 1;
   padding: 2rem;
-  background-color: #ffffff; 
-  overflow-y: auto; 
+  background-color: #ffffff;
+  overflow-y: auto;
   color: var(--p-slate-900);
   font-family: sans-serif;
 }
@@ -112,29 +112,29 @@
 }
 
 /* media queries */
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
   .quick-access-cards {
     flex-wrap: wrap;
   }
   .card-item {
-    min-width: 45%; 
+    min-width: 45%;
   }
-}
+} */
 
 /* celulares */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .dashboard-container {
-    padding: 1rem; 
+    padding: 1rem;
   }
 
   .dashboard-header {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
 
   .quick-access-cards {
-    flex-direction: column; 
+    flex-direction: column;
   }
 
   .card-item {
@@ -146,7 +146,183 @@
   }
 
   .chart-container {
-    height: 250px; 
+    height: 250px;
+  }
+} */
+
+.dashboard-container {
+  padding: 2rem;
+  /* Usamos color de texto heredado para que PrimeNG lo maneje */
+  color: var(--p-slate-900);;
+  font-family: sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
+  /* Cambia el fondo blanco por uno adaptativo */
+  background-color: var(--bg-principal, #ffffff);
+  overflow-y: auto;
+  color: inherit;
+  font-family: sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  font-weight: 400;
+  margin: 0;
+}
+
+.quick-access-cards {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* --- TARJETAS MODIFICADAS --- */
+.card-item {
+  flex: 1;
+  /* Color claro por defecto, color oscuro de PrimeNG cuando se activa */
+  background-color: var(--p-content-background, #f0f7f9);
+  border: 1px solid var(--p-content-border-color, transparent);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.card-icon {
+  margin-right: 1.5rem;
+}
+
+.card-icon i {
+  font-size: 2.5rem;
+  /* Usamos el color de texto principal del tema actual */
+  color: var(--p-text-color);
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  /* Color de texto secundario/atenuado de PrimeNG */
+  color: var(--p-text-muted-color, #5c6c7c);
+}
+
+::ng-deep .action-btn .p-button-icon {
+  font-size: 2rem !important;
+  color: var(--p-text-color) !important;
+}
+
+/* --- SECCIÓN DEL GRÁFICO MODIFICADA --- */
+.chart-section {
+  background-color: var(--p-content-background, #f0f7f9);
+  border: 1px solid var(--p-content-border-color, transparent);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.3s ease;
+}
+
+.chart-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.chart-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.4rem;
+}
+
+.chart-header p {
+  margin: 0;
+  color: var(--p-text-muted-color, #5c6c7c);
+  font-size: 0.9rem;
+}
+
+.chart-container {
+  height: 350px;
+  width: 100%;
+}
+
+/* --- REGLAS ADICIONALES PARA TU PROPIO MODO OSCURO --- */
+/* Si necesitás forzar colores oscuros específicos para tus contenedores principales */
+
+.dark-mode .dashboard-container {
+  background-color: #6c73d8; /* El color oscuro que quieras para el fondo general */
+            /* El color del texto principal en modo oscuro */
+}
+.dark-mode .dashboard-content {
+  background-color:  #6c73d8;;
+
+}
+
+:host-context(.dark-mode) .card-content p,
+:host-context(.dark-mode) .card-content h3,
+:host-context(.dark-mode) .chart-header h3,
+:host-context(.dark-mode) .chart-header p {
+  color: #4593a9 !important;
+}
+/* También asegúrate de pintar el icono de las tarjetas */
+.dark-mode .card-icon i {
+  color: #5ab0c8 !important;
+}
+
+/* ==========================================================================
+   Media Queries (Se mantienen igual)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .quick-access-cards {
+    flex-wrap: wrap;
+  }
+  .card-item {
+    min-width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .quick-access-cards {
+    flex-direction: column;
+  }
+
+  .card-item {
+    width: 100%;
+  }
+
+  .chart-section {
+    padding: 1rem;
+  }
+
+  .chart-container {
+    height: 250px;
   }
 }
 

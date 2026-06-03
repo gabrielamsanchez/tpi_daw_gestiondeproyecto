@@ -119,3 +119,46 @@
 :host ::ng-deep .btn-guardar:hover {
   background-color: #0f172a !important; 
 }
+/* El contenedor del modal flotante (sigue usando ng-deep porque es de PrimeNG) */
+:host-context(.dark-mode) ::ng-deep .custom-modal-v2 .p-dialog-content {
+  background-color: #252550 !important;
+  color: #7fc7dc !important;
+}
+
+/* Títulos y etiquetas */
+:host-context(.dark-mode) .modal-title {
+  color: #319591 !important;
+}
+
+:host-context(.dark-mode) .field-label {
+  color: #8995a4 !important;
+}
+
+/* Inputs */
+:host-context(.dark-mode) .custom-input {
+  background-color: #1e1e38 !important;
+  color: #43889b !important;
+  border: 1px solid #4a4a8a !important;
+}
+
+:host-context(.dark-mode) .custom-input::placeholder {
+  color: #5378ac !important;
+}
+
+:host-context(.dark-mode) .custom-input:focus {
+  border-color: #486f7a !important;
+  box-shadow: 0 0 0 1px #f0f7f9 !important;
+}
+
+/* Botón de PrimeNG */
+/* Forzamos las variables internas que usa PrimeNG para sus botones */
+:host-context(.dark-mode) ::ng-deep .btn-guardar-premium .p-button {
+  background: #87c3d3 !important;
+  border-color: #87c3d3 !important;
+
+  /* Cambiamos la variable interna de color de texto de PrimeNG */
+  --p-button-color: #f9f8f9 !important;
+
+  /* Por si acaso tu versión todavía lee la propiedad clásica */
+  color: #f9f8f9 !important;
+}
