@@ -1,1 +1,4 @@
-export interface Usuario {}
+export interface Usuario {
+  nombre: string;
+  estado: string;
+}

@@ -1,1 +1,133 @@
-<p>proyecto-list works!</p>
+<div class="main-container">
+    <p-toast />
+    
+    <div class="header-row">
+        <app-back></app-back>
+
+        <div class="badge-wrapper">
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">MÓDULO</span>
+                    <span class="badge-subtitle">Gestión de Proyectos</span>
+                </div>
+            </div>
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">ESTADO DE SISTEMA</span>
+                    <span class="badge-subtitle">En Línea</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-row">
+        <button
+            pButton
+            type="button"
+            label="NUEVO PROYECTO"
+            class="btn-agregar-tarea"
+            icon="pi pi-plus-circle"
+            (click)="crearNuevoProyecto()">
+        </button>
+    </div>
+
+    <div class="table-wrapper">
+                <p-table #dt 
+                [value]="proyectos()" 
+                dataKey="id" 
+                editMode="row" 
+                class="custom-table">
+            <ng-template #header>
+                <tr>
+                    <th class="col-nombre" style="width: 35%">Nombre Proyecto</th>
+                    <th class="col-nombre" style="width: 25%">Cliente</th>
+                    <th class="col-estado" style="width: 20%">Estado</th>
+                    <th class="col-acciones" style="width: 20%">Acciones</th>
+                </tr>
+            </ng-template>
+            
+            <ng-template #body let-proyecto let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="proyecto">
+                    
+                    <td class="col-cell">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="proyecto.nombre" required style="width: 100%" />
+                            </ng-template>
+                            <ng-template #output>
+                                <strong>{{ proyecto.nombre }}</strong>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell">
+                        @if (proyecto.cliente?.nombre) {
+                            {{ proyecto.cliente.nombre }}
+                        } @else {
+                            <span style="color: #64748b; font-style: italic;">Proyecto Interno</span>
+                        }
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-select 
+                                    [options]="statuses" 
+                                    optionLabel="label" 
+                                    optionValue="value" 
+                                    appendTo="body" 
+                                    [(ngModel)]="proyecto.estado" 
+                                    [style]="{ width: '100%' }" />
+                        </ng-template>
+                        <ng-template #output>
+                            <p-tag [value]="proyecto.estado" [severity]="getSeverity(proyecto.estado)" />
+                        </ng-template>  
+                        </p-cellEditor>
+                    </td>
+                    
+                    <td class="col-cell text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            
+                            @if (!editing) {
+                                    <button pButton pRipple type="button" icon="pi pi-eye" (click)="verDetalleProyecto(proyecto)" class="p-button-rounded p-button-text p-button-info" pTooltip="Ver Tareas"></button>
+                                    
+                                    <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(proyecto)" class="p-button-rounded p-button-text p-button-secondary"></button>
+                                    
+                                    @if (proyecto.estado !== 'BAJA') {
+                                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="eliminarProyecto(proyecto)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    }
+                            } @else {
+                                <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(proyecto)" class="p-button-rounded p-button-text p-button-success"></button>
+                                <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(proyecto, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            }
+
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="4" class="empty-cell">
+                        No hay proyectos registrados en la base de datos.
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="footer-row">
+        <button pButton 
+                type="button" 
+                label="DESCARGAR REPORTE CSV" 
+                icon="pi pi-download"
+                (click)="exportarCsvBackend()" 
+                [disabled]="proyectos().length === 0"
+                class="btn-dark btn-download">
+        </button>
+        
+        <span class="footer-text">
+            DAW - Sistema de Gestión de Proyectos © 2026
+        </span>
+    </div>
+</div>

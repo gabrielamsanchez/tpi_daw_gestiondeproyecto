@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Location } from '@angular/common';
 import { ButtonModule } from 'primeng/button'; 
 
 @Component({
@@ -8,4 +9,10 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './back.html',
   styleUrl: './back.css',
 })
-export class Back {}
+export class Back {
+  private location: Location = inject(Location);
+
+  volver(): void {
+    this.location.back();
+  }
+}

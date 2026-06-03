@@ -29,8 +29,9 @@
 }
 .tarjeta {
     background-color: var(--p-blue-100);
-    background: linear-gradient(180deg, #ffffff 40%, #4978f9f7 100%) !important;    width: 400px;
-    height: 450px;
+    background: linear-gradient(180deg, #ffffff 40%, #4978f9f7 100%) !important;
+    width: min(92vw, 420px);
+    min-height: 470px;
     border-radius: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -40,6 +41,9 @@
 }
 
 .formulario {
+    width: 100%;
+}
+.campo {
     width: 100%;
 }
 .form-text{
@@ -55,10 +59,30 @@ input, input::placeholder{
     color: var(--p-stone-950);
 }
 
+.error-message,
+.login-error {
+    color: #b91c1c;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.login-error {
+    background: rgba(185, 28, 28, 0.08);
+    border: 1px solid rgba(185, 28, 28, 0.25);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+}
+
 .boton-contenedor {
     width: 100%;
     display: flex;
     justify-content: center;
+}
+:host ::ng-deep .password-field {
+    width: 100%;
+}
+:host ::ng-deep .password-field .p-inputtext {
+    width: 100%;
 }
 :host ::ng-deep .boton {
     background-color: var(--p-slate-950);

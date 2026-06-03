@@ -33,14 +33,17 @@
 
 .card-item {
   flex: 1;
-  background-color: #f0f7f9;
+  background-color: #e0f2fe !important;
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
-
+.card-item:hover {
+    transform: translateY(-5px) scale(1);
+    box-shadow: 0 15px 35px var(--p-blue-150);
+}
 .card-icon {
   margin-right: 1.5rem;
 }
@@ -71,8 +74,17 @@
   color: var(--p-slate-900) !important;
 }
 
+::ng-deep .action-btn:focus,
+::ng-deep .action-btn .p-button:focus,
+::ng-deep .action-btn .p-button:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: transparent !important;
+}
+
+/*chart*/
 .chart-section {
-  background-color: #f0f7f9;
+  background-color: #e0f2fe !important;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
@@ -313,3 +325,4 @@
     height: 250px;
   }
 }
+

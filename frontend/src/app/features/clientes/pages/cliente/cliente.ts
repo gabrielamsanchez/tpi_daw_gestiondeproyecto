@@ -106,6 +106,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MessageService, SelectItem } from 'primeng/api';
+import { Back } from '../../../../shared/components/back/back';
+import { ClienteInterface } from '../../../../shared/interfaces/cliente.interface';
 import { TableModule } from 'primeng/table';
 import { Card } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -119,6 +121,18 @@ import { InterfaceCliente, EstadoCliente } from '../../../../core/interfaces/int
 @Component({
     selector: 'app-tabla-clientes',
     standalone: true,
+    imports: [
+        CommonModule,
+        SelectModule,
+        TableModule,
+        TagModule,
+        ToastModule,
+        ButtonModule,
+        InputTextModule,
+        RippleModule,
+        FormsModule,
+        Back
+    ],
     imports: [CommonModule, Card, SelectModule, TableModule, ToastModule, ButtonModule, InputTextModule, FormsModule],
     providers: [MessageService],
     templateUrl: './cliente.html',

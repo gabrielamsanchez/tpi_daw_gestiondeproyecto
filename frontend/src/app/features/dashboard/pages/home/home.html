@@ -1,12 +1,11 @@
 <div class="dashboard-container">
 
   <header class="dashboard-header">
-    <h2>Bienvenido, User</h2>
-    <app-logout></app-logout>
+    <h2>Bienvenido/a, {{username}}</h2>
   </header>
 
   <section class="quick-access-cards">
-    <div class="card-item">
+    <div class="card-item" role="button" tabindex="0" (click)="abrirModalNuevoProyecto()">
       <div class="card-icon">
         <i class="pi pi-folder"></i>
       </div>
@@ -14,10 +13,10 @@
         <h3>NUEVO PROYECTO</h3>
         <p>Crear un proyecto</p>
       </div>
-      <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn" (onClick)="abrirModalNuevoProyecto()"></p-button>
+       <p-button class="action-btn" icon="pi pi-plus-circle" [text]="true" size="large" ></p-button>
     </div>
 
-    <div class="card-item">
+    <div class="card-item" role="button" tabindex="0" (click)="abrirModalNuevaTarea()">
       <div class="card-icon">
         <i class="pi pi-file"></i>
       </div>
@@ -25,10 +24,10 @@
         <h3>NUEVA TAREA</h3>
         <p>Crear una nueva tarea</p>
       </div>
-      <p-button icon="pi pi-plus-circle" [text]="true" size="large" styleClass="action-btn" (onClick)="abrirModalNuevaTarea()"></p-button>
+       <p-button icon="pi pi-plus-circle" [text]="true" size="large" class="action-btn"></p-button>
     </div>
 
-    <div class="card-item">
+    <div class="card-item" role="button" tabindex="0" (click)="navegarAUsuarios()">
       <div class="card-icon">
         <i class="pi pi-users"></i>
       </div>
