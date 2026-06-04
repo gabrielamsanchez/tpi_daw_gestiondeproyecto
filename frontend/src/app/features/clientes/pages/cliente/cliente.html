@@ -17,25 +17,6 @@
 
   <div class="table-wrapper">
     <p-table
-    <p-card styleClass="w-full shadow-md rounded-xl p-2">
-      <p-toast />
-
-        <div class="flex items-center justify-between mb-4">
-              <div class="action-row">
-                <button
-                    pButton
-                    type="button"
-                    label="Nuevo Cliente"
-                    class="btn-agregar-cliente"
-                    icon="pi pi-plus-circle"
-                    (click)=" crearNuevoCliente()"
-                    >
-                </button>
-              </div>
-    </div>
-
-      <div class="w-full overflow-x-auto">
-        <p-table
           [value]="clientes"
           dataKey="id"
           editMode="row"
@@ -46,8 +27,6 @@
             <tr>
               <th style="background-color: #e0f2fe; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Nombre</th>
               <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Estado</th>
-              <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Teléfono</th>
-              <th style="background-color: #ffedd5; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; font-weight: 600;">Correo</th>
               <th style="background-color: #bbf7d0; color: #334155; text-align: center; border: 1px solid #cbd5e1; padding: 12px; width: 15%; font-weight: 600;">Acciones</th>
             </tr>
           </ng-template>
@@ -79,30 +58,6 @@
 
               <td class="col-cell text-center">
                 <div class="flex items-center justify-center gap-2">
-               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
-                <p-cellEditor>
-                  <ng-template #input>
-                    <input pInputText type="text" [(ngModel)]="cliente.telefono" class="w-full" />
-                  </ng-template>
-                  <ng-template #output>
-                    {{ cliente.telefono }}
-                  </ng-template>
-                </p-cellEditor>
-              </td>
-
-               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
-                <p-cellEditor>
-                  <ng-template #input>
-                    <input pInputText type="text" [(ngModel)]="cliente.correo" class="w-full" />
-                  </ng-template>
-                  <ng-template #output>
-                    {{ cliente.correo }}
-                  </ng-template>
-                </p-cellEditor>
-              </td>
-
-              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
-                <div class="flex justify-content-center align-items-center gap-3">
 
                   <ng-container *ngIf="!editing">
                     <button
