@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProyectoForm } from '../../features/proyectos/components/proyecto-form/proyecto-form';
 import { TareaForm } from '../../features/tareas/components/tarea-form/tarea-form'; // Ajusta tu ruta
+import { ClienteForm } from '../../features/clientes/pages/cliente-form/cliente-form';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class UiService {
   }
 
    openNuevoCliente(): DynamicDialogRef | null {
-    return this.dialogService.open(TareaForm, {
+    return this.dialogService.open(ClienteForm, {
       header: 'Nuevo Cliente',
       width: '450px',
       contentStyle: { overflow: 'visible' }, 
