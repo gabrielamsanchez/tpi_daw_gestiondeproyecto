@@ -9,13 +9,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class ProyectoService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/v1/proyectos';
+  private apiUrl = '/api/v1/proyectos';
 
   obtenerProyectos(page: number = 1, limit: number = 10, search?: string, estado?: string): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
-      
+
     if (search) params = params.set('search', search);
     if (estado) params = params.set('estado', estado);
 
@@ -40,6 +40,6 @@ export class ProyectoService {
   descargarCsv(estado?: string) {
     let url = `${this.apiUrl}/exportar/csv`;
     if (estado) url += `?estado=${estado}`;
-    window.open(url, '_blank'); 
+    window.open(url, '_blank');
   }
 }

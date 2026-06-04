@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 })
 export class TareaService {
 
-  private url = 'http://localhost:3000/api/v1/tareas';
+  private url = '/api/v1/tareas';
   constructor(private readonly http: HttpClient) {}
 
   //get
