@@ -1,4 +1,4 @@
-<div class="dashboard-container">
+<!-- <div class="dashboard-container">
 
   <header class="dashboard-header">
     <h2>Bienvenido/a, {{username}}</h2>
@@ -49,4 +49,78 @@
     </div>
   </section>
 
+  
+    
+      <div class="calendar-section">
+        <div class="header-card">
+          <h2>Tareas próximas</h2>
+          <button>Ver calendario</button>
+        </div>
+        <full-calendar *ngIf="isBrowser" [options]="calendarOptions"></full-calendar>
+      </div>
+    
+  
+</div> -->
+
+
+<div class="dashboard-container">
+
+  <header class="dashboard-header">
+    <h2>Bienvenido/a, {{username}}</h2>
+  </header>
+
+  <section class="quick-access-cards">
+    <div class="card-item" (click)="abrirModalNuevoProyecto()">
+      <div class="card-icon"><i class="pi pi-folder"></i></div>
+      <div class="card-content">
+        <h3>NUEVO PROYECTO</h3>
+        <p>Crear un proyecto</p>
+      </div>
+      <p-button class="action-btn" icon="pi pi-plus-circle" [text]="true" size="large"></p-button>
+    </div>
+
+    <div class="card-item" (click)="abrirModalNuevaTarea()">
+      <div class="card-icon"><i class="pi pi-file"></i></div>
+      <div class="card-content">
+        <h3>NUEVA TAREA</h3>
+        <p>Crear una nueva tarea</p>
+      </div>
+      <p-button icon="pi pi-plus-circle" [text]="true" size="large" class="action-btn"></p-button>
+    </div>
+
+    <div class="card-item" (click)="navegarAUsuarios()">
+      <div class="card-icon"><i class="pi pi-users"></i></div>
+      <div class="card-content">
+        <h3>USUARIOS</h3>
+        <p>Usuarios activos</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="dashboard-main-content">
+
+    <section class="chart-section dashboard-card">
+      <div class="chart-header">
+        <h3>PRODUCTIVIDAD MENSUAL</h3>
+        <p>Tareas completadas en el último semestre</p>
+      </div>
+      <div class="chart-container">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+      </div>
+    </section>
+
+    <section class="calendar-section dashboard-card">
+      <div class="header-card">
+        <div class="header-titles">
+          <h3>TAREAS</h3>
+          <p>Planificación de la semana</p>
+        </div>
+        <button class="ver-calendario-btn">Ver calendario</button>
+      </div>
+      <div class="calendar-container-inner">
+        <full-calendar *ngIf="isBrowser" [options]="calendarOptions"></full-calendar>
+      </div>
+    </section>
+
+  </div> 
 </div>
