@@ -1,9 +1,10 @@
-<div class="modal-form">
-        <button type="button" class="close-button" (click)="cerrar()">
-            <i class="pi pi-times"></i>
-        </button>
 
-        <h2 class="modal-title">Nuevo Proyecto</h2>
+<div class="modal-form">
+    <button type="button" class="close-button" (click)="cerrar()">
+        <i class="pi pi-times"></i>
+    </button>
+
+    <h2 class="modal-title">Nuevo Proyecto</h2>
 
     <div class="field">
         <label class="field-label">Nombre de PROYECTO</label>
@@ -13,11 +14,17 @@
 
     <div class="field" style="margin-top: 1.5rem;">
         <label class="field-label">CLIENTE ASIGNADO</label>
-        <input type="text" pInputText [(ngModel)]="proyecto.cliente" 
-               placeholder="Nombre de cliente" class="w-full custom-input" />
+        <p-select [options]="clientesDisponibles" 
+                  optionLabel="nombre" 
+                  optionValue="id" 
+                  [(ngModel)]="proyecto.idCliente" 
+                  placeholder="Seleccione un cliente" 
+                  class="w-full custom-select"
+                  appendTo="body">
+        </p-select>
     </div>
 
-        <div class="footer-actions">
-            <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()"></p-button>
-        </div>
+    <div class="footer-actions">
+        <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()"></p-button>
+    </div>
 </div>
