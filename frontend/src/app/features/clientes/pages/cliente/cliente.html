@@ -1,24 +1,20 @@
 <div class="flex h-screen w-full overflow-hidden">
-
-
-  <main>
-
+  <main class="w-full p-4">
     <p-card styleClass="w-full shadow-md rounded-xl p-2">
       <p-toast />
 
-        <div class="flex items-center justify-between mb-4">
-              <div class="action-row">
-                <button
-                    pButton
-                    type="button"
-                    label="Nuevo Cliente"
-                    class="btn-agregar-cliente"
-                    icon="pi pi-plus-circle"
-                    (click)=" crearNuevoCliente()"
-                    >
-                </button>
-              </div>
-    </div>
+      <div class="flex items-center justify-between mb-4">
+        <div class="action-row">
+          <button
+            pButton
+            type="button"
+            label="Nuevo Cliente"
+            class="btn-agregar-cliente"
+            icon="pi pi-plus-circle"
+            (click)="crearNuevoCliente()">
+          </button>
+        </div>
+      </div>
 
       <div class="w-full overflow-x-auto">
         <p-table
@@ -54,15 +50,22 @@
               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
                 <p-cellEditor>
                   <ng-template #input>
-                    <p-select [options]="estados" appendTo="body" [(ngModel)]="cliente.estado" [style]="{ 'width': '100%' }" />
+                    <p-select
+                      [options]="estados"
+                      appendTo="body"
+                      [(ngModel)]="cliente.estado"
+                      [disabled]="true"
+                      [style]="{ 'width': '100%' }" />
                   </ng-template>
                   <ng-template #output>
-                    {{ cliente.estado }}
+                    <span [class.text-red-500]="cliente.estado === 'BAJA'" style="font-weight: 500;">
+                      {{ cliente.estado === 'ACTIVO' ? 'Activo' : 'Inactivo' }}
+                    </span>
                   </ng-template>
                 </p-cellEditor>
               </td>
 
-               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
                 <p-cellEditor>
                   <ng-template #input>
                     <input pInputText type="text" [(ngModel)]="cliente.telefono" class="w-full" />
@@ -73,7 +76,7 @@
                 </p-cellEditor>
               </td>
 
-               <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
+              <td style="border: 1px solid #cbd5e1; padding: 10px; text-align: center;">
                 <p-cellEditor>
                   <ng-template #input>
                     <input pInputText type="text" [(ngModel)]="cliente.correo" class="w-full" />
@@ -102,7 +105,7 @@
                       severity="danger"
                       [rounded]="true"
                       [text]="true"
-                      (click)="onRowEditCancel(cliente, ri)">
+                      (click)="solicitarEliminarCliente(cliente)">
                     </p-button>
                   </ng-container>
 
@@ -115,6 +118,7 @@
                       (click)="onRowEditSave(cliente)"
                       style="color: #16a34a; background: none; border: none;">
                     </button>
+
                     <button
                       pButton
                       type="button"

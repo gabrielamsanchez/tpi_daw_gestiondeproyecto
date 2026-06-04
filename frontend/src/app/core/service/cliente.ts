@@ -25,4 +25,8 @@ export class ClienteService {
     // Pegamos a /api/v1/clientes/:id mandando solo las propiedades del body limpias
     return this.http.patch<InterfaceCliente>(`${this.apiUrl}/${id}`, cliente);
   }
+
+  eliminarCliente(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
 }
