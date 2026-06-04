@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TareaService {
-  
+
   private url = 'http://localhost:3000/api/v1/tareas';
   constructor(private readonly http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class TareaService {
   getTareasPorProyecto(idProyecto: number): Observable<Tarea[]> {
   return this.http.get<Tarea[]>(`${this.url}/proyecto/${idProyecto}`);
 }
-  
+
 
   //post - crear
   crearTarea(tarea: TareaPayload): Observable<{ id: number }> {

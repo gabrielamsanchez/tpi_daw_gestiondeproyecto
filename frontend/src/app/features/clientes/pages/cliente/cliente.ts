@@ -102,12 +102,10 @@
 //     }
 // }
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MessageService, SelectItem } from 'primeng/api';
-import { Back } from '../../../../shared/components/back/back';
-import { ClienteInterface } from '../../../../shared/interfaces/cliente.interface';
 import { TableModule } from 'primeng/table';
 import { Card } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -115,8 +113,8 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
 import { ClienteService } from '../../../../core/service/cliente';
+import { InterfaceCliente } from '../../../../core/interfaces/interface-cliente';
 import { UiService } from '../../../../core/service/ui';
-import { InterfaceCliente, EstadoCliente } from '../../../../core/interfaces/interface-cliente';
 
 @Component({
     selector: 'app-tabla-clientes',
@@ -129,9 +127,7 @@ import { InterfaceCliente, EstadoCliente } from '../../../../core/interfaces/int
         ButtonModule,
         InputTextModule,
         FormsModule,
-        Back,
         Card,
-        
     ],
     providers: [MessageService],
     templateUrl: './cliente.html',
@@ -141,6 +137,7 @@ export class Cliente implements OnInit {
     private messageService = inject(MessageService);
     private uiService = inject(UiService);
     private clienteService = inject(ClienteService);
+    private cdr = inject(ChangeDetectorRef); // Inyectado para refrescar cambios en tiempo real
 
     clientes: InterfaceCliente[] = [];
     estados: SelectItem[] = [];
@@ -149,16 +146,19 @@ export class Cliente implements OnInit {
     ngOnInit() {
         this.loadClientes();
 
-        // Mapeo exacto de los valores en mayúsculas que NestJS/Postgres validan
+        // CORRECCIÓN 1: Los values deben ser exactamente 'ACTIVO' y 'BAJA' en mayúsculas
         this.estados = [
-            { label: 'Activo', value: EstadoCliente.ACTIVO },
-            { label: 'Inactivo / Baja', value: EstadoCliente.BAJA }
+            { label: 'Activo', value: 'ACTIVO' },
+            { label: 'Inactivo / Baja', value: 'BAJA' }
         ];
     }
 
     loadClientes() {
         this.clienteService.getClientes().subscribe({
-            next: (data) => this.clientes = data,
+            next: (data) => {
+                this.clientes = data;
+                this.cdr.markForCheck(); // Fuerza el renderizado visual de la lista
+            },
             error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron recuperar los clientes.' })
         });
     }
@@ -168,14 +168,28 @@ export class Cliente implements OnInit {
     }
 
     onRowEditSave(cliente: InterfaceCliente) {
-        this.clienteService.updateCliente(cliente.id, cliente).subscribe({
+        // CORRECCIÓN 2: Removemos el id de las propiedades para que NestJS no rebote por "property id should not exist"
+        const { id, ...datosParaActualizar } = cliente;
+
+        // Construimos el payload limpio y seguro que el DTO espera recibir
+        const payloadLimpio = {
+            nombre: datosParaActualizar.nombre,
+            estado: datosParaActualizar.estado,
+            telefono: datosParaActualizar.telefono || undefined,
+            correo: datosParaActualizar.correo || undefined
+        };
+
+        // Pasamos el id numérico por un lado para la URL, y el objeto filtrado por el otro para el body
+        this.clienteService.updateCliente(cliente.id, payloadLimpio).subscribe({
             next: () => {
                 delete this.clonedClientes[cliente.id];
                 this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Cliente actualizado con éxito en Postgres.' });
+                this.cdr.markForCheck(); // Refresca la fila visual de forma asíncrona
             },
-            error: () => {
+            error: (err) => {
+                console.error('Falla en NestJS:', err.error);
                 this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Falla al guardar en el servidor.' });
-                this.loadClientes(); // Revierte cambios visuales
+                this.loadClientes(); // Revierte el frontend al estado original de la DB
             }
         });
     }
@@ -183,22 +197,50 @@ export class Cliente implements OnInit {
     onRowEditCancel(cliente: InterfaceCliente, index: number) {
         this.clientes[index] = this.clonedClientes[cliente.id];
         delete this.clonedClientes[cliente.id];
+        this.cdr.markForCheck();
     }
 
     crearNuevoCliente() {
-        const ref = this.uiService.openNuevoCliente();
-        if (ref) {
-            ref.onClose.subscribe((datosDelCliente: any) => {
-                if (datosDelCliente) {
-                    this.clienteService.createCliente(datosDelCliente).subscribe({
-                        next: () => {
-                            this.loadClientes();
-                            this.messageService.add({ severity: 'success', summary: 'Cliente Creado', detail: 'Guardado en base de datos.' });
-                        },
-                        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Hubo un problema al crear el cliente.' })
-                    });
-                }
-            });
-        }
-    }
+    const ref = this.uiService.openNuevoCliente();
+      if (ref) {
+          ref.onClose.subscribe((datosDelCliente: any) => {
+              if (datosDelCliente) {
+
+                  // 💡 ARMAMOS EL PAYLOAD PERFECTO PARA EL DTO DE NESTJS
+                  const nuevoClientePayload = {
+                      nombre: datosDelCliente.nombre,
+                      // Forzamos a que el estado vaya en mayúsculas ('ACTIVO' o 'BAJA') pase lo que pase
+                      estado: datosDelCliente.estado ? datosDelCliente.estado.toUpperCase() : 'ACTIVO',
+                      // Si el teléfono o correo vienen vacíos (""), los pasamos a undefined
+                      // para que @IsOptional() en NestJS funcione correctamente y no falle el validador
+                      telefono: datosDelCliente.telefono?.trim() || undefined,
+                      correo: datosDelCliente.correo?.trim() || undefined
+                  };
+
+                  console.log('Enviando este payload de creación a NestJS:', nuevoClientePayload);
+
+                  this.clienteService.createCliente(nuevoClientePayload).subscribe({
+                      next: () => {
+                          this.loadClientes(); // Recarga la tabla de Postgres para mostrar el nuevo cliente
+                          this.messageService.add({
+                              severity: 'success',
+                              summary: 'Cliente Creado',
+                              detail: 'Guardado en base de datos de forma exitosa.'
+                          });
+                      },
+                      error: (err) => {
+                          console.error('Error detallado al crear cliente:', err.error);
+                          this.messageService.add({
+                              severity: 'error',
+                              summary: 'Error',
+                              detail: 'Hubo un problema al crear el cliente. Revisá la consola.'
+                          });
+                      }
+                  });
+              }
+          });
+      }
+  }
+
+    
 }

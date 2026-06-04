@@ -6,16 +6,14 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './core/interceptors/interceptor';
+import { tokenInterceptor } from './core/interceptors/interceptor';
+import { MessageService } from 'primeng/api';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     DialogService,
-    provideHttpClient((
-      withFetch(),
-      withInterceptors([authInterceptor])
-    ),),
+    provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
@@ -24,7 +22,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: '.dark-mode'
+          darkModeSelector: 'none'
         }
 
       },

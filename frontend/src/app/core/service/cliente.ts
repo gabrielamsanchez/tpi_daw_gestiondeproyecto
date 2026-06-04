@@ -1,14 +1,17 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InterfaceCliente, EstadoCliente } from '../interfaces/interface-cliente';
+import { InterfaceCliente } from '../interfaces/interface-cliente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
   private http = inject(HttpClient);
-  private apiUrl = '/clientes'; // Ajustá el puerto según tu Nest
+
+  // CORRECCIÓN 3: Dejamos la URL relativa para que pase obligatoriamente por el proxy.conf.json
+  // e inyecte las cabeceras/tokens del interceptor de forma automática.
+  private apiUrl = '/api/v1/clientes';
 
   getClientes(): Observable<InterfaceCliente[]> {
     return this.http.get<InterfaceCliente[]>(this.apiUrl);
@@ -19,7 +22,7 @@ export class ClienteService {
   }
 
   updateCliente(id: number, cliente: Partial<InterfaceCliente>): Observable<InterfaceCliente> {
-    // Usamos PATCH de forma explícita
+    // Pegamos a /api/v1/clientes/:id mandando solo las propiedades del body limpias
     return this.http.patch<InterfaceCliente>(`${this.apiUrl}/${id}`, cliente);
   }
 }
