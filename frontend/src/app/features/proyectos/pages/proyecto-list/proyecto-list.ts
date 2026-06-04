@@ -9,13 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { SelectItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-
-
-// Imports desde el Core
 import { UiService } from '../../../../core/service/ui';
 import { Back } from '../../../../shared/components/back/back';
-
-// Imports desde su propio dominio (Features)
 import { ProyectoService } from '../../services/proyecto';
 import { Proyecto } from '../../../../shared/interfaces/proyecto';
 
@@ -76,14 +71,12 @@ export class ProyectoList implements OnInit {
     onRowEditSave(proyecto: Proyecto) {
         if (proyecto.nombre && proyecto.nombre.trim().length > 0) {
             
-            // 1. Armamos el paquete limpio para que NestJS no devuelva Error 400
             const payloadLimpio = {
                 nombre: proyecto.nombre,
                 estado: proyecto.estado,
                 idCliente: proyecto.idCliente
             };
 
-            // Enviamos payloadLimpio en vez del proyecto entero
             this.proyectoService.actualizarProyecto(proyecto.id, payloadLimpio).subscribe({
                 next: (proyectoActualizado) => {
                     delete this.clonedProyectos[proyecto.id];
@@ -91,7 +84,7 @@ export class ProyectoList implements OnInit {
                 },
                 error: (err) => {
                     console.error(err);
-                    // 2. Le agregamos los paréntesis a proyectos() porque es una Signal
+            
                     this.onRowEditCancel(proyecto, this.proyectos().findIndex(p => p.id === proyecto.id));
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fallo al actualizar el proyecto' });
                 }
@@ -107,7 +100,6 @@ export class ProyectoList implements OnInit {
             return [...listaActual]; 
         });
         
-        // 3. Faltaba eliminar el clon y CERRAR LA LLAVE de la función
         delete this.clonedProyectos[proyecto.id];
     }
 

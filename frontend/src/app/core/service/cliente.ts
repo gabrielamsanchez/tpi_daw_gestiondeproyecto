@@ -9,8 +9,6 @@ import { InterfaceCliente } from '../interfaces/interface-cliente';
 export class ClienteService {
   private http = inject(HttpClient);
 
-  // CORRECCIÓN 3: Dejamos la URL relativa para que pase obligatoriamente por el proxy.conf.json
-  // e inyecte las cabeceras/tokens del interceptor de forma automática.
   private apiUrl = 'api/v1/clientes';
 
   getClientes(): Observable<InterfaceCliente[]> {

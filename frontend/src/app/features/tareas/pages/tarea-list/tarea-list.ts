@@ -1,4 +1,4 @@
-   import { Component, OnInit, inject, ChangeDetectorRef, signal, afterNextRender, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, signal, afterNextRender, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -15,7 +15,6 @@ import { Tarea, TareaPayload } from '../../../../shared/interfaces/tarea';
 import { ProyectoService } from '../../../proyectos/services/proyecto';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-
 
 
 @Component({
@@ -35,24 +34,19 @@ export class Tareas implements OnInit {
     private uiService = inject(UiService); 
     private tareaService = inject(TareaService);
     private cdr = inject(ChangeDetectorRef);
-    private proyectoService = inject(ProyectoService); // <-- Inyectamos el de proyectos
-    private route = inject(ActivatedRoute); // <-- Inyectamos el lector de URLs
+    private proyectoService = inject(ProyectoService);
+    private route = inject(ActivatedRoute); 
     private platformId = inject(PLATFORM_ID);
-    // Guardamos el ID que leemos de la URL
-    idProyectoActual!: number;
 
-    // Convertimos la info del proyecto en una Signal para que sea reactiva
+    idProyectoActual!: number;
     infoProyecto = signal<any>(null);
     
-    // Modernizado a Signals
     tareas = signal<Tarea[]>([]);
     statuses!: SelectItem[];
     clonedTareas: { [s: string]: Tarea } = {};
     loading = false;
 
     
-
-
     ngOnInit() {
         this.statuses = [
             { label: 'PENDIENTE', value: 'PENDIENTE' },
@@ -80,8 +74,7 @@ export class Tareas implements OnInit {
                 this.cdr.detectChanges();
             }
         });
-// B. Cargamos las tareas (¡ahora es 100% dinámico!)
-        // Ahora sí cargamos las tareas, porque idProyectoActual ya es un número real
+
         this.loadTareas();
     }
 
@@ -89,7 +82,6 @@ export class Tareas implements OnInit {
 
     loadTareas() {
         this.loading = true;
-        // ¡Chau Hardcodeo! Usamos el ID de la clase
         this.tareaService.getTareasPorProyecto(this.idProyectoActual).subscribe({
             next: (data) => {
                 this.tareas.set(Array.isArray(data) ? data : []);
@@ -150,12 +142,12 @@ export class Tareas implements OnInit {
                     const payload: TareaPayload = {
                         descripcion: datosDeLaTarea.titulo, 
                         estado: 'PENDIENTE',
-                        id_proyecto: this.idProyectoActual // <-- Chau hardcodeo al crear
+                        id_proyecto: this.idProyectoActual 
                     };
 
                     this.tareaService.crearTarea(payload).subscribe({
                         next: () => {
-                            this.loadTareas(); // Recargamos de la base de datos
+                            this.loadTareas(); 
                             this.messageService.add({ severity: 'success', summary: 'Tarea Creada', detail: 'Se agregó la tarea con éxito.' });
                         },
                         error: () => {
@@ -171,7 +163,6 @@ export class Tareas implements OnInit {
         if (confirm(`¿Estás seguro de eliminar "${tarea.descripcion}"?`)) {
             this.tareaService.eliminarTarea(Number(tarea.id)).subscribe({
                 next: () => {
-                    // Actualizamos la Signal filtrando la tarea eliminada
                     this.tareas.update(lista => lista.filter(t => t.id !== tarea.id));
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tarea enviada a la papelera (Baja Lógica)' });
                 },

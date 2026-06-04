@@ -4,7 +4,7 @@
 // }
 
 export interface InterfaceCliente {
-  id: number; // Numérico para PostgreSQL
+  id: number;
   nombre: string;
   estado: string;
   telefono?: string;

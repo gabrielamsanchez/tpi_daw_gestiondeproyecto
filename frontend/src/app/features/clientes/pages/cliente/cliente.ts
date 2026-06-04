@@ -1,11 +1,9 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
 import { MessageService, SelectItem } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -44,7 +42,6 @@ export class Cliente implements OnInit {
     ngOnInit() {
         this.loadClientes();
 
-        // Valores nativos mapeados con el enum estricto de Postgres
         this.estados = [
             { label: 'Activo', value: 'ACTIVO' },
             { label: 'Inactivo', value: 'BAJA' }
@@ -55,19 +52,17 @@ export class Cliente implements OnInit {
         this.clienteService.getClientes().subscribe({
             next: (data) => {
                 this.clientes = data;
-                this.cdr.markForCheck(); // Renderiza la grilla con la información real de Postgres
+                this.cdr.markForCheck(); 
             },
             error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron recuperar los clientes.' })
         });
     }
 
     onRowEditInit(cliente: InterfaceCliente) {
-        // Almacenamos el clon exacto por si el usuario presiona cancelar en el modo edición
         this.clonedClientes[cliente.id] = { ...cliente };
     }
 
     onRowEditSave(cliente: InterfaceCliente) {
-        // Extraemos el id para enviarlo en la URL y limpiamos el Payload para que Nest no devuelva Error 400
         const { id, ...datosParaActualizar } = cliente;
 
         const payloadLimpio = {
@@ -91,15 +86,12 @@ export class Cliente implements OnInit {
         });
     }
 
-    // ACCIÓN CANCELAR (Se ejecuta solo cuando la cruz se toca estando en modo EDICIÓN)
     onRowEditCancel(cliente: InterfaceCliente, index: number) {
-        // Devuelve la fila a sus valores iniciales guardados en el clon
         this.clientes[index] = this.clonedClientes[cliente.id];
         delete this.clonedClientes[cliente.id];
-        this.cdr.markForCheck(); // Notifica los cambios visuales
+        this.cdr.markForCheck(); 
     }
 
-    // ACCIÓN BAJA LÓGICA (Se ejecuta cuando la cruz se toca estando en modo LECTURA)
     solicitarEliminarCliente(cliente: InterfaceCliente) {
         this.clienteService.eliminarCliente(cliente.id).subscribe({
             next: () => {
@@ -108,16 +100,15 @@ export class Cliente implements OnInit {
                     summary: 'Baja Exitosa',
                     detail: `El cliente "${cliente.nombre}" no tiene proyectos asociados. Cambiado a Inactivo.`
                 });
-                this.loadClientes(); // Recarga la lista. Al venir con 'BAJA', el HTML pintará automáticamente 'Inactivo'
+                this.loadClientes(); 
             },
             error: (err) => {
-                // Captura el BadRequestException (400) que tira tu servicio de NestJS si tiene proyectos vinculados
                 const mensajeError = err.error?.message || 'No se pudo procesar la baja del cliente.';
 
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Acción Bloqueada',
-                    detail: mensajeError // "No se puede dar de baja el cliente porque tiene proyectos vinculados."
+                    detail: mensajeError 
                 });
             }
         });
