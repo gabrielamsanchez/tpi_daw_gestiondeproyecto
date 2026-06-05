@@ -8,7 +8,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { Usuarios } from './features/usuarios/usuarios';
 import { Tareas } from './features/tareas/pages/tarea-list/tarea-list';
 import { ProyectoList } from './features/proyectos/pages/proyecto-list/proyecto-list';
-
+import { CalendarioComponent } from './features/calendario/pages/calendario/calendario';
 
 export const routes: Routes = [
     {
@@ -39,11 +39,13 @@ export const routes: Routes = [
       },
       { path: 'proyectos/:id/tareas',
       component: Tareas },
+      
+      { path: 'calendario', component: CalendarioComponent },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: 'login' },
-   
+
     
 ];
