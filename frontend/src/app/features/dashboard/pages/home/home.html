@@ -24,13 +24,15 @@
       <p-button icon="pi pi-plus-circle" [text]="true" size="large" class="action-btn"></p-button>
     </div>
 
-    <div class="card-item" (click)="navegarAUsuarios()">
-      <div class="card-icon"><i class="pi pi-users"></i></div>
-      <div class="card-content">
-        <h3>USUARIOS</h3>
-        <p>Usuarios activos</p>
-      </div>
-    </div>
+    @if (rolActual === 'ADMIN') {
+            <div class="card-item" (click)="navegarAUsuarios()">
+            <div class="card-icon"><i class="pi pi-users"></i></div>
+            <div class="card-content">
+                <h3>USUARIOS</h3>
+                <p>Usuarios activos</p>
+            </div>
+            </div>
+        }
   </section>
 
   <div class="dashboard-main-content">

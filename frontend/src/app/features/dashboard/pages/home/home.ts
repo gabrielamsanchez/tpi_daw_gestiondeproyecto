@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Inject, PLATFORM_ID } from '@angular/core';
-import { from } from 'rxjs/internal/observable/from';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 
@@ -28,6 +27,7 @@ export class Home implements OnInit {
   username: string = '';
   calendarOptions: any;
 
+  rolActual: string | null = null;
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
@@ -43,6 +43,8 @@ export class Home implements OnInit {
     this.initCalendarOptions();
     const nombreUsuario = this.authStore.obtenerNombreUsuario();
     this.username = nombreUsuario ?? 'Usuario';
+
+    this.rolActual = this.authStore.obtenerRol();
   }
 
   initCalendarOptions() {

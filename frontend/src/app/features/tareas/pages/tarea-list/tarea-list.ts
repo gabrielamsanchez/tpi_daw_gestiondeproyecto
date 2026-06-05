@@ -15,7 +15,7 @@ import { Tarea, TareaPayload } from '../../../../shared/interfaces/tarea';
 import { ProyectoService } from '../../../proyectos/services/proyecto';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-
+import { AuthStore } from '../../../auth/auth-store';
 
 @Component({
     selector: 'app-tareas-tabla',
@@ -38,6 +38,9 @@ export class Tareas implements OnInit {
     private route = inject(ActivatedRoute); 
     private platformId = inject(PLATFORM_ID);
 
+    private authStore = inject(AuthStore);
+    rolActual = this.authStore.obtenerRol();
+
     idProyectoActual!: number;
     infoProyecto = signal<any>(null);
     
@@ -46,7 +49,6 @@ export class Tareas implements OnInit {
     clonedTareas: { [s: string]: Tarea } = {};
     loading = false;
 
-    
     ngOnInit() {
         this.statuses = [
             { label: 'PENDIENTE', value: 'PENDIENTE' },
@@ -55,7 +57,6 @@ export class Tareas implements OnInit {
         ];
 
         if (isPlatformBrowser(this.platformId)) {
-            
             this.route.paramMap.subscribe(params => {
                 const id = params.get('id');
                 if (id) {
@@ -63,7 +64,6 @@ export class Tareas implements OnInit {
                     this.cargarTodoElDetalle();
                 }
             });
-            
         }
     }
 
@@ -77,8 +77,6 @@ export class Tareas implements OnInit {
 
         this.loadTareas();
     }
-
-     
 
     loadTareas() {
         this.loading = true;
@@ -160,6 +158,11 @@ export class Tareas implements OnInit {
     }
 
     confirmDeleteTarea(tarea: Tarea) {
+        if (this.rolActual !== 'ADMIN') {
+            this.messageService.add({ severity: 'error', summary: 'Denegado', detail: 'Solo los administradores pueden eliminar tareas' });
+            return;
+        }
+
         if (confirm(`¿Estás seguro de eliminar "${tarea.descripcion}"?`)) {
             this.tareaService.eliminarTarea(Number(tarea.id)).subscribe({
                 next: () => {
@@ -187,4 +190,3 @@ export class Tareas implements OnInit {
         return found?.label ?? status;
     }
 }
-

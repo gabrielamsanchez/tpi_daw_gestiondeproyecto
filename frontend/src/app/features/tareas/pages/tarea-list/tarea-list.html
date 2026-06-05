@@ -89,7 +89,9 @@
                             @if (!editing) {
                                 <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(tarea)" class="p-button-rounded p-button-text p-button-secondary"></button>
                                 
-                                <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmDeleteTarea(tarea)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                @if (rolActual === 'ADMIN') {
+                                    <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmDeleteTarea(tarea)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                }
                             } @else {
                                 <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(tarea)" class="p-button-rounded p-button-text p-button-success"></button>
                                 
