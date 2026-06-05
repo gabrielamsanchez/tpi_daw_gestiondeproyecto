@@ -33,4 +33,12 @@ export class CreateTareaDto {
   @IsInt()
   @IsNotEmpty()
   id_proyecto!: number;
+
+  @IsOptional()
+  @IsString()
+  fecha_inicio?: string;
+
+  @IsOptional()
+  @IsString()
+  fecha_limite?: string;
 }

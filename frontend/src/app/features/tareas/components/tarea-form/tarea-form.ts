@@ -1,3 +1,4 @@
+
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,29 +7,35 @@ import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProyectoService } from '../../../proyectos/services/proyecto'; 
+import { DatePickerModule } from 'primeng/datepicker'; 
 
 @Component({
   selector: 'app-tarea-form',
   standalone: true, 
-  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, SelectModule],
+  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, SelectModule, DatePickerModule],
   templateUrl: './tarea-form.html',
   styleUrls: ['./tarea-form.css'] 
 })
 export class TareaForm implements OnInit {
 
-  tarea = {
+  tarea: any = {
     titulo: '',
-    proyectoId: null
+    proyectoId: null,
+    fechaInicio: null,
+    fechaLimite: null
   };
 
   proyectosDisponibles: any[] = [];
   private proyectoService = inject(ProyectoService);
 
   constructor(public ref: DynamicDialogRef) {}
+
   ngOnInit() {
     this.proyectoService.obtenerProyectos(1, 100).subscribe({
       next: (response) => {
-        this.proyectosDisponibles = response.data;
+        setTimeout(() => {
+          this.proyectosDisponibles = response.data || response; 
+        }, 0);
       },
       error: (err) => {
         console.error('Error al cargar proyectos desde la BD', err);
@@ -38,11 +45,40 @@ export class TareaForm implements OnInit {
 
   guardar() {
     if (this.tarea.titulo && this.tarea.proyectoId) {
-      this.ref.close(this.tarea); 
+      const datosParaEnviar: any = { ...this.tarea };
+
+      if (this.tarea.fechaInicio && this.tarea.fechaInicio instanceof Date) {
+        const d = this.tarea.fechaInicio;
+        const anio = d.getFullYear();
+        const mes = String(d.getMonth() + 1).padStart(2, '0');
+        const dia = String(d.getDate()).padStart(2, '0');
+        datosParaEnviar.fecha_inicio = `${anio}-${mes}-${dia}`;
+      } else {
+        datosParaEnviar.fecha_inicio = null;
+      }
+
+      if (this.tarea.fechaLimite && this.tarea.fechaLimite instanceof Date) {
+        const d = this.tarea.fechaLimite;
+        const anio = d.getFullYear();
+        const mes = String(d.getMonth() + 1).padStart(2, '0');
+        const dia = String(d.getDate()).padStart(2, '0');
+        datosParaEnviar.fecha_limite = `${anio}-${mes}-${dia}`;
+      } else {
+        datosParaEnviar.fecha_limite = null;
+      }
+
+      delete datosParaEnviar.fechaInicio;
+      delete datosParaEnviar.fechaLimite;
+
+      if (this.ref) {
+        this.ref.close(datosParaEnviar);
+      }
     }
   }
 
   cerrar() {
-    this.ref.close(); 
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 }

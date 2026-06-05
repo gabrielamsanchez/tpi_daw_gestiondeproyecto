@@ -6,6 +6,12 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { EstadisticasModule } from './estadisticas/estadisticas.module';
 
 @Module({
-  imports: [UsuariosModule, ClientesModule, ProyectosModule, TareasModule, EstadisticasModule],
+  imports: [
+    UsuariosModule,
+    ClientesModule,
+    ProyectosModule,
+    TareasModule,
+    EstadisticasModule,
+  ],
 })
 export class GestionModule {}
