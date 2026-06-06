@@ -1,5 +1,5 @@
 
-import { Component, OnInit, inject, ChangeDetectorRef, signal, afterNextRender, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, signal, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -15,9 +15,7 @@ import { TareaService } from '../../services/tarea.service';
 import { Tarea, TareaPayload } from '../../../../shared/interfaces/tarea';
 import { ProyectoService } from '../../../proyectos/services/proyecto';
 import { ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { CommonModule, DatePipe } from '@angular/common';
-
+import { isPlatformBrowser, DatePipe } from '@angular/common'; 
 
 
 @Component({
@@ -26,11 +24,11 @@ import { CommonModule, DatePipe } from '@angular/common';
     imports: [
         SelectModule, TableModule, TagModule, ToastModule, 
         ButtonModule, InputTextModule, RippleModule, 
-        FormsModule, Back,DatePipe, CommonModule
+        FormsModule, Back, DatePipe
     ],
     templateUrl: './tarea-list.html',
     styleUrls: ['./tarea-list.css'],
-    providers: [MessageService, DatePipe] 
+    providers: [MessageService] 
 })
 export class Tareas implements OnInit {
     private messageService = inject(MessageService);
@@ -48,7 +46,6 @@ export class Tareas implements OnInit {
     statuses!: SelectItem[];
     clonedTareas: { [s: string]: Tarea } = {};
     loading = false;
-
     
     ngOnInit() {
         this.statuses = [
@@ -58,7 +55,6 @@ export class Tareas implements OnInit {
         ];
 
         if (isPlatformBrowser(this.platformId)) {
-            
             this.route.paramMap.subscribe(params => {
                 const id = params.get('id');
                 if (id) {
@@ -66,7 +62,6 @@ export class Tareas implements OnInit {
                     this.cargarTodoElDetalle();
                 }
             });
-            
         }
     }
 
@@ -77,11 +72,8 @@ export class Tareas implements OnInit {
                 this.cdr.detectChanges();
             }
         });
-
         this.loadTareas();
     }
-
-    
 
     loadTareas() {
         this.loading = true;
@@ -144,7 +136,6 @@ export class Tareas implements OnInit {
         if (ref) {
             ref.onClose.subscribe((datosDeLaTarea: any) => {
                 if (datosDeLaTarea) {
-                    // CORRECCIÓN LÍNEA 142: Mapeamos los datos dinámicos que vienen del formulario Premium
                     const payload: TareaPayload = {
                         descripcion: datosDeLaTarea.titulo,
                         estado: 'PENDIENTE',

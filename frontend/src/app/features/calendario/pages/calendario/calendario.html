@@ -5,6 +5,6 @@
   </div>
 
   <div class="main-calendar-card">
-    <full-calendar *ngIf="isBrowser" [options]="calendarOptions"></full-calendar>
+    <full-calendar *ngIf="isBrowser && eventsLoaded" [options]="calendarOptions"></full-calendar>
   </div>
 </div>

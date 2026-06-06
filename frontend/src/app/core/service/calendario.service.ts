@@ -1,17 +1,17 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Tarea } from '../../shared/interfaces/tarea';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarioService {
   private http = inject(HttpClient);
-  
+ 
+  private apiUrl = 'http://localhost:3000/api/v1/tareas/calendario';
 
-  private apiUrl = 'http://localhost:3000/api/v1/calendario';
-
-  obtenerEventos(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  obtenerEventos(): Observable<Tarea[]> {
+    return this.http.get<Tarea[]>(this.apiUrl);
   }
 }
