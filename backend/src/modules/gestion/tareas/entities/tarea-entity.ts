@@ -58,7 +58,7 @@ export class Tarea {
     nullable: true,
   })
   @Column({ name: 'fecha_inicio', type: 'timestamp', nullable: true })
-  fechaInicio?: Date;
+  fecha_inicio?: Date; // <-- Cambiado a snake_case
 
   @ApiProperty({
     description: 'Fecha límite',
@@ -66,5 +66,5 @@ export class Tarea {
     nullable: true,
   })
   @Column({ name: 'fecha_limite', type: 'timestamp', nullable: true })
-  fechaLimite?: Date;
+  fecha_limite?: Date;
 }

@@ -15,10 +15,15 @@ export class ListTareaDto {
   descripcion!: string;
 
   @ApiProperty({
-    description:
-      'Estado actual en el que se encuentra la tarea',
+    description: 'Estado actual en el que se encuentra la tarea',
     enum: EstadoTarea,
     example: EstadoTarea.PENDIENTE,
   })
   estado!: EstadoTarea;
+
+  @ApiProperty({ description: 'Fecha de inicio de la tarea', required: false })
+  fecha_inicio?: Date;
+
+  @ApiProperty({ description: 'Fecha límite de la tarea', required: false })
+  fecha_limite?: Date;
 }
