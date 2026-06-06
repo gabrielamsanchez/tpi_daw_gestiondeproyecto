@@ -1,6 +1,7 @@
 import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { Router } from "@angular/router";
 import { isPlatformBrowser } from "@angular/common";
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
     providedIn: "root"
@@ -37,7 +38,6 @@ export class AuthStore {
         if (!this.isBrowser()) {
             return;
         }
-
         sessionStorage.removeItem(this.storageKey);
     }
 
@@ -83,6 +83,18 @@ export class AuthStore {
             return value;
         }
         return value + '='.repeat(4 - padding);
+    }
+
+    obtenerRol(): string | null {
+    const token = this.obtenerToken(); 
+    if (!token) return null;
+
+    try {
+        const payload: any = jwtDecode(token);
+        return payload.rol; 
+    } catch (error) {
+        return null;
+    }
     }
 
 }

@@ -93,7 +93,7 @@
                                     
                                     <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(proyecto)" class="p-button-rounded p-button-text p-button-secondary"></button>
                                     
-                                    @if (proyecto.estado !== 'BAJA') {
+                                    @if (proyecto.estado !== 'BAJA' && rolActual === 'ADMIN') {
                                         <button pButton pRipple type="button" icon="pi pi-trash" (click)="eliminarProyecto(proyecto)" class="p-button-rounded p-button-text p-button-danger"></button>
                                     }
                             } @else {

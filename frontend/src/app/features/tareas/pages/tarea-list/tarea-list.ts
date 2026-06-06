@@ -15,6 +15,7 @@ import { TareaService } from '../../services/tarea.service';
 import { Tarea, TareaPayload } from '../../../../shared/interfaces/tarea';
 import { ProyectoService } from '../../../proyectos/services/proyecto';
 import { ActivatedRoute } from '@angular/router';
+import { AuthStore } from '../../../auth/auth-store';
 import { isPlatformBrowser, DatePipe } from '@angular/common'; 
 
 
@@ -38,6 +39,9 @@ export class Tareas implements OnInit {
     private proyectoService = inject(ProyectoService);
     private route = inject(ActivatedRoute); 
     private platformId = inject(PLATFORM_ID);
+
+    private authStore = inject(AuthStore);
+    rolActual = this.authStore.obtenerRol();
 
     idProyectoActual!: number;
     infoProyecto = signal<any>(null);
@@ -159,6 +163,11 @@ export class Tareas implements OnInit {
     }
 
     confirmDeleteTarea(tarea: Tarea) {
+        if (this.rolActual !== 'ADMIN') {
+            this.messageService.add({ severity: 'error', summary: 'Denegado', detail: 'Solo los administradores pueden eliminar tareas' });
+            return;
+        }
+
         if (confirm(`¿Estás seguro de eliminar "${tarea.descripcion}"?`)) {
             this.tareaService.eliminarTarea(Number(tarea.id)).subscribe({
                 next: () => {

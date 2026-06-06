@@ -13,6 +13,7 @@ import { UiService } from '../../../../core/service/ui';
 import { Back } from '../../../../shared/components/back/back';
 import { ProyectoService } from '../../services/proyecto';
 import { Proyecto } from '../../../../shared/interfaces/proyecto';
+import { AuthStore } from '../../../auth/auth-store'; 
 
 
 @Component({
@@ -32,6 +33,10 @@ export class ProyectoList implements OnInit {
     private proyectoService = inject(ProyectoService);
     private cdr = inject(ChangeDetectorRef);
     private router = inject(Router);
+
+    private authStore = inject(AuthStore);
+    rolActual = this.authStore.obtenerRol();
+
     proyectos = signal<Proyecto[]>([]);
     statuses!: SelectItem[];
     clonedProyectos: { [s: string]: Proyecto } = {};
@@ -54,7 +59,6 @@ export class ProyectoList implements OnInit {
     cargarProyectos() {
         this.proyectoService.obtenerProyectos(1, 50).subscribe({
             next: (response) => {
-
                 this.proyectos.set(response.data);
                 this.cdr.detectChanges();
             },
@@ -105,12 +109,22 @@ export class ProyectoList implements OnInit {
 
     
     eliminarProyecto(proyecto: Proyecto) {
-        this.proyectoService.eliminarProyecto(proyecto.id).subscribe({
-            next: () => {
-                proyecto.estado = 'BAJA'; 
-                this.messageService.add({ severity: 'success', summary: 'Baja Lógica', detail: 'Proyecto enviado a la papelera' });
-            }
-        });
+        if (this.rolActual !== 'ADMIN') {
+            this.messageService.add({ severity: 'error', summary: 'Denegado', detail: 'Solo los administradores pueden eliminar proyectos' });
+            return;
+        }
+
+        if (confirm(`¿Estás seguro de enviar a la papelera el proyecto "${proyecto.nombre}"?`)) {
+            this.proyectoService.eliminarProyecto(proyecto.id).subscribe({
+                next: () => {
+                    proyecto.estado = 'BAJA'; 
+                    this.messageService.add({ severity: 'success', summary: 'Baja Lógica', detail: 'Proyecto enviado a la papelera' });
+                },
+                error: () => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el proyecto' });
+                }
+            });
+        }
     }
 
     crearNuevoProyecto() {

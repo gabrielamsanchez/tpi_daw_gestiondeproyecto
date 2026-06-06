@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { UiService } from '../../../core/service/ui';
 import { AuthService } from '../../../features/auth/auth-service';
+import { AuthStore } from '../../../features/auth/auth-store';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,6 +17,9 @@ export class Sidebar {
   private uiService: UiService = inject(UiService);
   private location: Location = inject(Location);
   private readonly authService = inject(AuthService);
+  private authStore = inject(AuthStore);
+
+  rolActual = this.authStore.obtenerRol();
 
   navegarA(ruta: string): void {
     this.router.navigate([ruta]);

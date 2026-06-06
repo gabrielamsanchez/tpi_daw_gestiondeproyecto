@@ -28,6 +28,7 @@ export class Home implements OnInit {
   username: string = '';
   calendarOptions: any;
 
+  rolActual: string | null = null;
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
@@ -44,6 +45,8 @@ export class Home implements OnInit {
     this.initCalendarOptions();
     const nombreUsuario = this.authStore.obtenerNombreUsuario();
     this.username = nombreUsuario ?? 'Usuario';
+
+    this.rolActual = this.authStore.obtenerRol();
   }
 
   initCalendarOptions() {
