@@ -1,5 +1,4 @@
-// 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, inject, ChangeDetectorRef } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { UiService } from '../../../../core/service/ui';
@@ -10,12 +9,13 @@ import { AuthStore } from '../../../../features/auth/auth-store';
 import { Router } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/interaction';
-import { PLATFORM_ID } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
+import { CalendarioService } from '../../../../core/service/calendario.service'; 
 
 @Component({
   selector: 'app-home',
+  standalone: true, 
   imports: [ChartModule, ButtonModule, CommonModule, FullCalendarModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
@@ -27,12 +27,15 @@ export class Home implements OnInit {
   isBrowser = false;
   username: string = '';
   calendarOptions: any;
-
   rolActual: string | null = null;
+  
+  private calendarioService = inject(CalendarioService);
+  private cdr = inject(ChangeDetectorRef);
+
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
-    private tareaService: TareaService, // <-- Servicio Inyectado correctamente
+    private tareaService: TareaService,
     private authStore: AuthStore,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -45,8 +48,11 @@ export class Home implements OnInit {
     this.initCalendarOptions();
     const nombreUsuario = this.authStore.obtenerNombreUsuario();
     this.username = nombreUsuario ?? 'Usuario';
-
     this.rolActual = this.authStore.obtenerRol();
+
+    if (this.isBrowser) {
+      this.cargarEventosDelBackend();
+    }
   }
 
   initCalendarOptions() {
@@ -62,7 +68,7 @@ export class Home implements OnInit {
         const fecha = arg.event.start;
         const dia = fecha.getDate();
         const mes = fecha.toLocaleString('es-ES', { month: 'short' }).toUpperCase();
-        const proyecto = arg.event.extendedProps['proyecto'] || 'Sin proyecto';
+        const proyecto = arg.event.extendedProps['proyecto'] || 'Sin proyecto'; 
         
         const etiqueta = this.calcularEtiqueta(fecha);
 
@@ -84,11 +90,42 @@ export class Home implements OnInit {
           `
         };
       },
-      events: [
-        { title: 'Reunión con el cliente', start: '2026-06-04', extendedProps: { proyecto: 'Rediseño Web' }, color: '#3b82f6' },
-        { title: 'Entrega wireframes', start: '2026-06-05', extendedProps: { proyecto: 'App Móvil' }, color: '#10b981' }
-      ]
+      events: [] 
     };
+  }
+
+  cargarEventosDelBackend() {
+    this.calendarioService.obtenerEventos().subscribe({
+      next: (tareasDesdeBack: any) => {
+        if (Array.isArray(tareasDesdeBack)) {
+          const eventosMapeados = tareasDesdeBack.map((tarea: any) => {
+            const startLimpio = tarea.fecha_inicio ? new Date(tarea.fecha_inicio).toISOString().split('T')[0] : null;
+            
+            return {
+              title: tarea.descripcion || tarea.titulo || 'Tarea sin título', 
+              start: startLimpio,
+              color: tarea.estado === 'FINALIZADA' ? '#10b981' : '#3b82f6',
+  
+              extendedProps: {
+                proyecto: tarea.proyecto?.nombre || 'Sin proyecto' 
+              }
+            };
+          });
+
+          const eventosFiltrados = eventosMapeados.filter(evento => evento.start !== null);
+
+          this.calendarOptions = {
+            ...this.calendarOptions,
+            events: eventosFiltrados
+          };
+
+          this.cdr.detectChanges(); 
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar eventos en la Home:', err);
+      }
+    });
   }
 
   calcularEtiqueta(fecha: Date): string {
@@ -184,20 +221,20 @@ export class Home implements OnInit {
             fecha_limite: formatearFechaSegura(datosDeLaTarea.fecha_limite)
           };
 
-          console.log('Enviando payload exacto sin propiedades extra:', tareaMapeada);
-
           this.tareaService.crearTarea(tareaMapeada).subscribe({
             next: (respuesta) => {
-              console.log('¡Éxito absoluto! Tarea guardada con fechas en PostgreSQL:', respuesta);
+              console.log('¡Éxito absoluto! Tarea guardada:', respuesta);
+            
             },
             error: (err) => {
-              console.error('El backend rechazó la petición. Revisa los mensajes de validación del DTO:', err);
+              console.error('El backend rechazó la petición:', err);
             }
           });
         }
       });
     }
   }
+
   navegarAUsuarios(): void {
     this.router.navigate(['/usuarios']);
   }

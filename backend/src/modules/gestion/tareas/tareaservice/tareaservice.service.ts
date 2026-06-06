@@ -18,17 +18,27 @@ export class TareasService {
     @InjectRepository(Proyecto)
     private readonly proyectosRepository: Repository<Proyecto>,
   ) {}
-
   async obtenerTareasParaCalendario() {
     return await this.tareasRepository.find({
       where: {
-        fecha_inicio: Not(IsNull()), // Solo traemos las que tengan fecha de inicio
+        fecha_inicio: Not(IsNull()), 
       },
+      relations: ['proyecto'], 
       order: {
         fecha_inicio: 'ASC',
       },
     });
   }
+  // async obtenerTareasParaCalendario() {
+  //   return await this.tareasRepository.find({
+  //     where: {
+  //       fecha_inicio: Not(IsNull()), // Solo traemos las que tengan fecha de inicio
+  //     },
+  //     order: {
+  //       fecha_inicio: 'ASC',
+  //     },
+  //   });
+  // }
   async crearTarea(dto: CreateTareaDto): Promise<{ id: number }> {
     const proyecto = await this.proyectosRepository.findOne({
       where: { id: dto.id_proyecto },
