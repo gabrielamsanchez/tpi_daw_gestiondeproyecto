@@ -1,5 +1,5 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -27,15 +27,17 @@ export class TareaForm implements OnInit {
 
   proyectosDisponibles: any[] = [];
   private proyectoService = inject(ProyectoService);
+  // 👇 Inyectamos el detector de cambios
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(public ref: DynamicDialogRef) {}
 
   ngOnInit() {
     this.proyectoService.obtenerProyectos(1, 100).subscribe({
       next: (response) => {
-        setTimeout(() => {
-          this.proyectosDisponibles = response.data || response; 
-        }, 0);
+        // 👇 Asignamos directo y forzamos la actualización sin setTimeout
+        this.proyectosDisponibles = response.data || response; 
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar proyectos desde la BD', err);

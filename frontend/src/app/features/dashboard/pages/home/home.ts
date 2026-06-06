@@ -1,16 +1,16 @@
 // 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { UiService } from '../../../../core/service/ui';
 import { ProyectoService } from '../../../../core/service/proyecto';
+import { TareaService } from '../../../../../app/features/tareas/services/tarea.service'; 
 import { CommonModule, isPlatformBrowser } from "@angular/common";
 import { AuthStore } from '../../../../features/auth/auth-store';
 import { Router } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/interaction';
-import { Inject, PLATFORM_ID } from '@angular/core';
-import { from } from 'rxjs/internal/observable/from';
+import { PLATFORM_ID } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 
@@ -18,7 +18,7 @@ import listPlugin from '@fullcalendar/list';
   selector: 'app-home',
   imports: [ChartModule, ButtonModule, CommonModule, FullCalendarModule],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css'],
 })
 export class Home implements OnInit {
 
@@ -31,6 +31,7 @@ export class Home implements OnInit {
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
+    private tareaService: TareaService, // <-- Servicio Inyectado correctamente
     private authStore: AuthStore,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -87,7 +88,6 @@ export class Home implements OnInit {
     };
   }
 
-  // DEJAMOS UNA SOLA IMPLEMENTACIÓN DE LA FUNCIÓN ACÁ
   calcularEtiqueta(fecha: Date): string {
     const hoy = new Date();
     const fechaClon = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
@@ -155,9 +155,9 @@ export class Home implements OnInit {
             error: (err) => {
               console.log('Hubo un error:', err);
             }
-          })
+          });
         }
-      })
+      });
     }
   }
 
@@ -167,7 +167,27 @@ export class Home implements OnInit {
     if (ref) {
       ref.onClose.subscribe((datosDeLaTarea: any) => {
         if (datosDeLaTarea) {
-          console.log('Datos de la tarea listos para enviar:', datosDeLaTarea);
+          
+          // Creamos el objeto adaptado estrictamente a tu interfaz TareaPayload del Frontend
+          const tareaMapeada = {
+            descripcion: datosDeLaTarea.titulo || 'Nueva Tarea',
+            id_proyecto: Number(datosDeLaTarea.proyectoId),
+            estado: 'PENDIENTE', // Forzamos mayúsculas para evitar el error 400 de NestJS
+            // Evitamos pasar 'null' usando fechas por defecto o asegurando instancias de Date reales
+            fecha_inicio: datosDeLaTarea.fecha_inicio ? new Date(datosDeLaTarea.fecha_inicio) : new Date(),
+            fecha_limite: datosDeLaTarea.fecha_limite ? new Date(datosDeLaTarea.fecha_limite) : new Date()
+          };
+
+          console.log('Datos listos y corregidos para TareaPayload. Enviando a NestJS:', tareaMapeada);
+
+          this.tareaService.crearTarea(tareaMapeada).subscribe({
+            next: (respuesta) => {
+              console.log('¡Éxito! Tarea guardada en PostgreSQL:', respuesta);
+            },
+            error: (err) => {
+              console.error('El backend rechazó la tarea:', err);
+            }
+          });
         }
       });
     }
