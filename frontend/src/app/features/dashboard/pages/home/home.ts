@@ -168,31 +168,33 @@ export class Home implements OnInit {
       ref.onClose.subscribe((datosDeLaTarea: any) => {
         if (datosDeLaTarea) {
           
-          // Creamos el objeto adaptado estrictamente a tu interfaz TareaPayload del Frontend
+          const formatearFechaSegura = (fechaInput: any): Date => {
+            const d = fechaInput ? new Date(fechaInput) : new Date();
+            return isNaN(d.getTime()) ? new Date() : d;
+          };
+
           const tareaMapeada = {
             descripcion: datosDeLaTarea.titulo || 'Nueva Tarea',
             id_proyecto: Number(datosDeLaTarea.proyectoId),
-            estado: 'PENDIENTE', // Forzamos mayúsculas para evitar el error 400 de NestJS
-            // Evitamos pasar 'null' usando fechas por defecto o asegurando instancias de Date reales
-            fecha_inicio: datosDeLaTarea.fecha_inicio ? new Date(datosDeLaTarea.fecha_inicio) : new Date(),
-            fecha_limite: datosDeLaTarea.fecha_limite ? new Date(datosDeLaTarea.fecha_limite) : new Date()
+            estado: 'PENDIENTE',
+            fecha_inicio: formatearFechaSegura(datosDeLaTarea.fecha_inicio),
+            fecha_limite: formatearFechaSegura(datosDeLaTarea.fecha_limite)
           };
 
-          console.log('Datos listos y corregidos para TareaPayload. Enviando a NestJS:', tareaMapeada);
+          console.log('Enviando payload exacto sin propiedades extra:', tareaMapeada);
 
           this.tareaService.crearTarea(tareaMapeada).subscribe({
             next: (respuesta) => {
-              console.log('¡Éxito! Tarea guardada en PostgreSQL:', respuesta);
+              console.log('¡Éxito absoluto! Tarea guardada con fechas en PostgreSQL:', respuesta);
             },
             error: (err) => {
-              console.error('El backend rechazó la tarea:', err);
+              console.error('El backend rechazó la petición. Revisa los mensajes de validación del DTO:', err);
             }
           });
         }
       });
     }
   }
-
   navegarAUsuarios(): void {
     this.router.navigate(['/usuarios']);
   }

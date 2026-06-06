@@ -5,26 +5,26 @@
         <app-back></app-back>
 
         <div class="badge-wrapper">
-                    <div class="badge-blue">
-                        <div class="badge-text-box">
-                            <span class="badge-title">NOMBRE PROYECTO</span>
-                            <span class="badge-subtitle">{{ infoProyecto()?.nombre || 'Cargando...' }}</span>
-                        </div>
-                    </div>
-
-                    <div class="badge-blue">
-                        <div class="badge-text-box">
-                            <span class="badge-title">ESTADO</span>
-                            <span class="badge-subtitle">{{ infoProyecto()?.estado || 'Cargando...' }}</span>
-                        </div>
-                    </div>
-
-                <div class="badge-blue">
-                    <div class="badge-text-box">
-                        <span class="badge-title">CLIENTE</span>
-                        <span class="badge-subtitle">{{ infoProyecto()?.cliente?.nombre || 'Proyecto Interno' }}</span>
-                    </div>
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">NOMBRE PROYECTO</span>
+                    <span class="badge-subtitle">{{ infoProyecto()?.nombre || 'Cargando...' }}</span>
                 </div>
+            </div>
+
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">ESTADO</span>
+                    <span class="badge-subtitle">{{ infoProyecto()?.estado || 'Cargando...' }}</span>
+                </div>
+            </div>
+
+            <div class="badge-blue">
+                <div class="badge-text-box">
+                    <span class="badge-title">CLIENTE</span>
+                    <span class="badge-subtitle">{{ infoProyecto()?.cliente?.nombre || 'Proyecto Interno' }}</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -47,8 +47,10 @@
                 class="custom-table">
             <ng-template #header>
                 <tr>
-                    <th class="col-nombre" style="width: 45%">Descripción de la Tarea</th>
-                    <th class="col-estado" style="width: 35%">Estado</th>
+                    <th class="col-nombre" style="width: 30%">Descripción de la Tarea</th>
+                    <th class="col-fecha" style="width: 15%">Fecha Inicio</th>
+                    <th class="col-fecha" style="width: 15%">Fecha Límite</th>
+                    <th class="col-estado" style="width: 20%">Estado</th>
                     <th class="col-acciones" style="width: 20%">Acciones</th>
                 </tr>
             </ng-template>
@@ -63,6 +65,28 @@
                             </ng-template>
                             <ng-template #output>
                                 {{ tarea.descripcion }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-datepicker [(ngModel)]="tarea.fecha_inicio" appendTo="body" dateFormat="yy-mm-dd" [style]="{ width: '100%' }" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ tarea.fecha_inicio | date: 'dd/MM/yyyy' }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td class="col-cell text-center">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-datepicker [(ngModel)]="tarea.fecha_limite" appendTo="body" dateFormat="yy-mm-dd" [style]="{ width: '100%' }" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ tarea.fecha_limite | date: 'dd/MM/yyyy' }}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -103,7 +127,7 @@
 
             <ng-template #emptymessage>
                 <tr>
-                    <td colspan="3" class="empty-cell">
+                    <td colspan="5" class="empty-cell">
                         No se encontraron tareas en este proyecto.
                     </td>
                 </tr>

@@ -27,7 +27,6 @@ export class TareaForm implements OnInit {
 
   proyectosDisponibles: any[] = [];
   private proyectoService = inject(ProyectoService);
-  // 👇 Inyectamos el detector de cambios
   private cdr = inject(ChangeDetectorRef);
 
   constructor(public ref: DynamicDialogRef) {}
