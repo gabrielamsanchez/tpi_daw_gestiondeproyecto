@@ -31,6 +31,11 @@ import { RolesGuard } from '../../../auth/guards/roles.guard';
 export class TareacontrollerController {
   constructor(private readonly tareasService: TareasService) {}
 
+  @Get('calendario')
+  async obtenerEventos() {
+    return await this.tareasService.obtenerTareasParaCalendario();
+  }
+
   // Crear tarea
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
