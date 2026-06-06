@@ -129,7 +129,6 @@ export class TareacontrollerController {
     description: 'No autorizado.',
   })
   async eliminarTarea(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    //agregar console log
     await this.tareasService.eliminarTarea(id);
   }
 }

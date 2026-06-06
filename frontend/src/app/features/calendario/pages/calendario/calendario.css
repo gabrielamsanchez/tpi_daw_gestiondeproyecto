@@ -40,7 +40,7 @@
   font-size: 0.85rem !important; 
 }
 
-/* Achicamos la altura de las celdas de los días */
+
 ::ng-deep .fc .fc-daygrid-day-frame {
   min-height: 85px !important; 
 }
