@@ -1,15 +1,16 @@
 // 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { UiService } from '../../../../core/service/ui';
 import { ProyectoService } from '../../../../core/service/proyecto';
+import { TareaService } from '../../../../../app/features/tareas/services/tarea.service'; 
 import { CommonModule, isPlatformBrowser } from "@angular/common";
 import { AuthStore } from '../../../../features/auth/auth-store';
 import { Router } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/interaction';
-import { Inject, PLATFORM_ID } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 
@@ -17,7 +18,7 @@ import listPlugin from '@fullcalendar/list';
   selector: 'app-home',
   imports: [ChartModule, ButtonModule, CommonModule, FullCalendarModule],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css'],
 })
 export class Home implements OnInit {
 
@@ -31,6 +32,7 @@ export class Home implements OnInit {
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
+    private tareaService: TareaService, // <-- Servicio Inyectado correctamente
     private authStore: AuthStore,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -89,7 +91,6 @@ export class Home implements OnInit {
     };
   }
 
-  // DEJAMOS UNA SOLA IMPLEMENTACIÓN DE LA FUNCIÓN ACÁ
   calcularEtiqueta(fecha: Date): string {
     const hoy = new Date();
     const fechaClon = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
@@ -157,9 +158,9 @@ export class Home implements OnInit {
             error: (err) => {
               console.log('Hubo un error:', err);
             }
-          })
+          });
         }
-      })
+      });
     }
   }
 
@@ -169,12 +170,34 @@ export class Home implements OnInit {
     if (ref) {
       ref.onClose.subscribe((datosDeLaTarea: any) => {
         if (datosDeLaTarea) {
-          console.log('Datos de la tarea listos para enviar:', datosDeLaTarea);
+          
+          const formatearFechaSegura = (fechaInput: any): Date => {
+            const d = fechaInput ? new Date(fechaInput) : new Date();
+            return isNaN(d.getTime()) ? new Date() : d;
+          };
+
+          const tareaMapeada = {
+            descripcion: datosDeLaTarea.titulo || 'Nueva Tarea',
+            id_proyecto: Number(datosDeLaTarea.proyectoId),
+            estado: 'PENDIENTE',
+            fecha_inicio: formatearFechaSegura(datosDeLaTarea.fecha_inicio),
+            fecha_limite: formatearFechaSegura(datosDeLaTarea.fecha_limite)
+          };
+
+          console.log('Enviando payload exacto sin propiedades extra:', tareaMapeada);
+
+          this.tareaService.crearTarea(tareaMapeada).subscribe({
+            next: (respuesta) => {
+              console.log('¡Éxito absoluto! Tarea guardada con fechas en PostgreSQL:', respuesta);
+            },
+            error: (err) => {
+              console.error('El backend rechazó la petición. Revisa los mensajes de validación del DTO:', err);
+            }
+          });
         }
       });
     }
   }
-
   navegarAUsuarios(): void {
     this.router.navigate(['/usuarios']);
   }

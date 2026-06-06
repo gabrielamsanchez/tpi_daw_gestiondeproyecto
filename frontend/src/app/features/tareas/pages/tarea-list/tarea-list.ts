@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, ChangeDetectorRef, signal, afterNextRender, PLATFORM_ID } from '@angular/core';
+
+import { Component, OnInit, inject, ChangeDetectorRef, signal, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -14,8 +15,9 @@ import { TareaService } from '../../services/tarea.service';
 import { Tarea, TareaPayload } from '../../../../shared/interfaces/tarea';
 import { ProyectoService } from '../../../proyectos/services/proyecto';
 import { ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 import { AuthStore } from '../../../auth/auth-store';
+import { isPlatformBrowser, DatePipe } from '@angular/common'; 
+
 
 @Component({
     selector: 'app-tareas-tabla',
@@ -23,7 +25,7 @@ import { AuthStore } from '../../../auth/auth-store';
     imports: [
         SelectModule, TableModule, TagModule, ToastModule, 
         ButtonModule, InputTextModule, RippleModule, 
-        FormsModule, Back,
+        FormsModule, Back, DatePipe
     ],
     templateUrl: './tarea-list.html',
     styleUrls: ['./tarea-list.css'],
@@ -48,7 +50,7 @@ export class Tareas implements OnInit {
     statuses!: SelectItem[];
     clonedTareas: { [s: string]: Tarea } = {};
     loading = false;
-
+    
     ngOnInit() {
         this.statuses = [
             { label: 'PENDIENTE', value: 'PENDIENTE' },
@@ -74,7 +76,6 @@ export class Tareas implements OnInit {
                 this.cdr.detectChanges();
             }
         });
-
         this.loadTareas();
     }
 
@@ -105,6 +106,8 @@ export class Tareas implements OnInit {
                 descripcion: tarea.descripcion.trim(),
                 estado: tarea.estado,
                 id_proyecto: Number(tarea.id_proyecto),
+                fecha_inicio: tarea.fecha_inicio || null,
+                fecha_limite: tarea.fecha_limite || null,
             };
 
             this.tareaService.actualizarTarea(Number(tarea.id), payload).subscribe({
@@ -138,9 +141,11 @@ export class Tareas implements OnInit {
             ref.onClose.subscribe((datosDeLaTarea: any) => {
                 if (datosDeLaTarea) {
                     const payload: TareaPayload = {
-                        descripcion: datosDeLaTarea.titulo, 
+                        descripcion: datosDeLaTarea.titulo,
                         estado: 'PENDIENTE',
-                        id_proyecto: this.idProyectoActual 
+                        id_proyecto: this.idProyectoActual,
+                        fecha_inicio: datosDeLaTarea.fecha_inicio || null,
+                        fecha_limite: datosDeLaTarea.fecha_limite || null,
                     };
 
                     this.tareaService.crearTarea(payload).subscribe({

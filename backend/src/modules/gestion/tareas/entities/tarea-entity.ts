@@ -39,7 +39,6 @@ export class Tarea {
   })
   estado!: EstadoTarea;
 
-  //esto es momentaneo
   @ApiProperty({
     description: 'ID del proyecto asociado',
     example: 1,
@@ -52,4 +51,20 @@ export class Tarea {
   })
   @JoinColumn({ name: 'id_proyecto' })
   proyecto!: Proyecto;
+
+  @ApiProperty({
+    description: 'Fecha de inicio',
+    example: '2026-06-15',
+    nullable: true,
+  })
+  @Column({ name: 'fecha_inicio', type: 'timestamp', nullable: true })
+  fecha_inicio?: Date; // <-- Cambiado a snake_case
+
+  @ApiProperty({
+    description: 'Fecha límite',
+    example: '2026-06-20',
+    nullable: true,
+  })
+  @Column({ name: 'fecha_limite', type: 'timestamp', nullable: true })
+  fecha_limite?: Date;
 }

@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './modules/database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { GestionModule } from './modules/gestion/gestion.module';
+import { CalendarioController } from './modules/calendario/calendario.controller';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { GestionModule } from './modules/gestion/gestion.module';
     AuthModule,
     GestionModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, CalendarioController],
   providers: [AppService],
 })
 export class AppModule {}
