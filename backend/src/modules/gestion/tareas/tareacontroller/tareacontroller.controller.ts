@@ -68,7 +68,7 @@ export class TareacontrollerController {
   @UseGuards(AuthGuardGuard)
   @Get('proyecto/:idProyecto')
   @ApiOperation({
-    summary: 'Ver el detalle de las tareas que componen un proyecto',
+    summary: 'Ver las tareas que componen un proyecto',
   })
   async obtenerTareas(@Param('idProyecto', ParseIntPipe) idProyecto: number) {
     return await this.tareasService.obtenerTareasPorProyecto(idProyecto);

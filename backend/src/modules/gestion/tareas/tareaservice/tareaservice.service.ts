@@ -18,6 +18,7 @@ export class TareasService {
     @InjectRepository(Proyecto)
     private readonly proyectosRepository: Repository<Proyecto>,
   ) {}
+  
   async obtenerTareasParaCalendario() {
     return await this.tareasRepository.find({
       where: {

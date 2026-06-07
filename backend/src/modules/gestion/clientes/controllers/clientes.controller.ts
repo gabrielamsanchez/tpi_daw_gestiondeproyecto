@@ -63,7 +63,7 @@ export class ClienteController {
 
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
-  @Get('exportar/csv') // <-- Recordar: Arriba de :id
+  @Get('exportar/csv') // <-- arriba de :id
   @ApiOperation({
     summary:
       'Descargar listado de clientes en CSV, filtrando opcionalmente por estado',
@@ -84,7 +84,7 @@ export class ClienteController {
     return res.status(HttpStatus.OK).send(csvContent);
   }
 
-  // Obtener un cliente por su ID
+  // get cliente por id
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Get(':id')
@@ -106,7 +106,7 @@ export class ClienteController {
     return await this.clienteService.findOne(id);
   }
 
-  // Actualizar un cliente
+  // actualizar cliente
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Patch(':id')
@@ -132,12 +132,12 @@ export class ClienteController {
     return await this.clienteService.update(id, updateClienteDto);
   }
 
-  // Eliminar cliente (Baja Lógica)
+  // eliminar cliente
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Eliminar un cliente (Baja Lógica)' })
+  @ApiOperation({ summary: 'Eliminar un cliente' })
   @ApiParam({
     name: 'id',
     description: 'ID del cliente a eliminar',

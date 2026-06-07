@@ -13,12 +13,12 @@ export class Cliente {
   @Column({
     type: 'enum',
     enum: EstadoCliente,
-    enumName: 'estados_clientes', // Fundamental para PostgreSQL
+    enumName: 'estados_clientes', 
     default: EstadoCliente.ACTIVO,
   })
   estado!: EstadoCliente;
 
-  // Funcionalidad Extra (Contacto)
+  // Funcionalidad extra 
   @Column({ type: 'text', nullable: true })
   telefono?: string;
 

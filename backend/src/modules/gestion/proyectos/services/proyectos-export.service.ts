@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Proyecto } from '../entities/proyecto.entity';
 import { QueryProyectoDto } from '../dtos/input/query-proyecto.dto';
-import { generarArchivoCsv } from '../../../../common/utils/csv-generator.util'; // <-- Usamos la máquina empaquetadora
+import { generarArchivoCsv } from '../../../../common/utils/csv-generator.util'; 
 
 @Injectable()
 export class ProyectosExportService {
@@ -38,7 +38,6 @@ export class ProyectosExportService {
       'Correo Cliente',
     ];
 
-    // Armamos la matriz limpia, sin ensuciar el código con comillas ni replace()
     const matrizDeDatos = proyectos.map((p) => [
       p.id,
       p.nombre,
@@ -48,7 +47,6 @@ export class ProyectosExportService {
       p.cliente?.correo || 'N/A',
     ]);
 
-    // Le pasamos la matriz a la utilidad y que ella haga el trabajo sucio
     return generarArchivoCsv(encabezados, matrizDeDatos);
   }
   async exportarProyectoConTareasCsv(idProyecto: number): Promise<string> {

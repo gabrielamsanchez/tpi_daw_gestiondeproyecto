@@ -24,7 +24,7 @@ export class ProyectosService {
     private readonly exportService: ProyectosExportService,
   ) {}
 
-  //necesitamos validar el cliente exista y que este en estado activo.
+  //validar el cliente exista y que este en estado activo.
   private async validarClienteActivo(idCliente: number): Promise<void> {
     const cliente = await this.clientesRepository.findOne({
       where: { id: idCliente },
@@ -41,7 +41,6 @@ export class ProyectosService {
   }
 
   async crearProyecto(dto: CreateProyectoDto): Promise<{ id: number }> {
-    // 1. Validamos la regla de negocio del cliente
     if (dto.idCliente) {
       await this.validarClienteActivo(dto.idCliente);
     }
@@ -55,7 +54,7 @@ export class ProyectosService {
     return { id: proyecto.id };
   }
 
-  // BÚSQUEDA AVANZADA IMPLEMENTADA
+  // BÚSQUEDA AVANZADA
   async obtenerTodos(query: QueryProyectoDto) {
     const { search, estado, page = 1, limit = 10 } = query;
     const qb = this.proyectosRepository

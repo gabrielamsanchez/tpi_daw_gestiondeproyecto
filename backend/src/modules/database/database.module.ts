@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      // Usar forRootAsync es más seguro para asegurar que las variables de entorno existan
+      // para asegurar que las variables de entorno existen
       useFactory: () => ({
         type: 'postgres',
         host: process.env.DB_HOST,

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Cliente } from '../entities/cliente.entity';
-import { generarArchivoCsv } from '../../../../common/utils/csv-generator.util';
-import { EstadoCliente } from '../enum/estado-cliente-enum';
+import { Cliente } from '../../entities/cliente.entity'; 
+import { generarArchivoCsv } from '../../../../../common/utils/csv-generator.util'; 
+import { EstadoCliente } from '../../enum/estado-cliente-enum'; 
 
 @Injectable()
 export class ClientesExportService {
@@ -31,7 +31,6 @@ export class ClientesExportService {
       'Correo Electrónico',
     ];
 
-    // Mapeamos los datos a una matriz pura y limpia
     const matrizDeDatos = clientes.map((c) => [
       c.id,
       c.nombre,
@@ -42,7 +41,6 @@ export class ClientesExportService {
     console.log('--- MATRIZ MAPAEDA ---');
     console.log(matrizDeDatos);
 
-    // Devolvemos el CSV procesado por la utilidad
     return generarArchivoCsv(encabezados, matrizDeDatos);
   }
 }

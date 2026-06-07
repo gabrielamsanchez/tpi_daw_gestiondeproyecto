@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { EstadoProyecto } from '../enum/estado-proyecto.enum';
-import { Cliente } from '../../clientes/entities/cliente.entity'; // Ajusta la ruta a tu cliente.entity
-import { Tarea } from '../../tareas/entities/tarea-entity'; // Ajusta la ruta a tu tarea-entity
+import { Cliente } from '../../clientes/entities/cliente.entity'; 
+import { Tarea } from '../../tareas/entities/tarea-entity'; 
 
 @Entity({ name: 'proyectos' })
 export class Proyecto {
@@ -18,7 +18,7 @@ export class Proyecto {
   @Column({
     type: 'enum',
     enum: EstadoProyecto,
-    enumName: 'estados_proyectos', // <- AGREGA ESTA LÍNEA
+    enumName: 'estados_proyectos',
     default: EstadoProyecto.ACTIVO,
   })
   estado!: EstadoProyecto;

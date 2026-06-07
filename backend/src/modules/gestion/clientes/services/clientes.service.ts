@@ -9,7 +9,7 @@ import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 import { Cliente } from '../entities/cliente.entity';
 import { EstadoCliente } from '../enum/estado-cliente-enum';
-import { ClientesExportService } from './clientes-export.service';
+import { ClientesExportService } from './clientes-export/clientes-export.service'; 
 
 @Injectable()
 export class ClienteService {

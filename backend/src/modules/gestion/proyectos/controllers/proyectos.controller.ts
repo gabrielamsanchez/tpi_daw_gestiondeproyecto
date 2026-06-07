@@ -72,7 +72,7 @@ export class ProyectosController {
   // 1. EXPORTAR TODOS LOS PROYECTOS (CON FILTROS)
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
-  @Get('exportar/csv') // <-- IMPRESCINDIBLE: Arriba de :id
+  @Get('exportar/csv') // arriba de :id
   @ApiOperation({
     summary:
       'Descargar proyectos en CSV aplicando los mismos filtros de búsqueda',
@@ -93,7 +93,7 @@ export class ProyectosController {
   // 2. EXPORTAR UN PROYECTO ESPECÍFICO CON SUS TAREAS
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
-  @Get(':id/exportar/csv') // <-- IMPRESCINDIBLE: Arriba de :id
+  @Get(':id/exportar/csv') // arriba de :id
   @ApiOperation({ summary: 'Descargar el detalle de un proyecto específico y sus tareas en formato CSV' })
   async exportarProyectoEspecificoCsv(@Param('id', ParseIntPipe) id: number, @Res() res: any) {
     const csvContent = await this.proyectosService.exportarProyectoConTareasCsv(id);
@@ -119,11 +119,11 @@ export class ProyectosController {
     return await this.proyectosService.obtenerPorId(id);
   }
 
-  // Actualizar (Corregido a 200 OK devolviendo el proyecto)
+  // Actualizar 
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Put(':id')
-  @HttpCode(HttpStatus.OK) // Cambiado de NO_CONTENT a OK
+  @HttpCode(HttpStatus.OK) 
   @ApiOperation({ summary: 'Actualizar un proyecto existente' })
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
   @ApiResponse({
@@ -142,12 +142,12 @@ export class ProyectosController {
     return await this.proyectosService.actualizarProyecto(id, dto);
   }
 
-  // Eliminar - Baja Lógica (Corregido a 200 OK devolviendo confirmación)
+  // Eliminar
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard, RolesGuard)
   @ROLES(RolUsuario.ADMIN)
   @Delete(':id')
-  @HttpCode(HttpStatus.OK) // Cambiado de NO_CONTENT a OK
+  @HttpCode(HttpStatus.OK) 
   @ApiOperation({ summary: 'Eliminar un proyecto (Baja Lógica)' })
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
   @ApiResponse({
