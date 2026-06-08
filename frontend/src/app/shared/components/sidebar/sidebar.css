@@ -1,10 +1,9 @@
 /* sidebar */
 .sidebar-hover {
-  width: 65px; /* Ancho inicial (colapsado) */
+  width: 65px;
   background-color: var(--p-bg-cyan-950); 
   transition: width 0.3s ease; 
-  overflow: hidden; /* Oculta lo que sobresale (el texto) */
-  display: flex;
+  overflow: hidden; 
   flex-direction: column;
   justify-content: space-between;
   border-right: 1px solid #1f3f4f;

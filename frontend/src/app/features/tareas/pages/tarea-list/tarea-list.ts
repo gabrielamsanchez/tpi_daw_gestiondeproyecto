@@ -17,6 +17,7 @@ import { ProyectoService } from '../../../proyectos/services/proyecto';
 import { ActivatedRoute } from '@angular/router';
 import { AuthStore } from '../../../auth/auth-store';
 import { isPlatformBrowser, DatePipe } from '@angular/common'; 
+import { Download } from '../../../../shared/components/download/download';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { isPlatformBrowser, DatePipe } from '@angular/common';
     imports: [
         SelectModule, TableModule, TagModule, ToastModule, 
         ButtonModule, InputTextModule, RippleModule, 
-        FormsModule, Back, DatePipe
+        FormsModule, Back, DatePipe, Download
     ],
     templateUrl: './tarea-list.html',
     styleUrls: ['./tarea-list.css'],
@@ -193,5 +194,11 @@ export class Tareas implements OnInit {
     getLabelEstado(status: string): string {
         const found = this.statuses.find(s => s.value === status);
         return found?.label ?? status;
+    }
+
+    exportarCsvBackend() {
+        if (this.idProyectoActual) {
+            this.tareaService.descargarCsv(this.idProyectoActual);
+        }
     }
 }

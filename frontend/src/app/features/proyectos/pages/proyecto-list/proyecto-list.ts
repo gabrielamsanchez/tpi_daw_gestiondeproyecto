@@ -14,6 +14,7 @@ import { Back } from '../../../../shared/components/back/back';
 import { ProyectoService } from '../../services/proyecto';
 import { Proyecto } from '../../../../shared/interfaces/proyecto';
 import { AuthStore } from '../../../auth/auth-store'; 
+import { Download } from '../../../../shared/components/download/download';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { AuthStore } from '../../../auth/auth-store';
     imports: [
         SelectModule, TableModule, TagModule, ToastModule, 
         ButtonModule, InputTextModule, RippleModule, 
-        FormsModule, Back
+        FormsModule, Back, Download
     ],
     templateUrl: './proyecto-list.html',
     styleUrls: ['./proyecto-list.css'],

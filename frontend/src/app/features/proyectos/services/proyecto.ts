@@ -3,12 +3,14 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Proyecto } from '../../../shared/interfaces/proyecto';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { DescargarCsvService } from '../../../core/service/descargar-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProyectoService {
   private http = inject(HttpClient);
+  private csvDescargar = inject(DescargarCsvService)
   private apiUrl = '/api/v1/proyectos';
 
   obtenerProyectos(page: number = 1, limit: number = 10, search?: string, estado?: string): Observable<any> {
@@ -40,6 +42,7 @@ export class ProyectoService {
   descargarCsv(estado?: string) {
     let url = `${this.apiUrl}/exportar/csv`;
     if (estado) url += `?estado=${estado}`;
-    window.open(url, '_blank');
+    
+    this.csvDescargar.descargarDesdeUrl(url, 'reporte_proyectos.csv');
   }
 }

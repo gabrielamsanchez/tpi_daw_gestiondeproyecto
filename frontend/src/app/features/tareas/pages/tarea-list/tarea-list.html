@@ -49,8 +49,8 @@
                 <tr>
                     <th class="col-nombre" style="width: 35%">Descripción de la Tarea</th>
                     <th class="col-estado" style="width: 20%">Estado</th>
-                    <th class="col-fecha" style="width: 15%">Fecha Inicio</th>
-                    <th class="col-fecha" style="width: 15%">Fecha Límite</th>
+                    <th class="col-fecha-inicio" style="width: 15%">Fecha Inicio</th>
+                    <th class="col-fecha-limite" style="width: 15%">Fecha Límite</th>
                     <th class="col-acciones" style="width: 15%">Acciones</th>
                 </tr>
             </ng-template>
@@ -138,13 +138,11 @@
     </div>
 
     <div class="footer-row">
-        <button pButton 
-                type="button" 
-                label="DESCARGAR" 
-                (click)="dt.exportCSV()" 
-                [disabled]="tareas().length === 0"
-                class="btn-dark btn-download">
-        </button>
+        <app-download 
+            label="DESCARGAR REPORTE CSV" 
+            [disabled]="tareas().length === 0"
+            (btnClick)="exportarCsvBackend()">
+        </app-download>
         
         <span class="footer-text">
             DAW - Sistema de Gestión de Proyectos © 2026

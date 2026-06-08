@@ -117,15 +117,12 @@
     </div>
 
     <div class="footer-row">
-        <button pButton 
-                type="button" 
-                label="DESCARGAR REPORTE CSV" 
-                icon="pi pi-download"
-                (click)="exportarCsvBackend()" 
-                [disabled]="proyectos().length === 0"
-                class="btn-dark btn-download">
-        </button>
-        
+        <app-download 
+            label="DESCARGAR REPORTE CSV" 
+            [disabled]="proyectos().length === 0"
+            (btnClick)="exportarCsvBackend()">
+        </app-download>
+
         <span class="footer-text">
             DAW - Sistema de Gestión de Proyectos © 2026
         </span>
