@@ -137,15 +137,13 @@
         </p-table>
     </div>
 
-    <div class="footer-row">
-        <app-download 
+    <app-download 
             label="DESCARGAR REPORTE CSV" 
             [disabled]="tareas().length === 0"
-            >
-        </app-download>
+            (click)="exportarCsvBackend()"> 
+    </app-download>
         
         <span class="footer-text">
             DAW - Sistema de Gestión de Proyectos © 2026
         </span>
-    </div>
 </div>

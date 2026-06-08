@@ -40,6 +40,7 @@ export class Tareas implements OnInit {
     private proyectoService = inject(ProyectoService);
     private route = inject(ActivatedRoute); 
     private platformId = inject(PLATFORM_ID);
+    
 
     private authStore = inject(AuthStore);
     rolActual = this.authStore.obtenerRol();
@@ -195,10 +196,41 @@ export class Tareas implements OnInit {
         const found = this.statuses.find(s => s.value === status);
         return found?.label ?? status;
     }
-
-   /*  exportarCsvBackend() {
+ exportarCsvBackend() {
         if (this.idProyectoActual) {
-            this.tareaService.descargarCsv(this.idProyectoActual);
+            this.proyectoService.descargarCsvProyectoEspecifico(this.idProyectoActual).subscribe({
+                next: (blob: Blob) => {
+                    // Creamos una URL temporal para el archivo binario
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    
+                    // Le asignamos el nombre al archivo descargado
+                    a.download = `proyecto_${this.idProyectoActual}_tareas.csv`;
+                    
+                    // Simulamos el clic para iniciar la descarga
+                    document.body.appendChild(a);
+                    a.click();
+                    
+                    // Limpiamos el DOM
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+
+                    this.messageService.add({ 
+                        severity: 'success', 
+                        summary: 'Descarga Exitosa', 
+                        detail: 'El archivo CSV se ha generado correctamente.' 
+                    });
+                },
+                error: (err) => {
+                    console.error('Error al descargar el CSV del proyecto:', err);
+                    this.messageService.add({ 
+                        severity: 'error', 
+                        summary: 'Error', 
+                        detail: 'No se pudo procesar la descarga del reporte.' 
+                    });
+                }
+            });
         }
-    } */
+    }
 }

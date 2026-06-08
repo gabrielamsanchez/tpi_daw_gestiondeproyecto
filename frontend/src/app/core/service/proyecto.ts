@@ -39,6 +39,8 @@ export class ProyectoService {
     if (estado) url += `?estado=${estado}`;
     window.open(url, '_blank'); 
   }
-
+  descargarCsvProyectoEspecifico(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/exportar/csv`, { responseType: 'blob' });
+  }
 
 }

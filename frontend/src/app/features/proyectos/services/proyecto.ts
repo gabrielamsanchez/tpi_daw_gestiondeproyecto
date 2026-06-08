@@ -45,4 +45,7 @@ export class ProyectoService {
     
     this.csvDescargar.descargarDesdeUrl(url, 'reporte_proyectos.csv');
   }
+  descargarCsvProyectoEspecifico(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/exportar/csv`, { responseType: 'blob' });
+  }
 }
