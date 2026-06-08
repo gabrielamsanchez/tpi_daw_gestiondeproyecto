@@ -20,7 +20,6 @@ export class ClienteService {
   }
 
   updateCliente(id: number, cliente: Partial<InterfaceCliente>): Observable<InterfaceCliente> {
-    // Pegamos a /api/v1/clientes/:id mandando solo las propiedades del body limpias
     return this.http.patch<InterfaceCliente>(`${this.apiUrl}/${id}`, cliente);
   }
 

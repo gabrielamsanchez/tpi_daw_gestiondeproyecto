@@ -11,6 +11,7 @@ import { Card } from 'primeng/card';
 import { ClienteService } from '../../../../core/service/cliente';
 import { InterfaceCliente } from '../../../../core/interfaces/interface-cliente';
 import { UiService } from '../../../../core/service/ui';
+import { Back } from '../../../../shared/components/back/back';
 
 @Component({
     selector: 'app-tabla-clientes',
@@ -24,6 +25,7 @@ import { UiService } from '../../../../core/service/ui';
         InputTextModule,
         FormsModule,
         Card,
+        Back
     ],
     providers: [MessageService],
     templateUrl: './cliente.html',

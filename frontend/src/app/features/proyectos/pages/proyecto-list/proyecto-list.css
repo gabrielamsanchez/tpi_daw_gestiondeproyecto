@@ -65,7 +65,7 @@
 }
 
 .btn-agregar-tarea {
-    background-color: #1a233a !important; 
+    background-color:var(--p-cyan-950)  !important;
     color: var(--p-slate-50) !important;
     border: none !important;
     padding: 12px 24px !important;
@@ -162,23 +162,6 @@ span .p-select, .p-select-label {
     width: 100%;
 }
 /* footer */
-.btn-download {
-    background-color: var(--p-cyan-950) !important;
-    color: var(--p-slate-50) !important;
-    border: none !important;
-    padding: 10px 24px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.05em !important;
-    border-radius: 8px !important;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-dark:hover,
-.btn-download:hover {
-    background: var(--p-cyan-800) !important;
-}
 
 .footer-text {
     color: var(--p-gray-400);

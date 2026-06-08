@@ -3,18 +3,24 @@
     <p-card styleClass="w-full shadow-md rounded-xl p-2">
       <p-toast />
 
-      <div class="flex items-center justify-between mb-4">
-        <div class="action-row">
-          <button
-            pButton
-            type="button"
-            label="Nuevo Cliente"
-            class="btn-agregar-cliente"
-            icon="pi pi-plus-circle"
-            (click)="crearNuevoCliente()">
-          </button>
-        </div>
+   <div class="header-actions">
+  
+      <div class="div-flechita">
+        <app-back></app-back>
       </div>
+
+      <div class="div-btn-cliente">
+        <button
+          pButton
+          type="button"
+          label="Nuevo Cliente"
+          class="btn-agregar-cliente"
+          icon="pi pi-plus-circle"
+          (click)="crearNuevoCliente()">
+        </button>
+      </div>
+
+    </div>
 
       <div class="w-full overflow-x-auto">
         <p-table
