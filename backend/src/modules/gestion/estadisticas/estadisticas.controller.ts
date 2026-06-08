@@ -1,34 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, UseGuards, HttpStatus } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { EstadisticasService } from './estadisticas.service';
-import { CreateEstadisticaDto } from './dto/create-estadistica.dto';
-import { UpdateEstadisticaDto } from './dto/update-estadistica.dto';
+import { AuthGuardGuard } from '../../auth/guards/auth-guard.guard'; // Ajusta la ruta
 
+@ApiTags('Dashboard y Estadísticas')
 @Controller('estadisticas')
 export class EstadisticasController {
   constructor(private readonly estadisticasService: EstadisticasService) {}
 
-  @Post()
-  create(@Body() createEstadisticaDto: CreateEstadisticaDto) {
-    return this.estadisticasService.create(createEstadisticaDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.estadisticasService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.estadisticasService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEstadisticaDto: UpdateEstadisticaDto) {
-    return this.estadisticasService.update(+id, updateEstadisticaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.estadisticasService.remove(+id);
+  @ApiBearerAuth('token')
+  @UseGuards(AuthGuardGuard)
+  @Get('resumen')
+  @ApiOperation({ summary: 'Obtiene las métricas generales del sistema para el Dashboard' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Estadísticas generadas correctamente.' })
+  async obtenerResumen() {
+    return await this.estadisticasService.obtenerResumenGeneral();
   }
 }

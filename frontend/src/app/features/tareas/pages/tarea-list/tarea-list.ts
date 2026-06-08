@@ -196,9 +196,9 @@ export class Tareas implements OnInit {
         return found?.label ?? status;
     }
 
-    exportarCsvBackend() {
+   /*  exportarCsvBackend() {
         if (this.idProyectoActual) {
             this.tareaService.descargarCsv(this.idProyectoActual);
         }
-    }
+    } */
 }

@@ -39,11 +39,22 @@
 
     <section class="chart-section dashboard-card">
       <div class="chart-header">
-        <h3>PRODUCTIVIDAD MENSUAL</h3>
-        <p>Tareas completadas en el último semestre</p>
+        <h3>RESUMEN GENERAL</h3>
+        <p>Estado actual del sistema</p>
       </div>
-      <div class="chart-container">
-        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+      
+      <div class="charts-grid" style="display: flex; gap: 2rem; justify-content: space-around; flex-wrap: wrap;">
+        
+        <div class="chart-container" style="width: 45%; min-width: 250px;">
+          <h4 style="text-align: center; color: #4b5563; margin-bottom: 1rem;">Proyectos</h4>
+          <p-chart type="doughnut" [data]="chartProyectos" [options]="chartOptions"></p-chart>
+        </div>
+
+        <div class="chart-container" style="width: 45%; min-width: 250px;">
+          <h4 style="text-align: center; color: #4b5563; margin-bottom: 1rem;">Tareas</h4>
+          <p-chart type="doughnut" [data]="chartTareas" [options]="chartOptions"></p-chart>
+        </div>
+
       </div>
     </section>
 

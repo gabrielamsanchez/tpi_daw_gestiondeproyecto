@@ -12,6 +12,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { CalendarioService } from '../../../../core/service/calendario.service'; 
+import { DashboardService } from '../../services/dashboard';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,8 @@ export class Home implements OnInit {
 
   chartData: any;
   chartOptions: any;
+  chartProyectos: any;
+  chartTareas: any;
   isBrowser = false;
   username: string = '';
   calendarOptions: any;
@@ -38,13 +41,14 @@ export class Home implements OnInit {
     private tareaService: TareaService,
     private authStore: AuthStore,
     private router: Router,
+    private dashboardService: DashboardService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
-    this.initChart();
+    this.initChartOptions();
     this.initCalendarOptions();
     const nombreUsuario = this.authStore.obtenerNombreUsuario();
     this.username = nombreUsuario ?? 'Usuario';
@@ -52,8 +56,63 @@ export class Home implements OnInit {
 
     if (this.isBrowser) {
       this.cargarEventosDelBackend();
+      this.cargarEstadisticas();
     }
   }
+  initChartOptions() {
+    this.chartOptions = {
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#495057' }
+        }
+      },
+      cutout: '60%' // Esto hace que el gráfico de torta tenga un agujero en el medio (Doughnut)
+    };
+  }
+  // 3. La magia: Llenar los gráficos con datos del Backend
+  cargarEstadisticas() {
+    this.dashboardService.obtenerResumenGeneral().subscribe({
+      next: (data) => {
+        // Armamos el gráfico de Proyectos con los datos reales del backend
+        this.chartProyectos = {
+          labels: ['Activos', 'Finalizados', 'Baja'],
+          datasets: [
+            {
+              data: [
+                data.proyectos.activos, 
+                data.proyectos.finalizados, 
+                data.proyectos.baja
+              ],
+              backgroundColor: ['#3b82f6', '#10b981', '#ef4444'],
+              hoverBackgroundColor: ['#2563eb', '#059669', '#dc2626']
+            }
+          ]
+        };
+
+        // Armamos el gráfico de Tareas con los datos reales del backend
+        this.chartTareas = {
+          labels: ['Pendientes', 'Completadas'],
+          datasets: [
+            {
+              data: [
+                data.tareas.pendientes, 
+                data.tareas.completadas
+              ],
+              backgroundColor: ['#f59e0b', '#8b5cf6'],
+              hoverBackgroundColor: ['#d97706', '#7c3aed']
+            }
+          ]
+        };
+        
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar las estadísticas del dashboard:', err);
+      }
+    });
+  }
+
 
   initCalendarOptions() {
     this.calendarOptions = {

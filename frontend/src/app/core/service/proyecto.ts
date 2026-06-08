@@ -39,4 +39,6 @@ export class ProyectoService {
     if (estado) url += `?estado=${estado}`;
     window.open(url, '_blank'); 
   }
+
+
 }
