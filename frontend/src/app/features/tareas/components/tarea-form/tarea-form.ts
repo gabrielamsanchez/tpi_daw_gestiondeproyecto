@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProyectoService } from '../../../proyectos/services/proyecto'; 
 import { DatePickerModule } from 'primeng/datepicker'; 
 
@@ -26,12 +26,21 @@ export class TareaForm implements OnInit {
   };
 
   proyectosDisponibles: any[] = [];
+  isProyectoFijo: boolean = false; // 2. BANDERA PARA BLOQUEAR EL SELECTOR
   private proyectoService = inject(ProyectoService);
   private cdr = inject(ChangeDetectorRef);
+
+  // 3. INYECTAR LA CONFIGURACIÓN DEL MODAL
+  public config = inject(DynamicDialogConfig);
 
   constructor(public ref: DynamicDialogRef) {}
 
   ngOnInit() {
+    // 4. VERIFICAMOS SI NOS MANDARON UN PROYECTO FIJO
+    if (this.config.data && this.config.data.idProyectoFijo) {
+      this.tarea.proyectoId = this.config.data.idProyectoFijo;
+      this.isProyectoFijo = true; // Bloqueamos el dropdown
+    }
     this.proyectoService.obtenerProyectos(1, 100).subscribe({
       next: (response) => {
         // 👇 Asignamos directo y forzamos la actualización sin setTimeout

@@ -96,6 +96,20 @@
   color: #475569 !important;
 }
 
+/* --- ESTADO BLOQUEADO (DISABLED) DEL SELECTOR --- */
+:host ::ng-deep .custom-select.p-disabled {
+  background-color: #f1f5f9 !important; /* Fondo gris claro (slate-100) */
+  border-color: #cbd5e1 !important; /* Borde gris neutro (slate-300) */
+  opacity: 1 !important; /* Forzamos opacidad al 100% para que el fondo se note */
+  cursor: not-allowed !important; /* Cambia el puntero al icono de bloqueado */
+}
+
+/* Color del texto y la flechita cuando está bloqueado */
+:host ::ng-deep .custom-select.p-disabled .p-select-label,
+:host ::ng-deep .custom-select.p-disabled .p-icon {
+  color: #94a3b8 !important; /* Texto gris plomizo (slate-400) */
+  cursor: not-allowed !important;
+}
 
 .footer-actions {
   width: 100%;

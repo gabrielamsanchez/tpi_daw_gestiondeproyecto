@@ -23,14 +23,16 @@ export class UiService {
   }
 
   // Nuevo método para la Tarea
-  openNuevaTarea(): DynamicDialogRef | null {
+  openNuevaTarea(datosExtra?: any): DynamicDialogRef | null {
     return this.dialogService.open(TareaForm, {
       header: ' ',
+      data: datosExtra, // <-- ESTA ES LA LÍNEA MÁGICA
       width: '450px',
       contentStyle: { overflow: 'auto', 'border-radius': '20px' },
       baseZIndex: 10000,
       styleClass: 'custom-modal-v2',
-      maskStyleClass: 'dialog-mask-blur'
+      maskStyleClass: 'dialog-mask-blur',
+      
     });
   }
 

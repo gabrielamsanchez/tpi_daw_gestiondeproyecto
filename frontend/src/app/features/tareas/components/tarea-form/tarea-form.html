@@ -3,7 +3,7 @@
     <i class="pi pi-times"></i>
   </button>
 
-    <h2 class="modal-title">Nueva Tarea</h2>
+  <h2 class="modal-title">Nueva Tarea</h2>
 
   <div class="field">
     <label for="titulo">TÍTULO DE LA TAREA</label>
@@ -27,38 +27,40 @@
       optionValue="id"
       placeholder="Seleccione un proyecto" 
       styleClass="custom-select"
-      appendTo="body">
+      appendTo="body"
+      [disabled]="isProyectoFijo"> 
     </p-select>
   </div>
 
   <div class="grid px-3">
-  <div class="col-12 md:col-6 field mb-3 flex flex-column gap-2 text-left">
-    <label for="fecha_inicio" class="font-semibold" style="color: #475569;">Fecha de Inicio</label>
-    <p-datepicker 
-      id="fecha_inicio" 
-      [(ngModel)]="tarea.fechaInicio" 
-      name="fechaInicio"
-      dateFormat="yy-mm-dd" 
-      placeholder="Seleccione inicio"
-      appendTo="body"
-      styleClass="w-full">
-    </p-datepicker>
+    <div class="col-12 md:col-6 field mb-3 flex flex-column gap-2 text-left">
+      <label for="fecha_inicio" class="font-semibold" style="color: #475569;">Fecha de Inicio</label>
+      <p-datepicker 
+        id="fecha_inicio" 
+        [(ngModel)]="tarea.fechaInicio" 
+        name="fechaInicio"
+        dateFormat="yy-mm-dd" 
+        placeholder="Seleccione inicio"
+        appendTo="body"
+        styleClass="w-full">
+      </p-datepicker>
+    </div>
+
+    <div class="col-12 md:col-6 field mb-3 flex flex-column gap-2 text-left">
+      <label for="fecha_limite" class="font-semibold" style="color: #475569;">Fecha Límite</label>
+      <p-datepicker 
+        id="fecha_limite" 
+        [(ngModel)]="tarea.fechaLimite" 
+        name="fechaLimite"
+        dateFormat="yy-mm-dd" 
+        placeholder="Seleccione límite"
+        appendTo="body"
+        styleClass="w-full">
+      </p-datepicker>
+    </div>
   </div>
 
-  <div class="col-12 md:col-6 field mb-3 flex flex-column gap-2 text-left">
-    <label for="fecha_limite" class="font-semibold" style="color: #475569;">Fecha Límite</label>
-    <p-datepicker 
-      id="fecha_limite" 
-      [(ngModel)]="tarea.fechaLimite" 
-      name="fechaLimite"
-      dateFormat="yy-mm-dd" 
-      placeholder="Seleccione límite"
-      appendTo="body"
-      styleClass="w-full">
-    </p-datepicker>
-  </div>
-</div>
-</div>
   <div class="footer-actions">
     <p-button label="GUARDAR" styleClass="btn-guardar-premium" (onClick)="guardar()"></p-button>
   </div>
+</div>

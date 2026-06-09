@@ -137,7 +137,8 @@ export class Tareas implements OnInit {
     }
 
     crearNuevaTarea() {
-        const ref = this.uiService.openNuevaTarea();
+        // Le pasamos el ID por debajo de la mesa al modal
+        const ref = this.uiService.openNuevaTarea({ idProyectoFijo: this.idProyectoActual });
 
         if (ref) {
             ref.onClose.subscribe((datosDeLaTarea: any) => {
