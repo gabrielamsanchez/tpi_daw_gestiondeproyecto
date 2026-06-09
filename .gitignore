@@ -177,3 +177,7 @@ bazel-out/
 *.sw?
 
 documentation/
+
+# Certificados SSL locales
+*.pem
+/certs/

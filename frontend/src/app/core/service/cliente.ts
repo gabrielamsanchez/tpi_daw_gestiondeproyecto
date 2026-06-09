@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InterfaceCliente } from '../interfaces/interface-cliente';
+import { DescargarCsvService } from './descargar-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
   private http = inject(HttpClient);
-
+ private csvDescargar = inject(DescargarCsvService);
   private apiUrl = 'api/v1/clientes';
 
   getClientes(): Observable<InterfaceCliente[]> {
@@ -25,5 +26,11 @@ export class ClienteService {
 
   eliminarCliente(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  descargarCsv(estado?: string) {
+    let url = `${this.apiUrl}/exportar/csv`;
+    if (estado) url += `?estado=${estado}`;
+    this.csvDescargar.descargarDesdeUrl(url, 'reporte_clientes.csv');
   }
 }

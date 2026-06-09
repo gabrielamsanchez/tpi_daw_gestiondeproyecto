@@ -1,20 +1,36 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api'
 
 @Injectable({
     providedIn: 'root'
 })
 export class DescargarCsvService {
     private http = inject(HttpClient);
+    private messageService = inject(MessageService);
 
     descargarDesdeUrl(urlEndpoint: string, nombreArchivo: string) {
         this.http.get(urlEndpoint, { responseType: 'blob' })
             .subscribe({
                 next: (blob: Blob) => {
                     this.ejecutarDescargaDOM(blob, nombreArchivo);
+
+                    // Alerta de éxito
+                    this.messageService.add({ 
+                        severity: 'success', 
+                        summary: 'Descarga Exitosa', 
+                        detail: `El archivo "${nombreArchivo}" se ha generado correctamente.` 
+                    });
                 },
+
+
                 error: (err) => {
                     console.error(`Error al descargar ${nombreArchivo}:`, err);
+                    this.messageService.add({ 
+                        severity: 'error', 
+                        summary: 'Error', 
+                        detail: `No se pudo procesar la descarga de "${nombreArchivo}".` 
+                    });
                 }
             });
     }

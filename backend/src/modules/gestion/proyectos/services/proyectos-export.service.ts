@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Proyecto } from '../entities/proyecto.entity';
 import { QueryProyectoDto } from '../dtos/input/query-proyecto.dto';
-import { generarArchivoCsv } from '../../../../common/utils/csv-generator.util'; 
+import { generarArchivoCsv } from '../../../../common/utils/csv-generator.util';
 
 @Injectable()
 export class ProyectosExportService {
@@ -63,6 +63,8 @@ export class ProyectosExportService {
       'ID Tarea',
       'Descripción',
       'Estado',
+      'fecha_inicio',
+      'fecha_limite',
       'ID Proyecto',
       'Nombre Proyecto',
     ];
@@ -72,6 +74,8 @@ export class ProyectosExportService {
         [
           'N/A',
           'El proyecto no tiene tareas registradas',
+          'N/A',
+          'N/A',
           'N/A',
           proyecto.id,
           proyecto.nombre,
@@ -83,6 +87,8 @@ export class ProyectosExportService {
       t.id,
       t.descripcion,
       t.estado,
+      t.fecha_inicio,
+      t.fecha_limite,
       proyecto.id,
       proyecto.nombre,
     ]);

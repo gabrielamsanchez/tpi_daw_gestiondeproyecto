@@ -12,6 +12,7 @@ import { ClienteService } from '../../../../core/service/cliente';
 import { InterfaceCliente } from '../../../../core/interfaces/interface-cliente';
 import { UiService } from '../../../../core/service/ui';
 import { Back } from '../../../../shared/components/back/back';
+import { Download } from '../../../../shared/components/download/download';
 
 @Component({
     selector: 'app-tabla-clientes',
@@ -25,7 +26,8 @@ import { Back } from '../../../../shared/components/back/back';
         InputTextModule,
         FormsModule,
         Card,
-        Back
+        Back, 
+        Download
     ],
     providers: [MessageService],
     templateUrl: './cliente.html',
@@ -142,4 +144,15 @@ export class Cliente implements OnInit {
             });
         }
     }
-}
+
+
+       exportarCsvBackend() {
+        this.clienteService.descargarCsv();
+    }
+
+        
+        
+        
+
+    }
+

@@ -144,4 +144,12 @@
 
     </p-card>
   </main>
+
+  <div class="footer-row">
+        <app-download 
+            label="DESCARGAR REPORTE CSV" 
+            [disabled]="clientes.length === 0"
+            (btnClick)="exportarCsvBackend()">
+        </app-download>
+  </div>
 </div>
