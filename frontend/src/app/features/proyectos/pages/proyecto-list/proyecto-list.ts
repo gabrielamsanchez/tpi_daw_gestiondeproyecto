@@ -16,7 +16,6 @@ import { Proyecto } from '../../../../shared/interfaces/proyecto';
 import { AuthStore } from '../../../auth/auth-store'; 
 import { Download } from '../../../../shared/components/download/download';
 
-
 @Component({
     selector: 'app-proyecto-list',
     imports: [
@@ -34,18 +33,20 @@ export class ProyectoList implements OnInit {
     private proyectoService = inject(ProyectoService);
     private cdr = inject(ChangeDetectorRef);
     private router = inject(Router);
-
     private authStore = inject(AuthStore);
+    
     rolActual = this.authStore.obtenerRol();
-
     proyectos = signal<Proyecto[]>([]);
     statuses!: SelectItem[];
     clonedProyectos: { [s: string]: Proyecto } = {};
 
+    // NUEVA VARIABLE: Guarda el total de elementos que hay en la Base de Datos
+    totalRegistros: number = 0;
+    
+    // Guardamos los ultimos parametros para poder refrescar la tabla correctamente
+    ultimoEventoLazy: any;
 
     ngOnInit() {
-        this.cargarProyectos();
-     
         this.statuses = [
             { label: 'Activo', value: 'ACTIVO' },
             { label: 'Finalizado', value: 'FINALIZADO' },
@@ -57,14 +58,31 @@ export class ProyectoList implements OnInit {
         this.router.navigate(['/proyectos', proyecto.id, 'tareas']);
     }
 
-    cargarProyectos() {
-        this.proyectoService.obtenerProyectos(1, 50).subscribe({
+    // NUEVO MÉTODO MAESTRO: Escucha a PrimeNG y golpea a NestJS
+    cargarProyectosLazy(event: any) {
+        this.ultimoEventoLazy = event;
+
+        // Paginación
+        const page = (event.first / event.rows) + 1;
+        const limit = event.rows;
+        
+        // Filtro 1: Texto del buscador global
+        const search = event.globalFilter || '';
+        
+        // Filtro 2: Estado del p-select (CORREGIDO PARA LEER ARRAYS DE PRIMENG)
+        const filtroEstado = event.filters?.['estado'];
+        const estado = Array.isArray(filtroEstado) ? filtroEstado[0]?.value : filtroEstado?.value;
+        const estadoFinal = estado || ''; // Si limpiamos el filtro, mandamos un string vacío
+
+        // Golpeamos a tu servicio enviando la combinación de ambos criterios
+        this.proyectoService.obtenerProyectos(page, limit, search, estadoFinal).subscribe({
             next: (response) => {
                 this.proyectos.set(response.data);
+                this.totalRegistros = response.total;
                 this.cdr.detectChanges();
             },
             error: () => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los proyectos' });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron sincronizar los datos con el servidor' });
             }
         });
     }
@@ -75,7 +93,6 @@ export class ProyectoList implements OnInit {
 
     onRowEditSave(proyecto: Proyecto) {
         if (proyecto.nombre && proyecto.nombre.trim().length > 0) {
-            
             const payloadLimpio = {
                 nombre: proyecto.nombre,
                 estado: proyecto.estado,
@@ -83,13 +100,12 @@ export class ProyectoList implements OnInit {
             };
 
             this.proyectoService.actualizarProyecto(proyecto.id, payloadLimpio).subscribe({
-                next: (proyectoActualizado) => {
+                next: () => {
                     delete this.clonedProyectos[proyecto.id];
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Proyecto actualizado en la base de datos' });
                 },
                 error: (err) => {
                     console.error(err);
-            
                     this.onRowEditCancel(proyecto, this.proyectos().findIndex(p => p.id === proyecto.id));
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fallo al actualizar el proyecto' });
                 }
@@ -104,10 +120,8 @@ export class ProyectoList implements OnInit {
             listaActual[index] = this.clonedProyectos[proyecto.id];
             return [...listaActual]; 
         });
-        
         delete this.clonedProyectos[proyecto.id];
     }
-
     
     eliminarProyecto(proyecto: Proyecto) {
         if (this.rolActual !== 'ADMIN') {
@@ -136,7 +150,10 @@ export class ProyectoList implements OnInit {
                 if (datos) {
                     this.proyectoService.crearProyecto(datos).subscribe({
                         next: () => {
-                            this.cargarProyectos(); 
+                            // Refrescamos llamando al evento perezoso actual para mantenernos en la misma página
+                            if (this.ultimoEventoLazy) {
+                                this.cargarProyectosLazy(this.ultimoEventoLazy);
+                            }
                             this.messageService.add({ severity: 'success', summary: 'Creado', detail: 'Proyecto registrado exitosamente' });
                         }
                     });
