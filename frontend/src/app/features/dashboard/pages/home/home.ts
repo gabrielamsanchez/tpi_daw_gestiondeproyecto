@@ -2,8 +2,8 @@ import { Component, OnInit, Inject, PLATFORM_ID, inject, ChangeDetectorRef } fro
 import { ChartModule } from 'primeng/chart';
 import { ButtonModule } from 'primeng/button';
 import { UiService } from '../../../../core/service/ui';
-import { ProyectoService } from '../../../../core/service/proyecto';
-import { TareaService } from '../../../../../app/features/tareas/services/tarea.service'; 
+import { ProyectoService } from '../../../proyectos/proyecto-api';
+import { TareaService } from '../../../tareas/tarea-api';
 import { CommonModule, isPlatformBrowser } from "@angular/common";
 import { AuthStore } from '../../../../features/auth/auth-store';
 import { Router } from '@angular/router';

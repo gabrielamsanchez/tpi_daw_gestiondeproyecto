@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Back } from '../../shared/components/back/back';
-import { UsuarioService } from '../../core/service/usuario-service';
+import { UsuarioService } from './usuario-api';
 import { Usuario } from '../../shared/interfaces/usuario';
 
 @Component({

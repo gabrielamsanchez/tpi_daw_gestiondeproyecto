@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UiService } from '../../../core/service/ui';
 import { AuthService } from '../../../features/auth/auth-service';
 import { AuthStore } from '../../../features/auth/auth-store';
-import { ProyectoService } from '../../../core/service/proyecto';
+import { ProyectoService } from '../../../features/proyectos/proyecto-api';
 
 @Component({
   selector: 'app-sidebar',

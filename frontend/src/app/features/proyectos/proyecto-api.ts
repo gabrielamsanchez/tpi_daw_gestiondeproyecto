@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { Proyecto } from '../../../shared/interfaces/proyecto';
+import { Proyecto } from '../../shared/interfaces/proyecto';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { DescargarCsvService } from '../../../core/service/descargar-service';
+import { DescargarCsvService } from '../../core/service/descargar-service';
 
 @Injectable({
   providedIn: 'root'

@@ -11,7 +11,7 @@ import { SelectItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { UiService } from '../../../../core/service/ui';
 import { Back } from '../../../../shared/components/back/back';
-import { ProyectoService } from '../../services/proyecto';
+import { ProyectoService } from '../../proyecto-api';
 import { Proyecto } from '../../../../shared/interfaces/proyecto';
 import { AuthStore } from '../../../auth/auth-store'; 
 import { Download } from '../../../../shared/components/download/download';

@@ -9,7 +9,7 @@ import { Tarea } from '../../shared/interfaces/tarea';
 export class CalendarioService {
   private http = inject(HttpClient);
  
-  private apiUrl = 'http://localhost:3000/api/v1/tareas/calendario';
+  private apiUrl = 'api/v1/tareas/calendario';
 
   obtenerEventos(): Observable<Tarea[]> {
     return this.http.get<Tarea[]>(this.apiUrl);

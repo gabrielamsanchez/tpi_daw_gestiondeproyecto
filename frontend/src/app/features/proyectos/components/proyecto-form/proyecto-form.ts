@@ -5,7 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ClienteService } from '../../../../core/service/cliente';
+import { ClienteService } from '../../../clientes/cliente-api';
 import { Proyecto } from '../../../../shared/interfaces/proyecto';
 
 @Component({

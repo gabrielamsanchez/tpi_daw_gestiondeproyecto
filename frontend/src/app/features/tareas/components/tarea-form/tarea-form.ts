@@ -6,7 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ProyectoService } from '../../../proyectos/services/proyecto'; 
+import { ProyectoService } from '../../../proyectos/proyecto-api';
 import { DatePickerModule } from 'primeng/datepicker'; 
 
 @Component({

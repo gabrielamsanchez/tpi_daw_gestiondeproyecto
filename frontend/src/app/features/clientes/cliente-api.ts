@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InterfaceCliente } from '../interfaces/interface-cliente';
-import { DescargarCsvService } from './descargar-service';
+import { InterfaceCliente } from '../../shared/interfaces/interface-cliente';
+import { DescargarCsvService } from '../../core/service/descargar-service';
 
 @Injectable({
   providedIn: 'root'
