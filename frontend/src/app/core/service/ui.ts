@@ -22,11 +22,10 @@ export class UiService {
     });
   }
 
-  // Nuevo método para la Tarea
   openNuevaTarea(datosExtra?: any): DynamicDialogRef | null {
     return this.dialogService.open(TareaForm, {
       header: ' ',
-      data: datosExtra, // <-- ESTA ES LA LÍNEA MÁGICA
+      data: datosExtra, 
       width: '450px',
       contentStyle: { overflow: 'auto', 'border-radius': '20px' },
       baseZIndex: 10000,
@@ -38,10 +37,11 @@ export class UiService {
 
    openNuevoCliente(): DynamicDialogRef | null {
     return this.dialogService.open(ClienteForm, {
-      header: 'Nuevo Cliente',
-      width: '450px',
+      header: ' ', 
+      width: '400px',
       contentStyle: { overflow: 'visible' }, 
       baseZIndex: 10000,
+      styleClass: 'custom-modal-v2', 
       maskStyleClass: 'dialog-mask-blur'
     });
   }
