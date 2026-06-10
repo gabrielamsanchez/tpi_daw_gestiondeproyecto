@@ -39,18 +39,17 @@ export class Sidebar {
             nombre: datosDelFormulario.nombre.trim()
           };
 
-          // Solo pasamos el cliente si realmente seleccionaron uno
+          
           if (datosDelFormulario.idCliente) {
             proyectoLimpio.idCliente = Number(datosDelFormulario.idCliente);
           }
 
-          // Enviamos la petición
+         
           this.proyectoService.crearProyecto(proyectoLimpio).subscribe({
             next: (respuesta) => {
               console.log('¡Proyecto creado con éxito desde el Sidebar!', respuesta);
               
-              // TRUCO DE UX: Si ya está en la vista de proyectos, recargamos la ruta.
-              // Si está en otra vista, lo mandamos a la vista de proyectos.
+              
               if (this.router.url === '/proyectos') {
                 this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
                   this.router.navigate(['/proyectos']);

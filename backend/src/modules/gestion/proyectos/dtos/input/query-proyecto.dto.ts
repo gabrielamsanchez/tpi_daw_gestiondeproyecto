@@ -21,7 +21,7 @@ export class QueryProyectoDto {
 
   @ApiPropertyOptional({ description: 'Número de página', default: 1 })
   @IsOptional()
-  @Type(() => Number) // EXPLICACION DE TYPE AL FINAL
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   page?: number = 1;

@@ -40,10 +40,10 @@ export class ProyectoList implements OnInit {
     statuses!: SelectItem[];
     clonedProyectos: { [s: string]: Proyecto } = {};
 
-    // NUEVA VARIABLE: Guarda el total de elementos que hay en la Base de Datos
+    
     totalRegistros: number = 0;
     
-    // Guardamos los ultimos parametros para poder refrescar la tabla correctamente
+    
     ultimoEventoLazy: any;
 
     ngOnInit() {
@@ -58,23 +58,23 @@ export class ProyectoList implements OnInit {
         this.router.navigate(['/proyectos', proyecto.id, 'tareas']);
     }
 
-    // NUEVO MÉTODO MAESTRO: Escucha a PrimeNG y golpea a NestJS
+    
     cargarProyectosLazy(event: any) {
         this.ultimoEventoLazy = event;
 
-        // Paginación
+       
         const page = (event.first / event.rows) + 1;
         const limit = event.rows;
         
-        // Filtro 1: Texto del buscador global
+        
         const search = event.globalFilter || '';
         
-        // Filtro 2: Estado del p-select (CORREGIDO PARA LEER ARRAYS DE PRIMENG)
+        
         const filtroEstado = event.filters?.['estado'];
         const estado = Array.isArray(filtroEstado) ? filtroEstado[0]?.value : filtroEstado?.value;
-        const estadoFinal = estado || ''; // Si limpiamos el filtro, mandamos un string vacío
+        const estadoFinal = estado || ''; 
 
-        // Golpeamos a tu servicio enviando la combinación de ambos criterios
+        
         this.proyectoService.obtenerProyectos(page, limit, search, estadoFinal).subscribe({
             next: (response) => {
                 this.proyectos.set(response.data);
@@ -150,7 +150,7 @@ export class ProyectoList implements OnInit {
                 if (datos) {
                     this.proyectoService.crearProyecto(datos).subscribe({
                         next: () => {
-                            // Refrescamos llamando al evento perezoso actual para mantenernos en la misma página
+                            
                             if (this.ultimoEventoLazy) {
                                 this.cargarProyectosLazy(this.ultimoEventoLazy);
                             }

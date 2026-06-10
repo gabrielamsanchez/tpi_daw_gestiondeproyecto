@@ -13,6 +13,8 @@ import {
   Res,
   Query,
 } from '@nestjs/common';
+import type { Response } from 'express';
+
 import {
   ApiBearerAuth,
   ApiTags,
@@ -63,12 +65,15 @@ export class ClienteController {
 
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
-  @Get('exportar/csv') // <-- arriba de :id
+  @Get('exportar/csv')
   @ApiOperation({
     summary:
       'Descargar listado de clientes en CSV, filtrando opcionalmente por estado',
   })
-  async exportarCsv(@Res() res: any, @Query('estado') estado?: EstadoCliente) {
+  async exportarCsv(
+    @Res() res: Response,
+    @Query('estado') estado?: EstadoCliente,
+  ) {
     const csvContent = await this.clienteService.exportarClientesCsv(estado);
 
     const nombreArchivo = estado
@@ -80,8 +85,7 @@ export class ClienteController {
       'Content-Disposition',
       `attachment; filename=${nombreArchivo}`,
     );
-
-    return res.status(HttpStatus.OK).send(csvContent);
+    res.status(HttpStatus.OK).send(csvContent);
   }
 
   // get cliente por id

@@ -35,8 +35,7 @@ export class AuthControllerController {
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Credenciales inválidas.',
+    description: 'Credenciales inválidas.',
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,

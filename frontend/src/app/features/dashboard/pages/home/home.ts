@@ -67,14 +67,14 @@ export class Home implements OnInit {
           labels: { color: '#495057' }
         }
       },
-      cutout: '60%' // Esto hace que el gráfico de torta tenga un agujero en el medio (Doughnut)
+      cutout: '60%' 
     };
   }
-  // 3. La magia: Llenar los gráficos con datos del Backend
+  
   cargarEstadisticas() {
     this.dashboardService.obtenerResumenGeneral().subscribe({
       next: (data) => {
-        // Armamos el gráfico de Proyectos con los datos reales del backend
+        
         this.chartProyectos = {
           labels: ['Activos', 'Finalizados', 'Baja'],
           datasets: [
@@ -90,7 +90,7 @@ export class Home implements OnInit {
           ]
         };
 
-        // Armamos el gráfico de Tareas con los datos reales del backend
+        
         this.chartTareas = {
           labels: ['Pendientes', 'Completadas'],
           datasets: [
@@ -248,23 +248,22 @@ export class Home implements OnInit {
       ref.onClose.subscribe((datosDelFormulario: any)=>{
         if(datosDelFormulario && datosDelFormulario.nombre){
           
-          // 1. ARMAMOS EL PAYLOAD BLINDADO PARA NESTJS
+          
           const proyectoLimpio: any = {
             nombre: datosDelFormulario.nombre.trim()
           };
 
-          // Solo agregamos el idCliente si el usuario realmente seleccionó uno
+          
           if (datosDelFormulario.idCliente) {
             proyectoLimpio.idCliente = Number(datosDelFormulario.idCliente);
           }
 
-          // 2. ENVIAMOS LA PETICIÓN
+          
           this.proyectoService.crearProyecto(proyectoLimpio).subscribe({
             next: (respuesta) => {
               console.log('¡Proyecto creado con éxito desde el Dashboard!', respuesta);
               
-              // ¡Magia extra! Recargamos las estadísticas para que el gráfico 
-              // de "Proyectos" sume 1 automáticamente sin tener que refrescar la página
+              
               this.cargarEstadisticas();
             },
             error: (err) => {

@@ -36,14 +36,14 @@ export class TareaForm implements OnInit {
   constructor(public ref: DynamicDialogRef) {}
 
   ngOnInit() {
-    // 4. VERIFICAMOS SI NOS MANDARON UN PROYECTO FIJO
+    
     if (this.config.data && this.config.data.idProyectoFijo) {
       this.tarea.proyectoId = this.config.data.idProyectoFijo;
       this.isProyectoFijo = true; // Bloqueamos el dropdown
     }
     this.proyectoService.obtenerProyectos(1, 100).subscribe({
       next: (response) => {
-        // 👇 Asignamos directo y forzamos la actualización sin setTimeout
+        
         this.proyectosDisponibles = response.data || response; 
         this.cdr.detectChanges();
       },

@@ -15,10 +15,10 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 export class ClienteForm implements OnInit {
 
-  // Objeto base que mapea con los campos de tu listado principal
+  
   cliente = {
     nombre: '',
-    estado: 'Activo', // Valor por defecto
+    estado: 'Activo', 
     telefono: '',
     correo: ''
   };
@@ -34,11 +34,11 @@ export class ClienteForm implements OnInit {
   guardar() {
     // Validación simple: obligamos a que ponga mínimo el nombre
     if (this.cliente.nombre.trim()) {
-      this.ref.close(this.cliente); // Enviamos los datos de vuelta a la tabla
+      this.ref.close(this.cliente); 
     }
   }
 
   cerrar() {
-    this.ref.close(); // Cierra el modal sin mandar datos
+    this.ref.close(); 
   }
 }

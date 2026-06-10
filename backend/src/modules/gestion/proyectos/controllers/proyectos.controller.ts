@@ -13,6 +13,9 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
+
+import type { Response } from 'express';
+
 import {
   ApiBearerAuth,
   ApiTags,
@@ -24,7 +27,7 @@ import { ProyectosService } from '../services/proyectos.service';
 import { CreateProyectoDto } from '../dtos/input/create-proyecto.dto';
 import { UpdateProyectoDto } from '../dtos/input/update-proyecto.dto';
 import { AuthGuardGuard } from '../../../auth/guards/auth-guard.guard';
-import { Proyecto } from '../entities/proyecto.entity'; // Ajusta la ruta a tu Guard
+import { Proyecto } from '../entities/proyecto.entity';
 import { RolesGuard } from '../../../auth/guards/roles.guard';
 import { ROLES } from '../../../auth/decorators/roles.decorators';
 import { RolUsuario } from '../../usuarios/enum/rol-usuario.enum';
@@ -54,7 +57,6 @@ export class ProyectosController {
     return await this.proyectosService.crearProyecto(dto);
   }
 
-  // Obtener todos CON BÚSQUEDA AVANZADA, funcionalidad extra
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Get()
@@ -69,7 +71,6 @@ export class ProyectosController {
     return await this.proyectosService.obtenerTodos(query);
   }
 
-  // 1. EXPORTAR TODOS LOS PROYECTOS (CON FILTROS)
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Get('exportar/csv') // arriba de :id
@@ -77,7 +78,7 @@ export class ProyectosController {
     summary:
       'Descargar proyectos en CSV aplicando los mismos filtros de búsqueda',
   })
-  async exportarCsv(@Res() res: any, @Query() query: QueryProyectoDto) {
+  async exportarCsv(@Res() res: Response, @Query() query: QueryProyectoDto) {
     const csvContent = await this.proyectosService.exportarCsv(query);
 
     const sufijo = query.estado ? `_${query.estado.toLowerCase()}` : '_todos';
@@ -87,19 +88,28 @@ export class ProyectosController {
       `attachment; filename=reporte_proyectos${sufijo}.csv`,
     );
 
-    return res.status(HttpStatus.OK).send(csvContent);
+    res.status(HttpStatus.OK).send(csvContent);
   }
 
-  // 2. EXPORTAR UN PROYECTO ESPECÍFICO CON SUS TAREAS
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Get(':id/exportar/csv') // arriba de :id
-  @ApiOperation({ summary: 'Descargar el detalle de un proyecto específico y sus tareas en formato CSV' })
-  async exportarProyectoEspecificoCsv(@Param('id', ParseIntPipe) id: number, @Res() res: any) {
-    const csvContent = await this.proyectosService.exportarProyectoConTareasCsv(id);
+  @ApiOperation({
+    summary:
+      'Descargar el detalle de un proyecto específico y sus tareas en formato CSV',
+  })
+  async exportarProyectoEspecificoCsv(
+    @Param('id', ParseIntPipe) id: number,
+    @Res() res: Response,
+  ) {
+    const csvContent =
+      await this.proyectosService.exportarProyectoConTareasCsv(id);
 
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', `attachment; filename=proyecto_${id}_tareas.csv`);
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=proyecto_${id}_tareas.csv`,
+    );
 
     return res.status(HttpStatus.OK).send(csvContent);
   }
@@ -119,11 +129,11 @@ export class ProyectosController {
     return await this.proyectosService.obtenerPorId(id);
   }
 
-  // Actualizar 
+  // Actualizar
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Put(':id')
-  @HttpCode(HttpStatus.OK) 
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Actualizar un proyecto existente' })
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
   @ApiResponse({
@@ -147,7 +157,7 @@ export class ProyectosController {
   @UseGuards(AuthGuardGuard, RolesGuard)
   @ROLES(RolUsuario.ADMIN)
   @Delete(':id')
-  @HttpCode(HttpStatus.OK) 
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Eliminar un proyecto (Baja Lógica)' })
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
   @ApiResponse({
