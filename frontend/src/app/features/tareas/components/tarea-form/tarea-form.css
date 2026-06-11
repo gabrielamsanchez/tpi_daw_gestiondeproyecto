@@ -61,7 +61,11 @@
   text-align: center;
   letter-spacing: 0.05em;
 }
-
+.p-error , .pi-exclamation-triangle{
+    color: #b91c1c;
+    font-size: 0.9rem;
+    text-align: left;
+}
 
 .custom-input {
   width: 100%;
