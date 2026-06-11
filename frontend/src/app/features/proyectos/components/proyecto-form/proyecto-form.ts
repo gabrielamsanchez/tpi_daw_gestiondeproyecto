@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; // <-- 1. Importado
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -18,8 +18,6 @@ import { Proyecto } from '../../../../shared/interfaces/proyecto';
 export class ProyectoForm implements OnInit {
   ref = inject(DynamicDialogRef);
   private clienteService = inject(ClienteService);
-  
-
   private cdr = inject(ChangeDetectorRef); 
 
   proyecto: Partial<Proyecto> = {
@@ -33,7 +31,6 @@ export class ProyectoForm implements OnInit {
     this.clienteService.getClientes().subscribe({
       next: (response: any) => {
         this.clientesDisponibles = response.data ? response.data : response; 
-      
         this.cdr.detectChanges(); 
       },
       error: (err) => {
@@ -42,8 +39,15 @@ export class ProyectoForm implements OnInit {
     });
   }
 
+  formularioValido(): boolean {
+    return !!this.proyecto.nombre && 
+           this.proyecto.nombre.trim().length >= 5 && 
+           this.proyecto.idCliente !== undefined && 
+           this.proyecto.idCliente !== null;
+  }
+
   guardar() {
-    if (this.proyecto.nombre) {
+    if (this.formularioValido()) {
       this.ref.close(this.proyecto); 
     }
   }
