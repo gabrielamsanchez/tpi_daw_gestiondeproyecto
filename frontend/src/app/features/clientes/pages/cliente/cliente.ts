@@ -48,7 +48,7 @@ export class Cliente implements OnInit {
 
         this.estados = [
             { label: 'Activo', value: 'ACTIVO' },
-            { label: 'Inactivo', value: 'BAJA' }
+            { label: 'Baja', value: 'BAJA' }
         ];
     }
 
@@ -102,7 +102,7 @@ export class Cliente implements OnInit {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Baja Exitosa',
-                    detail: `El cliente "${cliente.nombre}" no tiene proyectos asociados. Cambiado a Inactivo.`
+                    detail: `El cliente "${cliente.nombre}" no tiene proyectos asociados. Cambiado a Baja.`
                 });
                 this.loadClientes(); 
             },

@@ -26,7 +26,7 @@ export class ClienteForm implements OnInit {
   constructor(public ref: DynamicDialogRef) {}
 
   ngOnInit() {
-    this.estadosDisponibles = ['Activo', 'Inactivo'];
+    this.estadosDisponibles = ['Activo', 'Baja'];
   }
 
   esCorreoValido(): boolean {
