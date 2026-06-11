@@ -86,15 +86,18 @@ export class ProyectoForm implements OnInit {
 
   clientesDisponibles: any[] = [];
 
-  ngOnInit() {
+ngOnInit() {
       this.clienteService.getClientes().subscribe({
         next: (response: any) => {
           const todosLosClientes = response.data ? response.data : response; 
           
-          this.clientesDisponibles = todosLosClientes.filter((cliente: any) => 
+          let clientesActivos = todosLosClientes.filter((cliente: any) => 
             cliente.estado && cliente.estado.toUpperCase() === 'ACTIVO'
           );
           
+          clientesActivos.unshift({ id: null, nombre: 'Ninguno (Proyecto Interno)' });
+
+          this.clientesDisponibles = clientesActivos;
           this.cdr.detectChanges(); 
         },
         error: (err) => {
@@ -105,9 +108,7 @@ export class ProyectoForm implements OnInit {
 
   formularioValido(): boolean {
     return !!this.proyecto.nombre && 
-           this.proyecto.nombre.trim().length >= 5 && 
-           this.proyecto.idCliente !== undefined && 
-           this.proyecto.idCliente !== null;
+           this.proyecto.nombre.trim().length >= 5;
   }
 
   guardar() {

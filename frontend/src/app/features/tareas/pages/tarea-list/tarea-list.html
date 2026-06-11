@@ -29,13 +29,14 @@
     </div>
 
     <div class="action-row">
-        <button
+       <button
             pButton
             type="button"
             label="CREAR NUEVA TAREA"
             class="btn-agregar-tarea"
             icon="pi pi-plus-circle"
-            (click)="crearNuevaTarea()">
+            (click)="crearNuevaTarea()"
+            [disabled]="!esProyectoActivo">
         </button>
     </div>
 
@@ -108,13 +109,21 @@
                         </p-cellEditor>
                     </td>
                     
-                    <td class="col-cell text-center">
+                   <td class="col-cell text-center">
                         <div class="flex items-center justify-center gap-2">
                             @if (!editing) {
-                                <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(tarea)" class="p-button-rounded p-button-text p-button-secondary"></button>
+                                <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" 
+                                    (click)="onRowEditInit(tarea)" 
+                                    class="p-button-rounded p-button-text p-button-secondary"
+                                    [disabled]="!esProyectoActivo">
+                                </button>
                                 
                                 @if (rolActual === 'ADMIN') {
-                                    <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmDeleteTarea(tarea)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    <button pButton pRipple type="button" icon="pi pi-trash" 
+                                        (click)="confirmDeleteTarea(tarea)" 
+                                        class="p-button-rounded p-button-text p-button-danger"
+                                        [disabled]="!esProyectoActivo">
+                                    </button>
                                 }
                             } @else {
                                 <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(tarea)" class="p-button-rounded p-button-text p-button-success"></button>

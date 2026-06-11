@@ -13,6 +13,8 @@ import { Cliente } from '../../clientes/entities/cliente.entity';
 import { EstadoCliente } from '../../clientes/enum/estado-cliente-enum';
 import { QueryProyectoDto } from '../dtos/input/query-proyecto.dto';
 import { ProyectosExportService } from './proyectos-export.service';
+import { Tarea } from '../../tareas/entities/tarea-entity';
+import { EstadoTarea } from '../../tareas/enum/estado-tareas-enum';
 
 @Injectable()
 export class ProyectosService {
@@ -21,6 +23,8 @@ export class ProyectosService {
     private readonly proyectosRepository: Repository<Proyecto>,
     @InjectRepository(Cliente)
     private readonly clientesRepository: Repository<Cliente>,
+    @InjectRepository(Tarea)
+    private readonly tareasRepository: Repository<Tarea>,
     private readonly exportService: ProyectosExportService,
   ) {}
 
@@ -36,6 +40,20 @@ export class ProyectosService {
     if (cliente.estado !== EstadoCliente.ACTIVO) {
       throw new BadRequestException(
         'Solo se pueden asignar proyectos a clientes en estado ACTIVO',
+      );
+    }
+  }
+  private async validarSinTareasPendientes(idProyecto: number): Promise<void> {
+    const cantidadPendientes = await this.tareasRepository.count({
+      where: {
+        proyecto: { id: idProyecto },
+        estado: EstadoTarea.PENDIENTE,
+      },
+    });
+
+    if (cantidadPendientes > 0) {
+      throw new BadRequestException(
+        'El proyecto aún tiene tareas en estado PENDIENTE.',
       );
     }
   }
@@ -103,19 +121,46 @@ export class ProyectosService {
     id: number,
     dto: UpdateProyectoDto,
   ): Promise<Proyecto> {
+    // Buscamos el proyecto original
     const proyecto = await this.obtenerPorId(id);
 
-    // Validamos el cliente si se está intentando cambiar
+    // 1. REGLA DE NEGOCIO ESTRICTA: Si está en BAJA, rechazamos al instante (Fail Fast)
+    if (proyecto.estado === EstadoProyecto.BAJA) {
+      throw new BadRequestException(
+        'El proyecto se encuentra dado de baja y no puede ser modificado.',
+      );
+    }
+    //validar que no tenga tareas pendiente
+    if (
+      dto.estado === EstadoProyecto.BAJA ||
+      dto.estado === EstadoProyecto.FINALIZADO
+    ) {
+      await this.validarSinTareasPendientes(id);
+    }
+    // 2. REGLA DE NEGOCIO PARA FINALIZADOS:
+    // Si ya se terminó, solo dejamos avanzar la petición si el objetivo es reactivarlo (cambiar su estado a ACTIVO)
+    if (
+      proyecto.estado === EstadoProyecto.FINALIZADO &&
+      dto.estado !== EstadoProyecto.ACTIVO
+    ) {
+      throw new BadRequestException(
+        'Un proyecto finalizado no puede ser modificado a menos que sea para reactivarlo.',
+      );
+    }
+
+    // 3. VALIDACIÓN DE CLIENTE
     if (dto.idCliente && dto.idCliente !== proyecto.idCliente) {
       await this.validarClienteActivo(dto.idCliente);
     }
 
+    // Si pasó todos los filtros, guardamos los cambios seguro
     this.proyectosRepository.merge(proyecto, dto);
     return await this.proyectosRepository.save(proyecto);
   }
 
   async eliminarProyecto(id: number) {
     const proyecto = await this.obtenerPorId(id);
+    await this.validarSinTareasPendientes(id);
     proyecto.estado = EstadoProyecto.BAJA;
     await this.proyectosRepository.save(proyecto);
     return {

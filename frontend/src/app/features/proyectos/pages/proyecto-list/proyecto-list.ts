@@ -39,42 +39,40 @@ export class ProyectoList implements OnInit {
     proyectos = signal<Proyecto[]>([]);
     statuses!: SelectItem[];
     clonedProyectos: { [s: string]: Proyecto } = {};
-
     
     totalRegistros: number = 0;
-    
-    
     ultimoEventoLazy: any;
 
     ngOnInit() {
-        this.statuses = [
-            { label: 'Activo', value: 'ACTIVO' },
-            { label: 'Finalizado', value: 'FINALIZADO' },
-            { label: 'Baja Lógica', value: 'BAJA' }
-        ];
+        if (this.rolActual === 'ADMIN') {
+            this.statuses = [
+                { label: 'Activo', value: 'ACTIVO' },
+                { label: 'Finalizado', value: 'FINALIZADO' },
+                { label: 'Baja Lógica', value: 'BAJA' }
+            ];
+        } else {
+            this.statuses = [
+                { label: 'Activo', value: 'ACTIVO' },
+                { label: 'Finalizado', value: 'FINALIZADO' }
+            ];
+        }
     }  
     
     verDetalleProyecto(proyecto: Proyecto) {
         this.router.navigate(['/proyectos', proyecto.id, 'tareas']);
     }
 
-    
     cargarProyectosLazy(event: any) {
         this.ultimoEventoLazy = event;
 
-       
         const page = (event.first / event.rows) + 1;
         const limit = event.rows;
-        
-        
         const search = event.globalFilter || '';
-        
         
         const filtroEstado = event.filters?.['estado'];
         const estado = Array.isArray(filtroEstado) ? filtroEstado[0]?.value : filtroEstado?.value;
         const estadoFinal = estado || ''; 
 
-        
         this.proyectoService.obtenerProyectos(page, limit, search, estadoFinal).subscribe({
             next: (response) => {
                 this.proyectos.set(response.data);
@@ -107,7 +105,16 @@ export class ProyectoList implements OnInit {
                 error: (err) => {
                     console.error(err);
                     this.onRowEditCancel(proyecto, this.proyectos().findIndex(p => p.id === proyecto.id));
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Fallo al actualizar el proyecto' });
+                    
+                    // ACÁ ESTÁ LA MAGIA: Capturamos el error exacto de NestJS
+                    let mensajeBackend = 'Fallo al actualizar el proyecto';
+                    if (err.error && err.error.message) {
+                        mensajeBackend = Array.isArray(err.error.message) 
+                            ? err.error.message.join(', ') 
+                            : err.error.message;
+                    }
+
+                    this.messageService.add({ severity: 'error', summary: 'Operación denegada', detail: mensajeBackend });
                 }
             });
         } else {
@@ -135,8 +142,15 @@ export class ProyectoList implements OnInit {
                     proyecto.estado = 'BAJA'; 
                     this.messageService.add({ severity: 'success', summary: 'Baja Lógica', detail: 'Proyecto enviado a la papelera' });
                 },
-                error: () => {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el proyecto' });
+                error: (err) => {
+                    // ACÁ TAMBIÉN: Capturamos por qué falló la eliminación
+                    let mensajeBackend = 'No se pudo eliminar el proyecto';
+                    if (err.error && err.error.message) {
+                        mensajeBackend = Array.isArray(err.error.message) 
+                            ? err.error.message.join(', ') 
+                            : err.error.message;
+                    }
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: mensajeBackend });
                 }
             });
         }
@@ -150,11 +164,19 @@ export class ProyectoList implements OnInit {
                 if (datos) {
                     this.proyectoService.crearProyecto(datos).subscribe({
                         next: () => {
-                            
                             if (this.ultimoEventoLazy) {
                                 this.cargarProyectosLazy(this.ultimoEventoLazy);
                             }
                             this.messageService.add({ severity: 'success', summary: 'Creado', detail: 'Proyecto registrado exitosamente' });
+                        },
+                        error: (err) => {
+                             let mensajeBackend = 'No se pudo crear el proyecto';
+                             if (err.error && err.error.message) {
+                                 mensajeBackend = Array.isArray(err.error.message) 
+                                     ? err.error.message.join(', ') 
+                                     : err.error.message;
+                             }
+                             this.messageService.add({ severity: 'error', summary: 'Error', detail: mensajeBackend });
                         }
                     });
                 }

@@ -53,12 +53,19 @@ export class Tareas implements OnInit {
     clonedTareas: { [s: string]: Tarea } = {};
     loading = false;
     
-    ngOnInit() {
-        this.statuses = [
-            { label: 'PENDIENTE', value: 'PENDIENTE' },
-            { label: 'FINALIZADA', value: 'FINALIZADA' },
-            { label: 'BAJA', value: 'BAJA' }
-        ];
+ngOnInit() {
+        if (this.rolActual === 'ADMIN') {
+            this.statuses = [
+                { label: 'PENDIENTE', value: 'PENDIENTE' },
+                { label: 'FINALIZADA', value: 'FINALIZADA' },
+                { label: 'BAJA', value: 'BAJA' }
+            ];
+        } else {
+            this.statuses = [
+                { label: 'PENDIENTE', value: 'PENDIENTE' },
+                { label: 'FINALIZADA', value: 'FINALIZADA' }
+            ];
+        }
 
         if (isPlatformBrowser(this.platformId)) {
             this.route.paramMap.subscribe(params => {
@@ -69,6 +76,11 @@ export class Tareas implements OnInit {
                 }
             });
         }
+    }
+   
+    get esProyectoActivo(): boolean {
+        const estado = this.infoProyecto()?.estado;
+        return estado !== 'BAJA' && estado !== 'FINALIZADO';
     }
 
     cargarTodoElDetalle() {
@@ -120,7 +132,16 @@ export class Tareas implements OnInit {
                 error: (err) => {
                     console.error('Error al actualizar tarea:', err);
                     this.onRowEditCancel(tarea, this.tareas().findIndex(t => t.id === tarea.id));
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo guardar la actualización' });
+                    
+                    // Capturamos el mensaje de NestJS
+                    let mensajeBackend = 'No se pudo guardar la actualización';
+                    if (err.error && err.error.message) {
+                        mensajeBackend = Array.isArray(err.error.message) 
+                            ? err.error.message.join(', ') 
+                            : err.error.message;
+                    }
+
+                    this.messageService.add({ severity: 'error', summary: 'Operación denegada', detail: mensajeBackend });
                 }
             });
         } else {
@@ -137,7 +158,7 @@ export class Tareas implements OnInit {
     }
 
     crearNuevaTarea() {
-        // Le pasamos el ID por debajo de la mesa al modal
+
         const ref = this.uiService.openNuevaTarea({ idProyectoFijo: this.idProyectoActual });
 
         if (ref) {
@@ -156,8 +177,14 @@ export class Tareas implements OnInit {
                             this.loadTareas(); 
                             this.messageService.add({ severity: 'success', summary: 'Tarea Creada', detail: 'Se agregó la tarea con éxito.' });
                         },
-                        error: () => {
-                            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear la tarea' });
+                        error: (err) => {
+                            let mensajeBackend = 'No se pudo crear la tarea';
+                            if (err.error && err.error.message) {
+                                mensajeBackend = Array.isArray(err.error.message) 
+                                    ? err.error.message.join(', ') 
+                                    : err.error.message;
+                            }
+                            this.messageService.add({ severity: 'error', summary: 'Error', detail: mensajeBackend });
                         }
                     });
                 }
@@ -175,10 +202,16 @@ export class Tareas implements OnInit {
             this.tareaService.eliminarTarea(Number(tarea.id)).subscribe({
                 next: () => {
                     this.tareas.update(lista => lista.filter(t => t.id !== tarea.id));
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tarea enviada a la papelera (Baja Lógica)' });
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tarea dada de baja' });
                 },
-                error: () => {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se puede eliminar la tarea' });
+                error: (err) => {
+                    let mensajeBackend = 'No se puede eliminar la tarea';
+                    if (err.error && err.error.message) {
+                        mensajeBackend = Array.isArray(err.error.message) 
+                            ? err.error.message.join(', ') 
+                            : err.error.message;
+                    }
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: mensajeBackend });
                 }
             });
         }
@@ -201,19 +234,15 @@ export class Tareas implements OnInit {
         if (this.idProyectoActual) {
             this.proyectoService.descargarCsvProyectoEspecifico(this.idProyectoActual).subscribe({
                 next: (blob: Blob) => {
-                    // Creamos una URL temporal para el archivo binario
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    
-                    // Le asignamos el nombre al archivo descargado
+
                     a.download = `proyecto_${this.idProyectoActual}_tareas.csv`;
                     
-                    // Simulamos el clic para iniciar la descarga
                     document.body.appendChild(a);
                     a.click();
                     
-                    // Limpiamos el DOM
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
 

@@ -61,6 +61,7 @@ export class Home implements OnInit {
   }
   initChartOptions() {
     this.chartOptions = {
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           position: 'bottom',

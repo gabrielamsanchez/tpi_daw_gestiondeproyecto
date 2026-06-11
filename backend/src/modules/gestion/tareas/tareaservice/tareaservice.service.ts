@@ -10,6 +10,8 @@ import { EstadoTarea } from '../enum/estado-tareas-enum';
 import { CreateTareaDto } from '../dtos/input/create-tarea-dto';
 import { UpdateTareaDto } from '../dtos/input/update-tarea-dto';
 import { Proyecto } from '../../proyectos/entities/proyecto.entity';
+import { EstadoProyecto } from '../../proyectos/enum/estado-proyecto.enum';
+
 @Injectable()
 export class TareasService {
   constructor(
@@ -18,7 +20,27 @@ export class TareasService {
     @InjectRepository(Proyecto)
     private readonly proyectosRepository: Repository<Proyecto>,
   ) {}
-  
+
+  private async validarProyectoEditable(idProyecto: number): Promise<void> {
+    const proyecto = await this.proyectosRepository.findOneBy({
+      id: idProyecto,
+    });
+    if (!proyecto) {
+      throw new NotFoundException(
+        `El proyecto con ID ${idProyecto} no existe.`,
+      );
+    }
+
+    if (
+      proyecto.estado === EstadoProyecto.BAJA ||
+      proyecto.estado === EstadoProyecto.FINALIZADO
+    ) {
+      throw new BadRequestException(
+        'Operación denegada: El proyecto asociado se encuentra finalizado o dado de baja.',
+      );
+    }
+  }
+
   async obtenerTareasParaCalendario() {
     return await this.tareasRepository.find({
       where: {
@@ -32,15 +54,8 @@ export class TareasService {
   }
 
   async crearTarea(dto: CreateTareaDto): Promise<{ id: number }> {
-    const proyecto = await this.proyectosRepository.findOne({
-      where: { id: dto.id_proyecto },
-    });
+    await this.validarProyectoEditable(dto.id_proyecto);
 
-    if (!proyecto) {
-      throw new NotFoundException(
-        `El proyecto con ID ${dto.id_proyecto} no existe`,
-      );
-    }
     const tarea = this.tareasRepository.create({
       ...dto,
       estado: dto.estado || EstadoTarea.PENDIENTE,
@@ -59,19 +74,46 @@ export class TareasService {
 
   //actualizar tarea
   async actualizarTarea(dto: UpdateTareaDto, idTarea: number): Promise<void> {
-    const tarea = await this.tareasRepository.findOneBy({ id: idTarea });
+    if (dto.estado === EstadoTarea.BAJA) {
+      throw new BadRequestException(
+        'Operación no permitida: No se puede dar de baja una tarea desde la edición. Utilice la función de eliminar.',
+      );
+    }
+    const tarea = await this.tareasRepository.findOne({
+      where: { id: idTarea },
+      relations: ['proyecto'],
+    });
+
     if (!tarea) {
       throw new BadRequestException('Tarea inexistente');
     }
+    if (tarea.estado === EstadoTarea.BAJA) {
+      throw new BadRequestException(
+        'Operación denegada: La tarea se encuentra dada de baja y no puede ser modificada ni reactivada.',
+      );
+    }
+
+    // Validamos que el proyecto dueño no esté cerrado antes de permitir los cambios
+    await this.validarProyectoEditable(tarea.proyecto.id);
+
     this.tareasRepository.merge(tarea, dto);
     await this.tareasRepository.save(tarea);
   }
 
+  // 4. Eliminar tarea (Modificado para traer la relación del proyecto)
   async eliminarTarea(idTarea: number): Promise<void> {
-    const tarea = await this.tareasRepository.findOneBy({ id: idTarea });
+    const tarea = await this.tareasRepository.findOne({
+      where: { id: idTarea },
+      relations: ['proyecto'],
+    });
+
     if (!tarea) {
       throw new NotFoundException('Tarea no encontrada');
     }
+
+    // Validamos que el proyecto dueño no esté cerrado antes de dar la baja
+    await this.validarProyectoEditable(tarea.proyecto.id);
+
     tarea.estado = EstadoTarea.BAJA;
     await this.tareasRepository.save(tarea);
   }
