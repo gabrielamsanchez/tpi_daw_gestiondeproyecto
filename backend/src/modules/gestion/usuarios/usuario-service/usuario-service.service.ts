@@ -24,8 +24,8 @@ export class UsuarioServiceService {
 
   async findByNombre(nombre: string): Promise<Usuario | null> {
     return this.usuariosRepository.findOneBy({
-      nombre,
-      estado: EstadoUsuario.ACTIVO,
+      nombre 
     });
   }
+
 }

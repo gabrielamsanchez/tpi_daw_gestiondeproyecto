@@ -12,17 +12,20 @@ export class AuthServiceService {
   ) {}
 
   async login(dto: LoginDto): Promise<{ accessToken: string }> {
-    const usuario = await this.usuariosService.findByNombre(dto.nombre); //busca por el nombre
+    const usuario = await this.usuariosService.findByNombre(dto.nombre); 
+
+    console.log("Usuario encontrado en BD:", usuario);
+    
     if (!usuario) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
-
+    if (usuario.estado !== 'ACTIVO') { 
+      throw new UnauthorizedException('El usuario se encuentra inactivo o dado de baja');
+    }
     const isClaveValida = await bcrypt.compare(dto.clave, usuario.clave);
-
     if (!isClaveValida) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
-
     const payload = {
       sub: usuario.id,
       nombre: usuario.nombre,
