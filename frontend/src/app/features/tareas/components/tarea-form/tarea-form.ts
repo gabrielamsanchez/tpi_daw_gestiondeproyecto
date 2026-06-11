@@ -1,4 +1,3 @@
-
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -26,24 +25,21 @@ export class TareaForm implements OnInit {
   };
 
   proyectosDisponibles: any[] = [];
-  isProyectoFijo: boolean = false; // 2. BANDERA PARA BLOQUEAR EL SELECTOR
+  isProyectoFijo: boolean = false; 
   private proyectoService = inject(ProyectoService);
   private cdr = inject(ChangeDetectorRef);
 
-  // 3. INYECTAR LA CONFIGURACIÓN DEL MODAL
   public config = inject(DynamicDialogConfig);
 
   constructor(public ref: DynamicDialogRef) {}
 
   ngOnInit() {
-    
     if (this.config.data && this.config.data.idProyectoFijo) {
       this.tarea.proyectoId = this.config.data.idProyectoFijo;
-      this.isProyectoFijo = true; // Bloqueamos el dropdown
+      this.isProyectoFijo = true; 
     }
     this.proyectoService.obtenerProyectos(1, 100).subscribe({
       next: (response) => {
-        
         this.proyectosDisponibles = response.data || response; 
         this.cdr.detectChanges();
       },
@@ -53,8 +49,20 @@ export class TareaForm implements OnInit {
     });
   }
 
+  fechasValidas(): boolean {
+    if (!this.tarea.fechaInicio || !this.tarea.fechaLimite) return false;
+    return this.tarea.fechaLimite >= this.tarea.fechaInicio;
+  }
+
+  formularioValido(): boolean {
+    return !!this.tarea.titulo && 
+           this.tarea.titulo.trim().length >= 5 && 
+           this.tarea.proyectoId !== null && 
+           this.fechasValidas();
+  }
+
   guardar() {
-    if (this.tarea.titulo && this.tarea.proyectoId) {
+    if (this.formularioValido()) {
       const datosParaEnviar: any = { ...this.tarea };
 
       if (this.tarea.fechaInicio && this.tarea.fechaInicio instanceof Date) {

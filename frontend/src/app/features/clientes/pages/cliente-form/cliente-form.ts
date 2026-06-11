@@ -1,3 +1,47 @@
+// import { Component, OnInit } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+// import { InputTextModule } from 'primeng/inputtext';
+// import { ButtonModule } from 'primeng/button';
+// import { SelectModule } from 'primeng/select';
+// import { DynamicDialogRef } from 'primeng/dynamicdialog';
+
+// @Component({
+//   selector: 'app-cliente-form',
+//   imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, SelectModule],
+//   templateUrl: './cliente-form.html',
+//   styleUrl: './cliente-form.css',
+// })
+
+// export class ClienteForm implements OnInit {
+
+  
+//   cliente = {
+//     nombre: '',
+//     estado: 'Activo', 
+//     telefono: '',
+//     correo: ''
+//   };
+
+//   estadosDisponibles: string[] = [];
+
+//   constructor(public ref: DynamicDialogRef) {}
+
+//   ngOnInit() {
+//     this.estadosDisponibles = ['Activo', 'Inactivo'];
+//   }
+
+//   guardar() {
+//     // Validación simple: obligamos a que ponga mínimo el nombre
+//     if (this.cliente.nombre.trim()) {
+//       this.ref.close(this.cliente); 
+//     }
+//   }
+
+//   cerrar() {
+//     this.ref.close(); 
+//   }
+// }
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,9 +56,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
   templateUrl: './cliente-form.html',
   styleUrl: './cliente-form.css',
 })
-
 export class ClienteForm implements OnInit {
-
   
   cliente = {
     nombre: '',
@@ -31,9 +73,29 @@ export class ClienteForm implements OnInit {
     this.estadosDisponibles = ['Activo', 'Inactivo'];
   }
 
+  esCorreoValido(): boolean {
+    if (!this.cliente.correo || this.cliente.correo.trim().length < 5) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(this.cliente.correo);
+  }
+
+  esTelefonoValido(): boolean {
+    if (!this.cliente.telefono || this.cliente.telefono.trim().length < 5) return false;
+    const telRegex = /^[0-9]+$/; 
+    return telRegex.test(this.cliente.telefono);
+  }
+
+  formularioValido(): boolean {
+    // Valida que nada esté vacío y se cumplan los formatos
+    return this.cliente.nombre.trim().length >= 5 && 
+           this.cliente.estado !== null &&
+           this.cliente.estado !== '' &&
+           this.esCorreoValido() && 
+           this.esTelefonoValido();
+  }
+
   guardar() {
-    // Validación simple: obligamos a que ponga mínimo el nombre
-    if (this.cliente.nombre.trim()) {
+    if (this.formularioValido()) {
       this.ref.close(this.cliente); 
     }
   }
