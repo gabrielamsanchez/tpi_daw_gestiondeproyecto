@@ -13,15 +13,12 @@ export class ClientesExportService {
   ) {}
 
   async exportarClientesCsv(estado?: EstadoCliente): Promise<string> {
-    // Si viene estado filtramos por él, si no, traemos todos
     const condicionWhere = estado ? { estado } : {};
 
     const clientes = await this.clienteRepository.find({
       where: condicionWhere,
       order: { id: 'ASC' },
     });
-    console.log('--- DATOS DESDE TYPEORM ---');
-    console.log(clientes);
 
     const encabezados = [
       'ID',
@@ -38,8 +35,6 @@ export class ClientesExportService {
       c.telefono || 'N/A',
       c.correo || 'N/A',
     ]);
-    console.log('--- MATRIZ MAPAEDA ---');
-    console.log(matrizDeDatos);
 
     return generarArchivoCsv(encabezados, matrizDeDatos);
   }

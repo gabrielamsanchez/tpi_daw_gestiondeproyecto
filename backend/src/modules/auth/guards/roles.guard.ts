@@ -25,7 +25,7 @@ export class RolesGuard implements CanActivate {
 
     if (!hasRole) {
       throw new ForbiddenException(
-        'No tienes permisos suficientes (Requiere rol ADMIN)',
+        'No tienes permisos suficientes',
       );
     }
 

@@ -36,7 +36,3 @@ export class QueryProyectoDto {
   @Min(1)
   limit?: number = 10;
 }
-//Usamos @Type(() => Number) de class-transformer para
-// que NestJS convierta automáticamente esos textos
-// en números reales antes de que lleguen a tu código,
-// evitando errores matemáticos en la paginación.

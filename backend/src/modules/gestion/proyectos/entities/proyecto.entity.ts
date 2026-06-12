@@ -45,14 +45,14 @@ export class Proyecto {
   @Column({ name: 'id_cliente', type: 'int', nullable: true })
   idCliente?: number | null;
 
-  // Relación Muchos a Uno: Muchos proyectos pertenecen a un cliente
+  // Muchos proyectos pertenecen a un cliente
   @ManyToOne(() => Cliente, (cliente) => cliente.proyectos, {
     nullable: true,
   })
   @JoinColumn({ name: 'id_cliente' })
   cliente?: Cliente | null;
 
-  // Relación Uno a Muchos: Un proyecto tiene muchas tareas
+  // un proyecto tiene muchas tareas
   @OneToMany(() => Tarea, (tarea) => tarea.proyecto)
   tareas!: Tarea[];
 }

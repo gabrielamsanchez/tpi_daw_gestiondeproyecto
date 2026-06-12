@@ -33,7 +33,7 @@ import { EstadoCliente } from '../enum/estado-cliente-enum';
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 
-  // Crear cliente
+  //crear cliente
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Post()
@@ -50,7 +50,7 @@ export class ClienteController {
     return await this.clienteService.create(createClienteDto);
   }
 
-  // Obtener todos los clientes
+  //get todos los clientes
   @ApiBearerAuth('token')
   @UseGuards(AuthGuardGuard)
   @Get()
@@ -68,7 +68,7 @@ export class ClienteController {
   @Get('exportar/csv')
   @ApiOperation({
     summary:
-      'Descargar listado de clientes en CSV, filtrando opcionalmente por estado',
+      'Descargar listado de clientes en CSV',
   })
   async exportarCsv(
     @Res() res: Response,

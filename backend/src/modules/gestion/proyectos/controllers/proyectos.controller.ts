@@ -76,7 +76,7 @@ export class ProyectosController {
   @Get('exportar/csv') // arriba de :id
   @ApiOperation({
     summary:
-      'Descargar proyectos en CSV aplicando los mismos filtros de búsqueda',
+      'Descargar proyectos en CSV',
   })
   async exportarCsv(@Res() res: Response, @Query() query: QueryProyectoDto) {
     const csvContent = await this.proyectosService.exportarCsv(query);
@@ -162,7 +162,7 @@ export class ProyectosController {
   @ApiParam({ name: 'id', description: 'ID del proyecto', example: 1 })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Proyecto eliminado lógicamente de forma correcta.',
+    description: 'Proyecto eliminado de forma correcta.',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

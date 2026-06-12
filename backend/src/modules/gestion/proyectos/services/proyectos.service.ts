@@ -72,27 +72,24 @@ export class ProyectosService {
     return { id: proyecto.id };
   }
 
-  // BÚSQUEDA AVANZADA
+  //busqueda avanzada
   async obtenerTodos(query: QueryProyectoDto) {
     const { search, estado, page = 1, limit = 10 } = query;
     const qb = this.proyectosRepository
       .createQueryBuilder('proyecto')
-      .leftJoinAndSelect('proyecto.cliente', 'cliente'); // Traemos datos del cliente
+      .leftJoinAndSelect('proyecto.cliente', 'cliente'); 
 
-    // Filtro por nombre
     if (search) {
       qb.andWhere('proyecto.nombre ILIKE :search', { search: `%${search}%` });
     }
 
-    // Filtro por estado
     if (estado) {
       qb.andWhere('CAST(proyecto.estado AS text) = :estado', { estado });
     }
 
-    // Ordenamiento por defecto (los más nuevos primero)
+    // los más nuevos primero
     qb.orderBy('proyecto.id', 'DESC');
 
-    // Paginación
     qb.skip((page - 1) * limit).take(limit);
 
     const [data, total] = await qb.getManyAndCount();
@@ -121,24 +118,20 @@ export class ProyectosService {
     id: number,
     dto: UpdateProyectoDto,
   ): Promise<Proyecto> {
-    // Buscamos el proyecto original
     const proyecto = await this.obtenerPorId(id);
 
-    // 1. REGLA DE NEGOCIO ESTRICTA: Si está en BAJA, rechazamos al instante (Fail Fast)
     if (proyecto.estado === EstadoProyecto.BAJA) {
       throw new BadRequestException(
         'El proyecto se encuentra dado de baja y no puede ser modificado.',
       );
     }
-    //validar que no tenga tareas pendiente
     if (
       dto.estado === EstadoProyecto.BAJA ||
       dto.estado === EstadoProyecto.FINALIZADO
     ) {
       await this.validarSinTareasPendientes(id);
     }
-    // 2. REGLA DE NEGOCIO PARA FINALIZADOS:
-    // Si ya se terminó, solo dejamos avanzar la petición si el objetivo es reactivarlo (cambiar su estado a ACTIVO)
+
     if (
       proyecto.estado === EstadoProyecto.FINALIZADO &&
       dto.estado !== EstadoProyecto.ACTIVO
@@ -148,12 +141,10 @@ export class ProyectosService {
       );
     }
 
-    // 3. VALIDACIÓN DE CLIENTE
     if (dto.idCliente && dto.idCliente !== proyecto.idCliente) {
       await this.validarClienteActivo(dto.idCliente);
     }
 
-    // Si pasó todos los filtros, guardamos los cambios seguro
     this.proyectosRepository.merge(proyecto, dto);
     return await this.proyectosRepository.save(proyecto);
   }

@@ -4,13 +4,11 @@ export function generarArchivoCsv(
 ): string {
   const filasFormateadas = filas.map((fila) => {
     const celdasProcesadas = fila.map((celda) => {
-      // Si la celda no tiene valor, devolvemos "N/A"
       if (celda === null || celda === undefined || celda === '') {
         return '"N/A"';
       }
 
       const celdaString = String(celda).replace(/"/g, '""');
-
       return `"${celdaString}"`;
     });
 

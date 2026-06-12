@@ -62,7 +62,6 @@ export class ClienteService {
   }
 
   async exportarClientesCsv(estado?: EstadoCliente): Promise<string> {
-    // Delegás la tarea al sub-servicio
     return await this.exportService.exportarClientesCsv(estado);
   }
 }

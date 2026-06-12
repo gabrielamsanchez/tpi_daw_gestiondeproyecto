@@ -93,14 +93,12 @@ export class TareasService {
       );
     }
 
-    // Validamos que el proyecto dueño no esté cerrado antes de permitir los cambios
     await this.validarProyectoEditable(tarea.proyecto.id);
 
     this.tareasRepository.merge(tarea, dto);
     await this.tareasRepository.save(tarea);
   }
 
-  // 4. Eliminar tarea (Modificado para traer la relación del proyecto)
   async eliminarTarea(idTarea: number): Promise<void> {
     const tarea = await this.tareasRepository.findOne({
       where: { id: idTarea },
@@ -111,7 +109,6 @@ export class TareasService {
       throw new NotFoundException('Tarea no encontrada');
     }
 
-    // Validamos que el proyecto dueño no esté cerrado antes de dar la baja
     await this.validarProyectoEditable(tarea.proyecto.id);
 
     tarea.estado = EstadoTarea.BAJA;
