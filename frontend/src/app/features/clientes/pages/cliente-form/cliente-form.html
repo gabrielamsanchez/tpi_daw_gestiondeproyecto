@@ -53,7 +53,6 @@
       [ngClass]="{'ng-invalid ng-dirty': telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)}"
     />
     <div *ngIf="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)">
-        <small class="p-error block mt-1" *ngIf="telefonoInput.errors?.['required']">El teléfono es obligatorio.</small>
         <small class="p-error block mt-1" *ngIf="telefonoInput.errors?.['minlength']">Debe tener al menos 5 dígitos.</small>
         <small class="p-error block mt-1" *ngIf="telefonoInput.errors?.['pattern']">Solo se permite número enteros</small>
     </div>
@@ -75,7 +74,6 @@
       [ngClass]="{'ng-invalid ng-dirty': correoInput.invalid && (correoInput.dirty || correoInput.touched)}"
     />
     <div *ngIf="correoInput.invalid && (correoInput.dirty || correoInput.touched)">
-        <small class="p-error block mt-1" *ngIf="correoInput.errors?.['required']">El correo electrónico es obligatorio.</small>
         <small class="p-error block mt-1" *ngIf="correoInput.errors?.['minlength']">Debe tener al menos 5 caracteres.</small>
         <small class="p-error block mt-1" *ngIf="correoInput.errors?.['pattern']">El formato del correo no es válido.</small>
     </div>

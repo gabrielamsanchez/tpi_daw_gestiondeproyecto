@@ -29,24 +29,11 @@ export class ClienteForm implements OnInit {
     this.estadosDisponibles = ['Activo', 'Baja'];
   }
 
-  esCorreoValido(): boolean {
-    if (!this.cliente.correo || this.cliente.correo.trim().length < 5) return false;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(this.cliente.correo);
-  }
-
-  esTelefonoValido(): boolean {
-    if (!this.cliente.telefono || this.cliente.telefono.trim().length < 5) return false;
-    const telRegex = /^[0-9]+$/; 
-    return telRegex.test(this.cliente.telefono);
-  }
-
   formularioValido(): boolean {
     return this.cliente.nombre.trim().length >= 5 && 
            this.cliente.estado !== null &&
-           this.cliente.estado !== '' &&
-           this.esCorreoValido() && 
-           this.esTelefonoValido();
+           this.cliente.estado !== '' 
+
   }
 
   guardar() {
