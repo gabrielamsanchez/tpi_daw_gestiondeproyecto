@@ -49,15 +49,21 @@ export class TareaForm implements OnInit {
     });
   }
 
+  // fechasValidas(): boolean {
+  //   if (!this.tarea.fechaInicio || !this.tarea.fechaLimite) return false;
+  //   return this.tarea.fechaLimite >= this.tarea.fechaInicio;
+  // }
   fechasValidas(): boolean {
-    if (!this.tarea.fechaInicio || !this.tarea.fechaLimite) return false;
+    if (!this.tarea.fechaInicio || !this.tarea.fechaLimite) {
+      return true;
+    }
     return this.tarea.fechaLimite >= this.tarea.fechaInicio;
   }
 
   formularioValido(): boolean {
     return !!this.tarea.titulo && 
            this.tarea.titulo.trim().length >= 5 && 
-           this.tarea.proyectoId !== null && 
+           this.tarea.proyectoId !== null &&
            this.fechasValidas();
   }
 

@@ -14,7 +14,6 @@ export class AuthServiceService {
   async login(dto: LoginDto): Promise<{ accessToken: string }> {
     const usuario = await this.usuariosService.findByNombre(dto.nombre); 
 
-    console.log("Usuario encontrado en BD:", usuario);
     
     if (!usuario) {
       throw new UnauthorizedException('Credenciales inválidas');

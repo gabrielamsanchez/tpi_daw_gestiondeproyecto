@@ -1,8 +1,3 @@
-// export enum EstadoCliente {
-//   ACTIVO = 'ACTIVO',
-//   BAJA = 'BAJA'
-// }
-
 export interface InterfaceCliente {
   id: number;
   nombre: string;

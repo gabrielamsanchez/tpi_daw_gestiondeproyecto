@@ -45,7 +45,6 @@
       pInputText
       [(ngModel)]="cliente.telefono"
       #telefonoInput="ngModel"
-      required
       minlength="5"
       pattern="^[0-9]+$"
       placeholder="Ej: 3361543210"
@@ -66,7 +65,6 @@
       pInputText
       [(ngModel)]="cliente.correo"
       #correoInput="ngModel"
-      required
       minlength="5"
       pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
       placeholder="Ej: cliente@correo.com"

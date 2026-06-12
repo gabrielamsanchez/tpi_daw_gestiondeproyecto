@@ -59,8 +59,6 @@ export class TareacontrollerController {
     description: 'No autorizado.',
   })
   async createTarea(@Body() dto: CreateTareaDto): Promise<{ id: number }> {
-    console.log('--- ENTRANDO AL CONTROLLER DE TAREAS ---');
-    console.log('DTOrecibido:', dto);
     return await this.tareasService.crearTarea(dto);
   }
 
