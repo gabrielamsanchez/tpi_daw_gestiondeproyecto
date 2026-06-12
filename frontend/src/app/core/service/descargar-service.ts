@@ -22,8 +22,7 @@ export class DescargarCsvService {
                 },
 
 
-                error: (err) => {
-                    console.error(`Error al descargar ${nombreArchivo}:`, err);
+                error: () => {
                     this.messageService.add({ 
                         severity: 'error', 
                         summary: 'Error', 

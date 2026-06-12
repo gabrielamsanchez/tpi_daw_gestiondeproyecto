@@ -261,10 +261,7 @@ export class Home implements OnInit {
 
           
           this.proyectoService.crearProyecto(proyectoLimpio).subscribe({
-            next: (respuesta) => {
-              console.log('¡Proyecto creado con éxito desde el Dashboard!', respuesta);
-              
-              
+            next: () => {
               this.cargarEstadisticas();
             },
             error: (err) => {
@@ -297,9 +294,9 @@ export class Home implements OnInit {
           };
 
           this.tareaService.crearTarea(tareaMapeada).subscribe({
-            next: (respuesta) => {
-              console.log('¡Éxito absoluto! Tarea guardada:', respuesta);
-            
+            next: () => {
+              this.cargarEstadisticas();
+              this.cargarEventosDelBackend();
             },
             error: (err) => {
               console.error('El backend rechazó la petición:', err);

@@ -39,17 +39,12 @@ export class Sidebar {
             nombre: datosDelFormulario.nombre.trim()
           };
 
-          
           if (datosDelFormulario.idCliente) {
             proyectoLimpio.idCliente = Number(datosDelFormulario.idCliente);
           }
 
-         
           this.proyectoService.crearProyecto(proyectoLimpio).subscribe({
-            next: (respuesta) => {
-              console.log('¡Proyecto creado con éxito desde el Sidebar!', respuesta);
-              
-              
+            next: () => {
               if (this.router.url === '/proyectos') {
                 this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
                   this.router.navigate(['/proyectos']);

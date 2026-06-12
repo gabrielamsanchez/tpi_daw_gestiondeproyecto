@@ -15,7 +15,7 @@ export class AuthStore {
     private isBrowser(): boolean {
         return isPlatformBrowser(this.platformId);
     }
-//ciclo de vida del token, almacenamiento
+
     guardarToken(token: string): void {
         if (!this.isBrowser()) {
             return;
@@ -45,18 +45,16 @@ export class AuthStore {
         this.eliminarToken();
         this.router.navigateByUrl("/login");
     }
-//esto es para extraer el nombre de usuario desde el token, se decodifica  el JWT
+
     obtenerNombreUsuario(): string | null {
         const token = this.obtenerToken();
 
         if (!token) {
-            //console.warn('No hay token disponible');
             return null;
         }
         try {
             const payloadBase64Url = token.split('.')[1];
             if (!payloadBase64Url) {
-                console.warn('Token inválido: no tiene payload');
                 return null;
             }
 
@@ -65,13 +63,11 @@ export class AuthStore {
             const payload = JSON.parse(payloadJson) as { nombre?: string };
 
             if (!payload.nombre) {
-                console.warn('El payload del token no contiene el nombre. Payload:', payload);
                 return null;
             }
 
             return payload.nombre;
         } catch (error) {
-            console.error('Error al decodificar el token:', error);
             return null;
         }
     }
@@ -86,15 +82,15 @@ export class AuthStore {
     }
 
     obtenerRol(): string | null {
-    const token = this.obtenerToken(); 
-    if (!token) return null;
+        const token = this.obtenerToken(); 
+        if (!token) return null;
 
-    try {
-        const payload: any = jwtDecode(token);
-        return payload.rol; 
-    } catch (error) {
-        return null;
-    }
+        try {
+            const payload: any = jwtDecode(token);
+            return payload.rol; 
+        } catch (error) {
+            return null;
+        }
     }
 
 }
