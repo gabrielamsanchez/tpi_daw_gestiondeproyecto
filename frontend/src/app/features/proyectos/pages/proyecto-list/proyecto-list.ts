@@ -48,7 +48,7 @@ export class ProyectoList implements OnInit {
             this.statuses = [
                 { label: 'Activo', value: 'ACTIVO' },
                 { label: 'Finalizado', value: 'FINALIZADO' },
-                { label: 'Baja Lógica', value: 'BAJA' }
+                { label: 'Baja', value: 'BAJA' }
             ];
         } else {
             this.statuses = [
@@ -140,7 +140,7 @@ export class ProyectoList implements OnInit {
             this.proyectoService.eliminarProyecto(proyecto.id).subscribe({
                 next: () => {
                     proyecto.estado = 'BAJA'; 
-                    this.messageService.add({ severity: 'success', summary: 'Baja Lógica', detail: 'Proyecto enviado a la papelera' });
+                    this.messageService.add({ severity: 'success', summary: 'Baja', detail: 'Proyecto dado de baja' });
                 },
                 error: (err) => {
                     // ACÁ TAMBIÉN: Capturamos por qué falló la eliminación

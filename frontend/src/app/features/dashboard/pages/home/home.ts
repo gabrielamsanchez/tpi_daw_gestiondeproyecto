@@ -13,13 +13,16 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { CalendarioService } from '../../../../core/service/calendario.service'; 
 import { DashboardService } from '../../services/dashboard';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
   standalone: true, 
-  imports: [ChartModule, ButtonModule, CommonModule, FullCalendarModule],
+  imports: [ChartModule, ButtonModule, CommonModule, FullCalendarModule, ToastModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
+  providers: [MessageService],
 })
 export class Home implements OnInit {
 
@@ -34,7 +37,7 @@ export class Home implements OnInit {
   
   private calendarioService = inject(CalendarioService);
   private cdr = inject(ChangeDetectorRef);
-
+  private messageService = inject(MessageService);
   constructor(
     private uiService: UiService,
     private proyectoService: ProyectoService,
@@ -263,9 +266,18 @@ export class Home implements OnInit {
           this.proyectoService.crearProyecto(proyectoLimpio).subscribe({
             next: () => {
               this.cargarEstadisticas();
+              
+              this.messageService.add({ severity: 'success', summary: 'Creado', detail: 'Proyecto registrado exitosamente' });
             },
             error: (err) => {
-              console.error('El backend rechazó la petición (400 Bad Request):', err);
+              
+              let mensajeBackend = 'No se pudo crear el proyecto';
+              if (err.error && err.error.message) {
+                  mensajeBackend = Array.isArray(err.error.message) 
+                      ? err.error.message.join(', ') 
+                      : err.error.message;
+              }
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: mensajeBackend });
             }
           });
         }
@@ -297,9 +309,18 @@ export class Home implements OnInit {
             next: () => {
               this.cargarEstadisticas();
               this.cargarEventosDelBackend();
+              // Lanzamos el cartel de éxito
+              this.messageService.add({ severity: 'success', summary: 'Tarea Creada', detail: 'Se agregó la tarea con éxito.' });
             },
             error: (err) => {
-              console.error('El backend rechazó la petición:', err);
+              // Capturamos el error exacto del backend
+              let mensajeBackend = 'No se pudo crear la tarea';
+              if (err.error && err.error.message) {
+                  mensajeBackend = Array.isArray(err.error.message) 
+                      ? err.error.message.join(', ') 
+                      : err.error.message;
+              }
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: mensajeBackend });
             }
           });
         }
