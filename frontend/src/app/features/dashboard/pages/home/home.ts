@@ -292,17 +292,13 @@ export class Home implements OnInit {
       ref.onClose.subscribe((datosDeLaTarea: any) => {
         if (datosDeLaTarea) {
           
-          const formatearFechaSegura = (fechaInput: any): Date => {
-            const d = fechaInput ? new Date(fechaInput) : new Date();
-            return isNaN(d.getTime()) ? new Date() : d;
-          };
-
+          
           const tareaMapeada = {
-            descripcion: datosDeLaTarea.titulo || 'Nueva Tarea',
-            id_proyecto: Number(datosDeLaTarea.proyectoId),
+            descripcion: datosDeLaTarea.titulo, 
+            id_proyecto: Number(datosDeLaTarea.proyectoId), 
             estado: 'PENDIENTE',
-            fecha_inicio: formatearFechaSegura(datosDeLaTarea.fecha_inicio),
-            fecha_limite: formatearFechaSegura(datosDeLaTarea.fecha_limite)
+            fecha_inicio: datosDeLaTarea.fecha_inicio || null,
+            fecha_limite: datosDeLaTarea.fecha_limite || null
           };
 
           this.tareaService.crearTarea(tareaMapeada).subscribe({
@@ -313,7 +309,7 @@ export class Home implements OnInit {
               this.messageService.add({ severity: 'success', summary: 'Tarea Creada', detail: 'Se agregó la tarea con éxito.' });
             },
             error: (err) => {
-              // Capturamos el error exacto del backend
+              // backend
               let mensajeBackend = 'No se pudo crear la tarea';
               if (err.error && err.error.message) {
                   mensajeBackend = Array.isArray(err.error.message) 
